@@ -6,6 +6,6 @@ export const environment = {
         apiKey: "AIzaSyDalTAm9ttdXOJll_8B89SHHyNCP8Jm_rM",
         authDomain: "ecomercesa-3c1ff.firebaseapp.com",
         messagingSenderId: "600924951861",
-    }
-
+    },
+    production:false
 }

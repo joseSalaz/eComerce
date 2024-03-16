@@ -1,29 +1,35 @@
 <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            Log In
-          </div>
-          <div class="card-body">
-            <form>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password">
-              </div>
-              <button type="submit" class="btn btn-primary">Log In</button>
-            </form>
-          </div>
-          <div class="card-footer">
-            <p class="text-center mb-0">Don't have an account? <a routerLink="/auth/sign-up">Sign in</a></p>
-          </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Log In
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Log In</button>
+          </form>
+        </div>
+        <div class="card-footer">
+          <p class="text-center mb-0">Don't have an account? <a routerLink="/auth/sign-up">Sign in</a></p>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-light" (click)="onclick()">
+            <i class="fab fa-google"></i> Log In with Google
+          </button>
         </div>
       </div>
     </div>
   </div>
+</div>
+
   

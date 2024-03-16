@@ -12,6 +12,8 @@ import { HeadComponent } from './pages/inicio/head/head.component';
 import { SignUpComponent } from './pages/auth/sign-up/sign-up.component';
 import { LogInComponent } from './pages/auth/log-in/log-in.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    provideFirebaseApp(() => initializeApp({"projectId":"ecomercesa-3c1ff","appId":"1:600924951861:web:cdafa4c00800d3f6d0287c","storageBucket":"ecomercesa-3c1ff.appspot.com","apiKey":"AIzaSyDalTAm9ttdXOJll_8B89SHHyNCP8Jm_rM","authDomain":"ecomercesa-3c1ff.firebaseapp.com","messagingSenderId":"600924951861"})),
+    provideAuth(() => getAuth())
   ],
   providers: [
     provideClientHydration()
