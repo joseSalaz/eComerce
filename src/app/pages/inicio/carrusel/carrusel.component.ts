@@ -1,11 +1,16 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+declare var bootstrap: any; // Importar Bootstrap globalmente
+
 @Component({
   selector: 'app-carrusel',
   templateUrl: './carrusel.component.html',
-  styleUrl: './carrusel.component.scss'
+  styleUrls: ['./carrusel.component.scss']
 })
-export class CarruselComponent {
+export class CarruselComponent implements AfterViewInit {
   @ViewChild('carousel') carouselElement!: ElementRef;
+  private carousel: any;
+  private currentIndex: number = 0;
+  private intervalId: any;
 
   constructor() {}
 
@@ -14,44 +19,39 @@ export class CarruselComponent {
 
     // Verificar si window está disponible
     if (typeof window !== 'undefined' && window.matchMedia("(min-width:576px)").matches) {
-      multipleItemCarousel.classList.remove('slide');
-
-      // Usar arrow function para mantener el contexto 'this'
-      multipleItemCarousel.addEventListener('click', (event: Event) => {
-        if (event.target instanceof HTMLElement && event.target.classList.contains('carousel-control-prev')) {
-          this.prevSlide();
-        } else if (event.target instanceof HTMLElement && event.target.classList.contains('carousel-control-next')) {
-          this.nextSlide();
-        }
+      this.carousel = new bootstrap.Carousel(multipleItemCarousel, {
+        interval: false, // Deshabilitar el desplazamiento automático por defecto
       });
+
+      // Iniciar el intervalo para desplazar automáticamente cada 3 segundos
+      this.intervalId = setInterval(() => {
+        this.nextSlide();
+      }, 5000);
     } else {
       multipleItemCarousel.classList.add('slide');
     }
   }
 
+  // Método para avanzar al siguiente slide
   nextSlide(): void {
-    const carousel = this.carouselElement.nativeElement;
-    const carouselInner = carousel.querySelector('.carousel-inner');
-    if (carouselInner) {
-      // Obtener el ancho de la primera carta
-      const firstItem = carouselInner.querySelector('.carousel-item');
-      if (firstItem) {
-        const itemWidth = firstItem.getBoundingClientRect().width;
-        carouselInner.scrollLeft += itemWidth + 30; // Ajuste para el margen entre cartas
-      }
+    const items = this.carouselElement.nativeElement.querySelectorAll('.carousel-item');
+
+    if (items.length > 0) {
+      this.currentIndex = (this.currentIndex + 1) % items.length;
+      items[this.currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
   }
-
   prevSlide(): void {
-    const carousel = this.carouselElement.nativeElement;
-    const carouselInner = carousel.querySelector('.carousel-inner');
-    if (carouselInner) {
-      // Obtener el ancho de la primera carta
-      const firstItem = carouselInner.querySelector('.carousel-item');
-      if (firstItem) {
-        const itemWidth = firstItem.getBoundingClientRect().width;
-        carouselInner.scrollLeft -= itemWidth + 30; // Ajuste para el margen entre cartas
-      }
+    const items = this.carouselElement.nativeElement.querySelectorAll('.carousel-item');
+
+    if (items.length > 0) {
+      this.currentIndex = (this.currentIndex - 1 + items.length) % items.length;
+      items[this.currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
+  }
+  ngOnDestroy(): void {
+    // Limpiar el intervalo cuando el componente se destruye
+    clearInterval(this.intervalId);
+    
   }
 }
