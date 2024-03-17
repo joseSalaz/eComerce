@@ -7,5 +7,5 @@ export const environment = {
         authDomain: "ecomercesa-3c1ff.firebaseapp.com",
         messagingSenderId: "600924951861",
     },
-    production:false
+
 }

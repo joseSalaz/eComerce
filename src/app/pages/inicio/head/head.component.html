@@ -17,10 +17,12 @@
                     </button>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-link text-decoration-none text-dark me-3" routerLink="/auth/log-in" (click)="logOut()">
-                        <i class="bi-person-circle text-primary me-1"></i>
-                        Regístrese
-                    </a>
+                    <div *ngIf="!vernombre;else templateRegister" >
+                        <a class="btn btn-link text-decoration-none text-dark me-3" routerLink="/auth/log-in" >
+                            <i class="bi-person-circle text-primary me-1"></i>
+                            Regístrese
+                        </a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <button class="btn btn-link text-decoration-none text-dark">
@@ -28,9 +30,15 @@
                         Carrito
                     </button>
                 </li>
+               
             </ul>
         </div>
     </div>
 </nav>
 
 
+
+<ng-template #templateRegister > {{displayname}} </ng-template>
+
+
+<button (click)="onClick()">cerrar sesion</button>

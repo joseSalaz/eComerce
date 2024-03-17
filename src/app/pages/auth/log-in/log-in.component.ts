@@ -3,6 +3,8 @@ import { AuthService } from '../../../Service/auth.service';
 import { response } from 'express';
 import { error } from 'console';
 import { Router } from '@angular/router';
+import { Session } from 'inspector';
+import { sesioncosntans } from '../../../constans/sesion.constans';
 
 @Component({
   selector: 'app-log-in',
@@ -16,9 +18,16 @@ constructor(
 ){
 }
   onclick(){
-    this.authService.liginWhitgogle()
+    this.authService.loginWhitgogle()
     .then(response=>{
-      console.log(response);
+      
+      console.log("==>",response);
+      let username =response.user.displayName;
+      if (username == null) {
+        username="";
+      }
+      sessionStorage.setItem(sesioncosntans.username,username)
+      sessionStorage.setItem(sesioncosntans.user,JSON.stringify(response.user))
       this.router.navigate(['/inicio'])
       
     })
