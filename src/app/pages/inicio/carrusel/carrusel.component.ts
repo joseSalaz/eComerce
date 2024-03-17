@@ -22,11 +22,6 @@ export class CarruselComponent implements AfterViewInit {
       this.carousel = new bootstrap.Carousel(multipleItemCarousel, {
         interval: false, // Deshabilitar el desplazamiento automático por defecto
       });
-
-      // Iniciar el intervalo para desplazar automáticamente cada 3 segundos
-      this.intervalId = setInterval(() => {
-        this.nextSlide();
-      }, 5000);
     } else {
       multipleItemCarousel.classList.add('slide');
     }
@@ -41,6 +36,8 @@ export class CarruselComponent implements AfterViewInit {
       items[this.currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
   }
+  
+  // Método para retroceder al slide anterior
   prevSlide(): void {
     const items = this.carouselElement.nativeElement.querySelectorAll('.carousel-item');
 
@@ -49,9 +46,9 @@ export class CarruselComponent implements AfterViewInit {
       items[this.currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
   }
+  
   ngOnDestroy(): void {
     // Limpiar el intervalo cuando el componente se destruye
     clearInterval(this.intervalId);
-    
   }
 }

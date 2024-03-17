@@ -15,6 +15,7 @@ import { LogInComponent } from './pages/auth/log-in/log-in.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
     provideAuth(() => getAuth())
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

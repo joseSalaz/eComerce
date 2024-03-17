@@ -48,4 +48,18 @@ export class HeadComponent implements OnInit {
       })
       .catch(error => console.error('Error al hacer logout:', error));
   }
+
+  onSelectOption(event: any): void {
+    const option = event?.target?.value; // Utiliza el operador de encadenamiento opcional (?.) para evitar errores si event, target o value son null
+    if (option !== null && option !== undefined) {
+      if (option === 'miPerfil') {
+        // Redirigir a la página de perfil
+        this.router.navigate(['/perfil']);
+      } else if (option === 'cerrarSesion') {
+        // Cerrar sesión
+        this.onClick();
+      }
+    }
+  }
 }
+

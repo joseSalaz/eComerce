@@ -58,3 +58,6 @@
     background-color: #007bff; /* Color del punto indicador activo */
 }
 
+select option:first-child {
+    display: none;
+}

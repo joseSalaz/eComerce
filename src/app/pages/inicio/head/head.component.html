@@ -17,28 +17,31 @@
                     </button>
                 </li>
                 <li class="nav-item">
-                    <div *ngIf="!vernombre;else templateRegister" >
+                    <div *ngIf="!vernombre; else templateRegister" class="d-flex align-items-center">
                         <a class="btn btn-link text-decoration-none text-dark me-3" routerLink="/auth/log-in" >
                             <i class="bi-person-circle text-primary me-1"></i>
                             Regístrese
                         </a>
                     </div>
                 </li>
+                <ng-template #templateRegister>
+                    <li class="nav-item" *ngIf="vernombre" style="height: 40px;">
+                        <div class="d-flex align-items-center">
+                            <select (change)="onSelectOption($event)" class="form-select form-select-sm">
+                                    <option>{{ displayname }}</option>
+                                    <option value="miperfil">Mi perfil</option>
+                                    <option value="cerrarSesion">Cerrar sesión</option>
+                            </select>
+                        </div>
+                    </li>
+                </ng-template>
                 <li class="nav-item">
                     <button class="btn btn-link text-decoration-none text-dark">
                         <i class="bi-cart-fill text-primary me-1"></i>
                         Carrito
                     </button>
                 </li>
-               
             </ul>
         </div>
     </div>
 </nav>
-
-
-
-<ng-template #templateRegister > {{displayname}} </ng-template>
-
-
-<button (click)="onClick()">cerrar sesion</button>

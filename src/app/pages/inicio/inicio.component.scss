@@ -57,3 +57,9 @@
 .carousel-indicators .active {
     background-color: #007bff; /* Color del punto indicador activo */
 }
+.app-inicio {
+    overflow-y: hidden !important;
+  }
+  .app-carrusel-wrapper {
+    overflow-y: hidden; /* Evitar el desplazamiento vertical */
+  }
