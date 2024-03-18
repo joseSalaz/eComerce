@@ -5,11 +5,13 @@ import { SignUpComponent } from './pages/auth/sign-up/sign-up.component';
 import { LogInComponent } from './pages/auth/log-in/log-in.component';
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { DetalleProductoComponent } from './pages/detalle-producto/detalle-producto.component';
+import { AutorComponent } from './autor/autor.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/inicio' },
   { path: 'inicio', component: InicioComponent },
   {path:'detalle-producto', component:DetalleProductoComponent},
+  {path:'autor', component:AutorComponent},
   {
     path: 'auth',
     children: [

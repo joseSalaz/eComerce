@@ -12,7 +12,6 @@ export class AuthService {
   }
 
   logout(){
-  
     return this.auth.signOut().then(()=>{
       sessionStorage.removeItem('username');
     })

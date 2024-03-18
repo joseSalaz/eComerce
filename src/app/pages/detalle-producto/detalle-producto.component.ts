@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AutorService } from '../../Service/autor.service';
+import { Autor } from '../../Interface/autor';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -6,6 +9,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./detalle-producto.component.scss']
 })
 export class DetalleProductoComponent {
+
+
+
+
   cantidad: number = 1; // Valor inicial de la cantidad
 
   incrementarCantidad(): void {

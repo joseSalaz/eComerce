@@ -16,6 +16,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HttpClientModule } from '@angular/common/http';
+import { AutorComponent } from './autor/autor.component';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     SignUpComponent,
     LogInComponent,
     DetalleProductoComponent,
-    FooterComponent
+    FooterComponent,
+    AutorComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -35,8 +40,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
     provideFirebaseApp(() => initializeApp({"projectId":"ecomercesa-3c1ff","appId":"1:600924951861:web:cdafa4c00800d3f6d0287c","storageBucket":"ecomercesa-3c1ff.appspot.com","apiKey":"AIzaSyDalTAm9ttdXOJll_8B89SHHyNCP8Jm_rM","authDomain":"ecomercesa-3c1ff.firebaseapp.com","messagingSenderId":"600924951861"})),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    
   ],
   providers: [
     provideClientHydration(),
