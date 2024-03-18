@@ -1,4 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { LibroService } from '../../../Service/libro.service';
+import { Libro } from '../../../Interface/libro';
+import { Router } from '@angular/router';
 declare var bootstrap: any; // Importar Bootstrap globalmente
 
 @Component({
@@ -11,10 +14,35 @@ export class CarruselComponent implements AfterViewInit {
   private carousel: any;
   private currentIndex: number = 0;
   private intervalId: any;
+  datas: Libro[] = [];
+  firstItemId: number = 0; // ID del primer elemento que se mostrará como activo
 
-  constructor() {}
+  constructor(
+    private _libroServicio: LibroService,
+    private router: Router
+    ) {
+    
+    this.mostrarLibro();
+  }
+
+  mostrarLibro() {
+    this._libroServicio.getLibros().subscribe({
+      next: (data: Libro[]) => {
+        this.datas = data;
+        // Encontrar el índice del primer elemento según su ID
+        this.firstItemId = data[0].idLibro;
+      },
+      error: (err) => {
+        console.log("error", err);
+      },
+      complete: () => {
+        // Hacer algo
+      },
+    });
+  }
 
   ngAfterViewInit(): void {
+    // Inicializar el carrusel después de que la vista se haya inicializado completamente
     const multipleItemCarousel = this.carouselElement.nativeElement;
 
     // Verificar si window está disponible
@@ -51,4 +79,7 @@ export class CarruselComponent implements AfterViewInit {
     // Limpiar el intervalo cuando el componente se destruye
     clearInterval(this.intervalId);
   }
+  comprar(libroId: number) {
+  this.router.navigate(['/detalle-producto', libroId]);
+}
 }

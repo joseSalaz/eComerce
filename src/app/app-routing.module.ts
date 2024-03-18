@@ -10,7 +10,7 @@ import { AutorComponent } from './autor/autor.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/inicio' },
   { path: 'inicio', component: InicioComponent },
-  {path:'detalle-producto', component:DetalleProductoComponent},
+  {path:'detalle-producto/:id', component:DetalleProductoComponent},
   {path:'autor', component:AutorComponent},
   {
     path: 'auth',
