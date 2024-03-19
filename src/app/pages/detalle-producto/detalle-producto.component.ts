@@ -4,6 +4,7 @@ import { LibroService } from '../../Service/libro.service';
 import { Libro } from '../../Interface/libro';
 import { Categorium } from '../../Interface/categorium';
 import { CategoriaService } from '../../Service/categoria.service';
+
 @Component({
   selector: 'app-detalle-producto',
   templateUrl: './detalle-producto.component.html',
@@ -16,7 +17,6 @@ export class DetalleProductoComponent implements OnInit {
   cantidad: number = 1;
   altura: number = 0;
   ancho: number = 0;
-  
 
   constructor(
     private route: ActivatedRoute,
@@ -27,17 +27,21 @@ export class DetalleProductoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id !== null) {
-      this.idLibro = id;
-    } else {
-      // Manejar el caso en el que no se recibe un ID
-    }
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.idLibro = id;
+        this.obtenerDatosLibro(this.idLibro);
+      } else {
+        // Manejar el caso en el que no se recibe un ID
+      }
+    });
+  }
 
-    this.libroService.getLibroPorId(this.idLibro).subscribe(
+  obtenerDatosLibro(id: string): void {
+    this.libroService.getLibroPorId(id).subscribe(
       (data: Libro) => {
-        this.libro = data;
-        console.log(this.libro); 
+        this.libro = data; 
 
         if (this.libro.tamanno) {
           const tamannoSplit = this.libro.tamanno.split('*');
@@ -63,9 +67,6 @@ export class DetalleProductoComponent implements OnInit {
           console.log(this.categoria); 
         } else {
           console.error('La categoría devuelta es nula o indefinida.');
-          console.log('ID del libro:', id); 
-          console.log('Datos del libro:', this.libro); 
-          console.log('Datos de la categoría:', categoriaData); 
         }
       },
       (categoriaError: any) => {
