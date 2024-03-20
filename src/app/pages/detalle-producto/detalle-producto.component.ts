@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LibroService } from '../../Service/libro.service';
 import { Libro } from '../../Interface/libro';
 import { Categorium } from '../../Interface/categorium';
 import { CategoriaService } from '../../Service/categoria.service';
+import { CarroService } from '../../Service/carro.service';
+
 @Component({
   selector: 'app-detalle-producto',
   templateUrl: './detalle-producto.component.html',
@@ -16,12 +18,14 @@ export class DetalleProductoComponent implements OnInit {
   cantidad: number = 1;
   altura: number = 0;
   ancho: number = 0;
+  libroSeleccionado: Libro | undefined;
   
 
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
-    private categoriaService: CategoriaService
+    private categoriaService: CategoriaService,
+    private carroService : CarroService
   ) { 
     this.categoria = undefined;
   }
@@ -83,4 +87,10 @@ export class DetalleProductoComponent implements OnInit {
       this.cantidad--; 
     }
   }
+
+
+  agregarAlCarrito(libro: Libro) {
+        this.carroService.addNewProduct(libro);
+  }
 }
+

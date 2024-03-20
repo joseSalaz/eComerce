@@ -19,6 +19,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HttpClientModule } from '@angular/common/http';
 import { AutorComponent } from './autor/autor.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { CarroComponent } from './pages/carro/carro.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
     LogInComponent,
     DetalleProductoComponent,
     FooterComponent,
-    AutorComponent
+    AutorComponent,
+    CarroComponent
     
   ],
   imports: [

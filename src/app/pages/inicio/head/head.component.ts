@@ -1,24 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { sesioncosntans } from '../../../constans/sesion.constans';
 import { AuthService } from '../../../Service/auth.service';
-import { error } from 'console';
 import { Router } from '@angular/router';
-
-
+import { sesioncosntans } from '../../../constans/sesion.constans';
 
 @Component({
   selector: 'app-head',
   templateUrl: './head.component.html',
-  styleUrl: './head.component.scss'
+  styleUrls: ['./head.component.scss']
 })
 export class HeadComponent implements OnInit {
+  vernombre: boolean = false;
+  displayname: string = "";
+  mostrarCarrito = false;
+
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
-
-  vernombre: boolean = false;
-  displayname: string = "";
 
   ngOnInit(): void {
     this.checkSession();
@@ -60,6 +58,10 @@ export class HeadComponent implements OnInit {
         this.onClick();
       }
     }
+  }
+
+  toggleCarrito() {
+    this.mostrarCarrito = !this.mostrarCarrito;
   }
 }
 

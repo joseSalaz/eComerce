@@ -1,0 +1,13 @@
+<div *ngIf="mostrarCarro" class="fondo-semi-transparente" (click)="cerrarCarro()"></div>
+<div *ngIf="mostrarCarro" class="carro-overlay">
+  <div class="cerrar-btn" (click)="cerrarCarro()"><i class="fas fa-times"></i></div>
+  <div class="carro-container">
+    <div style="text-align: center;"><i class="fas fa-shopping-cart fa-3x"></i></div>
+    <h2>Carrito de Compras</h2>
+    <ul *ngFor="let libro of libros;let indice=index;">
+        <span>{{ libro.titulo}}</span>
+        <button class="fas fa-times" (click)="delete(indice)"></button>
+    </ul>
+  </div>
+</div>
+

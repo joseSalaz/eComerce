@@ -1,6 +1,7 @@
 <title>Detalle de Producto</title>   
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <app-head></app-head>
 
 
@@ -11,7 +12,7 @@
         <div class="row">
             <!-- Título -->
             <div class="col-md-12">
-                <h2 class="mb-3">{{libro.titulo}}</h2>
+                <h2 class="mb-3">{{libro?.titulo}}</h2>
             </div>
             <!-- Imagen del Producto (Parte Izquierda) -->
             <div class="col-md-3">
@@ -27,7 +28,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Editorial:</th>
-                            <td>{{libro.Editorial}}</td>
+                            <td>{{libro?.Editorial}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Año de publicación:</th>
@@ -51,7 +52,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Categoria:</th>
-                            <td>{{categoria.categoria1}}</td>
+                            <td>{{categoria?.categoria1}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -62,7 +63,7 @@
                 <div class="mb-3">
                     <h4 class="mb-3">Reseña:</h4>
                     <textarea class="form-control p-3  " id="descripcion" rows="6" style="width: 100%; height: 300px;">
-                        {{libro.descripcion}}
+                        {{libro?.descripcion}}
                     </textarea>
                     <!-- Precio -->
                     <p class="text-end mt-2 fs-4">S/00.00</p>
@@ -70,6 +71,8 @@
                     <div class="d-flex justify-content-end">
                         <!-- Botón de Guardar en Favoritos -->
                         <button type="button" class="btn btn-outline-primary mb-3 me-3 fs-5">Guardar en Favoritos</button>
+                        <!-- Botón de Agregar al Carrito -->
+                        <button type="button" class="btn btn-primary mb-3 me-3 fs-5" (click)="agregarAlCarrito(libro)">Agregar al Carrito</button>
                         <!-- Botón de Comprar -->
                         <button type="button" class="btn btn-success fs-5">Comprar</button>
                     </div>
@@ -115,6 +118,7 @@
     </div>
 </section>
 <app-footer></app-footer>
+
 
 
 
