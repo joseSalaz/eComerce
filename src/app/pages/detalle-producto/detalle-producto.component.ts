@@ -4,11 +4,11 @@ import { LibroService } from '../../Service/libro.service';
 import { Libro } from '../../Interface/libro';
 import { Categorium } from '../../Interface/categorium';
 import { CategoriaService } from '../../Service/categoria.service';
-<<<<<<< HEAD
+
 import { CarroService } from '../../Service/carro.service';
-=======
 import { LibroAutorService } from '../../Service/libro_autor.service';
->>>>>>> 790e8a7c51a052ffc59d242d2e1bd5f4071b8157
+
+
 
 @Component({
   selector: 'app-detalle-producto',
@@ -23,21 +23,20 @@ export class DetalleProductoComponent implements OnInit {
   cantidad: number = 1;
   altura: number = 0;
   ancho: number = 0;
-<<<<<<< HEAD
+
   libroSeleccionado: Libro | undefined;
   
-=======
->>>>>>> 790e8a7c51a052ffc59d242d2e1bd5f4071b8157
+
 
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
     private categoriaService: CategoriaService,
-<<<<<<< HEAD
-    private carroService : CarroService
-=======
+
+    private carroService : CarroService,
+
     private libroAutorService: LibroAutorService
->>>>>>> 790e8a7c51a052ffc59d242d2e1bd5f4071b8157
+
   ) { 
     this.categoria = undefined;
   }
