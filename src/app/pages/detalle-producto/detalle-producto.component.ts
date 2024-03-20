@@ -4,7 +4,11 @@ import { LibroService } from '../../Service/libro.service';
 import { Libro } from '../../Interface/libro';
 import { Categorium } from '../../Interface/categorium';
 import { CategoriaService } from '../../Service/categoria.service';
+<<<<<<< HEAD
 import { CarroService } from '../../Service/carro.service';
+=======
+import { LibroAutorService } from '../../Service/libro_autor.service';
+>>>>>>> 790e8a7c51a052ffc59d242d2e1bd5f4071b8157
 
 @Component({
   selector: 'app-detalle-producto',
@@ -14,34 +18,46 @@ import { CarroService } from '../../Service/carro.service';
 export class DetalleProductoComponent implements OnInit {
   libro: any;
   categoria: any;
+  autores: any[] = []; 
   idLibro: string = '';
   cantidad: number = 1;
   altura: number = 0;
   ancho: number = 0;
+<<<<<<< HEAD
   libroSeleccionado: Libro | undefined;
   
+=======
+>>>>>>> 790e8a7c51a052ffc59d242d2e1bd5f4071b8157
 
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
     private categoriaService: CategoriaService,
+<<<<<<< HEAD
     private carroService : CarroService
+=======
+    private libroAutorService: LibroAutorService
+>>>>>>> 790e8a7c51a052ffc59d242d2e1bd5f4071b8157
   ) { 
     this.categoria = undefined;
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id !== null) {
-      this.idLibro = id;
-    } else {
-      // Manejar el caso en el que no se recibe un ID
-    }
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.idLibro = id;
+        this.obtenerDatosLibro(this.idLibro);
+      } else {
+        // Manejar el caso en el que no se recibe un ID
+      }
+    });
+  }
 
-    this.libroService.getLibroPorId(this.idLibro).subscribe(
+  obtenerDatosLibro(id: string): void {
+    this.libroService.getLibroPorId(id).subscribe(
       (data: Libro) => {
-        this.libro = data;
-        console.log(this.libro); 
+        this.libro = data; 
 
         if (this.libro.tamanno) {
           const tamannoSplit = this.libro.tamanno.split('*');
@@ -52,6 +68,7 @@ export class DetalleProductoComponent implements OnInit {
         }
         
         this.obtenerCategoriaPorId(this.libro.idCategoria.toString());
+        this.obtenerAutoresDeLibro(this.libro.id);
       },
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
@@ -67,13 +84,24 @@ export class DetalleProductoComponent implements OnInit {
           console.log(this.categoria); 
         } else {
           console.error('La categoría devuelta es nula o indefinida.');
-          console.log('ID del libro:', id); 
-          console.log('Datos del libro:', this.libro); 
-          console.log('Datos de la categoría:', categoriaData); 
         }
       },
       (categoriaError: any) => {
         console.error('Error al obtener los detalles de la categoría:', categoriaError);
+      }
+    );
+  }
+
+  obtenerAutoresDeLibro(idLibro: string): void {
+    this.libroAutorService.getAutores().subscribe(
+      (autores: any[]) => {
+        // Filtrar los autores por el ID del libro
+        const idLibroNumero = parseInt(idLibro, 10); // Convertir idLibro a número
+        this.autores = autores.filter(autor => autor.idLibro === idLibroNumero);
+        console.log('Autores del libro:', this.autores); 
+      },
+      (error: any) => {
+        console.error('Error al obtener los autores del libro:', error);
       }
     );
   }

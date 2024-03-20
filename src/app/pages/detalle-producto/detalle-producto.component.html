@@ -24,7 +24,9 @@
                     <tbody>
                         <tr>
                             <th scope="row">Autor:</th>
-                            <td>{{libro?.Autor}}</td>
+                            <td *ngFor="let Autor of autores">
+                                {{ Autor.nombre }} {{ Autor.apellido }}
+                            </td>                           
                         </tr>
                         <tr>
                             <th scope="row">Editorial:</th>
@@ -118,6 +120,10 @@
     </div>
 </section>
 <app-footer></app-footer>
+
+<p *ngFor="let Autor of autores">
+    {{ Autor.nombre }} {{ Autor.apellido }}
+</p>
 
 
 
