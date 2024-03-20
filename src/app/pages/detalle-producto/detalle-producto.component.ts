@@ -4,6 +4,7 @@ import { LibroService } from '../../Service/libro.service';
 import { Libro } from '../../Interface/libro';
 import { Categorium } from '../../Interface/categorium';
 import { CategoriaService } from '../../Service/categoria.service';
+import { LibroAutorService } from '../../Service/libro_autor.service';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -13,6 +14,7 @@ import { CategoriaService } from '../../Service/categoria.service';
 export class DetalleProductoComponent implements OnInit {
   libro: any;
   categoria: any;
+  autores: any[] = []; 
   idLibro: string = '';
   cantidad: number = 1;
   altura: number = 0;
@@ -21,7 +23,8 @@ export class DetalleProductoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
-    private categoriaService: CategoriaService
+    private categoriaService: CategoriaService,
+    private libroAutorService: LibroAutorService
   ) { 
     this.categoria = undefined;
   }
@@ -52,6 +55,7 @@ export class DetalleProductoComponent implements OnInit {
         }
         
         this.obtenerCategoriaPorId(this.libro.idCategoria.toString());
+        this.obtenerAutoresDeLibro(this.libro.id);
       },
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
@@ -71,6 +75,20 @@ export class DetalleProductoComponent implements OnInit {
       },
       (categoriaError: any) => {
         console.error('Error al obtener los detalles de la categoría:', categoriaError);
+      }
+    );
+  }
+
+  obtenerAutoresDeLibro(idLibro: string): void {
+    this.libroAutorService.getAutores().subscribe(
+      (autores: any[]) => {
+        // Filtrar los autores por el ID del libro
+        const idLibroNumero = parseInt(idLibro, 10); // Convertir idLibro a número
+        this.autores = autores.filter(autor => autor.idLibro === idLibroNumero);
+        console.log('Autores del libro:', this.autores); 
+      },
+      (error: any) => {
+        console.error('Error al obtener los autores del libro:', error);
       }
     );
   }
