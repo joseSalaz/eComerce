@@ -6,12 +6,14 @@ import { LogInComponent } from './pages/auth/log-in/log-in.component';
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { DetalleProductoComponent } from './pages/detalle-producto/detalle-producto.component';
 import { AutorComponent } from './autor/autor.component';
+import { UserComponent } from './pages/user/user.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/inicio' },
   { path: 'inicio', component: InicioComponent },
   {path:'detalle-producto/:id', component:DetalleProductoComponent},
   {path:'autor', component:AutorComponent},
+  {path:'user',component:UserComponent},
   {
     path: 'auth',
     children: [

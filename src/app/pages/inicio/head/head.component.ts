@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../Service/auth.service';
 import { Router } from '@angular/router';
 import { sesioncosntans } from '../../../constans/sesion.constans';
+import { Console, error, log } from 'console';
 
 @Component({
   selector: 'app-head',
@@ -50,15 +51,16 @@ export class HeadComponent implements OnInit {
   onSelectOption(event: any): void {
     const option = event?.target?.value; // Utiliza el operador de encadenamiento opcional (?.) para evitar errores si event, target o value son null
     if (option !== null && option !== undefined) {
-      if (option === 'miPerfil') {
+      if (option === 'miperfil') {
         // Redirigir a la página de perfil
-        this.router.navigate(['/perfil']);
+        this.router.navigate(['/user']);
       } else if (option === 'cerrarSesion') {
         // Cerrar sesión
         this.onClick();
       }
     }
   }
+
 
   toggleCarrito() {
     this.mostrarCarrito = !this.mostrarCarrito;
