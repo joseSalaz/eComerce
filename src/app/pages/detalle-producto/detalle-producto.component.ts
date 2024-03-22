@@ -38,7 +38,7 @@ export class DetalleProductoComponent implements OnInit {
         this.idLibro = id;
         this.obtenerDatosLibro(this.idLibro);
       } else {
-        // Manejar el caso en el que no se recibe un ID
+      
       }
     });
   }

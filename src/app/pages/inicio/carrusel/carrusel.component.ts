@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { LibroService } from '../../../Service/libro.service';
 import { Libro } from '../../../Interface/libro';
 import { Router } from '@angular/router';
@@ -10,34 +10,42 @@ declare var bootstrap: any; // Importar Bootstrap globalmente
   styleUrls: ['./carrusel.component.scss']
 })
 export class CarruselComponent implements AfterViewInit {
+  @Input() categoria: number | string = '';
   @ViewChild('carousel') carouselElement!: ElementRef;
   private carousel: any;
   private currentIndex: number = 0;
   private intervalId: any;
   datas: Libro[] = [];
-  firstItemId: number = 0; // ID del primer elemento que se mostrará como activo
+  firstItemId: number = 0; 
+  categoriaFiltrada: number | string = '';
 
   constructor(
     private _libroServicio: LibroService,
     private router: Router
-    ) {
-    
+  ) {}
+
+  ngOnInit(): void {
     this.mostrarLibro();
   }
 
-  mostrarLibro() {
-    this._libroServicio.getLibros().subscribe({
-      next: (data: Libro[]) => {
-        this.datas = data;
-        // Encontrar el índice del primer elemento según su ID
-        this.firstItemId = data[0].idLibro;
-      },
-      error: (err) => {
-        console.log("error", err);
-      },
-      complete: () => {
-        // Hacer algo
-      },
+  mostrarLibro(): void {
+    console.log('ID de categoría:', this.categoria); // Log del ID de categoría
+
+    // Obtener todos los libros
+    this._libroServicio.getLibros().subscribe(libros => {
+      // Filtrar los libros por categoría si se especifica una categoría
+      if (this.categoria) {
+        this.datas = libros.filter(libro => libro.idCategoria === parseInt(this.categoria.toString(), 10));
+      } else {
+        this.datas = libros; // Si no se especifica una categoría, mostrar todos los libros
+      }
+      
+      // Encontrar el índice del primer elemento según su ID
+      if (this.datas.length > 0) {
+        this.firstItemId = this.datas[0].idLibro;
+      }
+
+      console.log('Datos del libro:', this.datas); // Log de los datos de los libros
     });
   }
 
@@ -79,7 +87,8 @@ export class CarruselComponent implements AfterViewInit {
     // Limpiar el intervalo cuando el componente se destruye
     clearInterval(this.intervalId);
   }
+  
   comprar(libroId: number) {
-  this.router.navigate(['/detalle-producto', libroId]);
-}
+    this.router.navigate(['/detalle-producto', libroId]);
+  }
 }
