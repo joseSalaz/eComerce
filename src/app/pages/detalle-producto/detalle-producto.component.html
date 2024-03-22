@@ -23,9 +23,13 @@
                 <table class="table">
                     <tbody>
                         <tr>
-                            <th scope="row">Autor:</th>
-                            <td *ngFor="let Autor of autores">
-                                {{ Autor.nombre }} {{ Autor.apellido }}
+                            <th scope="row" class="align-middle">Autor:</th>
+                            <td >
+                                <div *ngFor="let autor of autores">
+                                    <p class="d-inline me-4" style="white-space: nowrap;">
+                                        {{ autor.nombre }} {{ autor.apellido }}
+                                    </p>
+                                </div>
                             </td>                           
                         </tr>
                         <tr>
@@ -120,10 +124,6 @@
     </div>
 </section>
 <app-footer></app-footer>
-
-<p *ngFor="let Autor of autores">
-    {{ Autor.nombre }} {{ Autor.apellido }}
-</p>
 
 
 

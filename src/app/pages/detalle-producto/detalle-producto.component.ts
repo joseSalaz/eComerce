@@ -1,14 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LibroService } from '../../Service/libro.service';
 import { Libro } from '../../Interface/libro';
 import { Categorium } from '../../Interface/categorium';
 import { CategoriaService } from '../../Service/categoria.service';
-
-import { CarroService } from '../../Service/carro.service';
 import { LibroAutorService } from '../../Service/libro_autor.service';
-
-
+import { CarroService } from '../../Service/carro.service';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -24,19 +21,12 @@ export class DetalleProductoComponent implements OnInit {
   altura: number = 0;
   ancho: number = 0;
 
-  libroSeleccionado: Libro | undefined;
-  
-
-
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
     private categoriaService: CategoriaService,
-
-    private carroService : CarroService,
-
-    private libroAutorService: LibroAutorService
-
+    private libroAutorService: LibroAutorService,
+    private carroService:CarroService
   ) { 
     this.categoria = undefined;
   }
@@ -67,7 +57,7 @@ export class DetalleProductoComponent implements OnInit {
         }
         
         this.obtenerCategoriaPorId(this.libro.idCategoria.toString());
-        this.obtenerAutoresDeLibro(this.libro.id);
+        this.obtenerAutoresDeLibro(this.idLibro)
       },
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
@@ -75,12 +65,17 @@ export class DetalleProductoComponent implements OnInit {
     );
   }
 
+ agregarAlCarrito(libro: Libro) {
+        this.carroService.addNewProduct(libro);
+  }
+  
+
   obtenerCategoriaPorId(id: number): void {
     this.categoriaService.getCategoriaPorId(id).subscribe(
       (categoriaData: Categorium) => {
         if (categoriaData) {
           this.categoria = categoriaData;
-          console.log(this.categoria); 
+          console.log('Categoría del libro:', this.categoria);
         } else {
           console.error('La categoría devuelta es nula o indefinida.');
         }
@@ -92,19 +87,27 @@ export class DetalleProductoComponent implements OnInit {
   }
 
   obtenerAutoresDeLibro(idLibro: string): void {
-    this.libroAutorService.getAutores().subscribe(
+    this.libroAutorService.getAutoresDeLibro(parseInt(idLibro)).subscribe(
       (autores: any[]) => {
-        // Filtrar los autores por el ID del libro
-        const idLibroNumero = parseInt(idLibro, 10); // Convertir idLibro a número
-        this.autores = autores.filter(autor => autor.idLibro === idLibroNumero);
-        console.log('Autores del libro:', this.autores); 
+        autores.forEach(autor => {
+          if (autor.idLibro === parseInt(idLibro)) {
+            this.libroAutorService.getAutorPorId(autor.idAutor).subscribe(
+              (autorDetalle: any) => {
+                this.autores.push(autorDetalle);
+              },
+              (error: any) => {
+                console.error('Error al obtener los detalles del autor:', error);
+              }
+            );
+          }
+        });
       },
       (error: any) => {
         console.error('Error al obtener los autores del libro:', error);
       }
     );
   }
-
+  
   incrementarCantidad(): void {
     this.cantidad++;
   }
@@ -114,10 +117,4 @@ export class DetalleProductoComponent implements OnInit {
       this.cantidad--; 
     }
   }
-
-
-  agregarAlCarrito(libro: Libro) {
-        this.carroService.addNewProduct(libro);
-  }
 }
-
