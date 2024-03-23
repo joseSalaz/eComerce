@@ -7,12 +7,13 @@ import { Libro } from '../Interface/libro';
 })
 export class CarroService {
   private libro: Libro [] = [];
+  private storageKey = 'carroLibros';
   
   private _libro:BehaviorSubject<Libro[]>;
 
   constructor(){
-    this._libro = new BehaviorSubject<Libro[]>
-    ([])
+    const storedLibros = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+    this._libro = new BehaviorSubject<Libro[]>(storedLibros);
   }
 
   obtenerCantidadProductos(): number {
@@ -31,8 +32,11 @@ export class CarroService {
   deleteLibro(index: number){
     this.libro.splice(index,1)
     this._libro.next(this.libro);
+  }  
+  private updateStorage(libros: Libro[]) {
+    this._libro.next(libros); // Actualiza el BehaviorSubject con la nueva lista de libros
+    localStorage.setItem(this.storageKey, JSON.stringify(libros)); // Almacena la lista de libros en el almacenamiento local del navegador
   }
-
   
 }
 

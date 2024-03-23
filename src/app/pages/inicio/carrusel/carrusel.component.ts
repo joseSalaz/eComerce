@@ -29,6 +29,7 @@ export class CarruselComponent implements AfterViewInit {
   }
 
   mostrarLibro(): void {
+    debugger
     this._libroServicio.getLibros().subscribe(libros => {
 
       if (this.categoria) {
