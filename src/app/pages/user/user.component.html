@@ -1,0 +1,61 @@
+<div class="bg-base">
+<app-head></app-head>
+<div class="row justify-content-center">
+    <!-- Imagen del usuario -->
+    <div class="user-image-container text-center col-auto">
+        <img src="{{photoURL}}" alt="User Image" class="user-image img-fluid d-inline-block">
+    </div>
+</div>
+<div class="row justify-content-center mt-3">
+    <div class="col-8">
+        <!-- Botones de navegación -->
+        <div class="text-center mb-3">
+            <button class="btn btn-outline-secondary btn-lg mb-2 active">Perfil</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2">Direcciones</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2">Pedidos</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2">Mis Favoritos</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2" (click)="prevpage()">Salir</button>
+        </div>
+
+        <!-- Detalles del usuario -->
+        <div class="user-details-container">  
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="user-detail text-left">
+                        <h5 class="detail-label text-success">Nombres:</h5>
+                        <span class="detail-value">Nombre del Usuario</span>
+                    </div>
+                    <div class="user-detail text-left">
+                        <h5 class="detail-label text-success">Apellidos:</h5>
+                        <span class="detail-value">Apellido del Usuario</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="user-detail text-left">
+                        <h5 class="detail-label text-success">Email:</h5>
+                        <span class="detail-value">{{email}}</span>
+                    </div>
+                    <div class="user-detail text-left">
+                        <h5 class="detail-label text-success">Documento de Identidad:</h5>
+                        <span class="detail-value">Documento del Usuario</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="user-detail text-left">
+                        <h5 class="detail-label text-success">Fecha de Nacimiento:</h5>
+                        <span class="detail-value">Fecha de Nacimiento del Usuario</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="user-detail text-left">
+                        <h5 class="detail-label text-success">Teléfono:</h5>
+                        <span class="detail-value">Teléfono del Usuario</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success btn-lg btn-block mt-3">Editar</button>
+        </div>
+    </div>
+</div>

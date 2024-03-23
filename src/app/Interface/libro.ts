@@ -11,7 +11,7 @@ export interface Libro {
     idCategoria: number;
     idTipoPapel: number;
     idProveedor: number;
-    rutaImagen?: string;
+    imagen: string ;
 }
 
   

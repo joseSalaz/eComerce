@@ -59,7 +59,6 @@ img {
     position: relative;
 }
 
-/* Estilos para el botón */
 .btn {
     width: 278px;
     height: 48px; 
@@ -71,11 +70,15 @@ img {
     opacity: 0; 
 }
 
-
-
 .card:hover .btn {
     display: block;
 }
+.card-title {
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    font-size: 1rem; 
+  }
 
 
 .card-title {
@@ -85,4 +88,32 @@ img {
 .card:hover .price,
 .card:hover .btn {
     opacity: 1;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px; 
+    height: 40px; 
+    background-color: transparent; 
+    border: none; 
+    border-radius: 50%; 
+    // box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+    
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: black; 
+    border-radius: 50%; 
+}
+
+.carousel-control-prev {
+    left: 0;
+}
+
+.carousel-control-next {
+    right: 0;
 }

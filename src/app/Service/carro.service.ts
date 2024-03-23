@@ -6,10 +6,15 @@ import { Libro } from '../Interface/libro';
   providedIn: 'root'
 })
 export class CarroService {
+
   private _libro: BehaviorSubject<Libro[]>;
   private storageKey = 'carroLibros';
 
-  constructor() {
+
+  private libro: Libro [] = [];
+
+
+  constructor(){
     const storedLibros = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
     this._libro = new BehaviorSubject<Libro[]>(storedLibros);
   }
@@ -27,10 +32,7 @@ export class CarroService {
     this.updateStorage(libros);
   }
 
-  deleteLibro(index: number) {
-    const libros = this._libro.value.filter((_, i) => i !== index);
-    this.updateStorage(libros);
-  }
+
 
   private updateStorage(libros: Libro[]) {
     this._libro.next(libros);
@@ -38,6 +40,14 @@ export class CarroService {
     console.log(libros);
     
   }
+
+  deleteLibro(index: number){
+    this.libro.splice(index,1)
+    this._libro.next(this.libro);
+  }  
+
+  
+
 }
 
 

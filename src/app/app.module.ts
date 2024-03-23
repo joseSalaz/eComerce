@@ -20,6 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AutorComponent } from './autor/autor.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { CarroComponent } from './pages/carro/carro.component';
+import { UserComponent } from './pages/user/user.component';
+import { CategoriaComponent } from './pages/categoria/categoria.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { CarroComponent } from './pages/carro/carro.component';
     DetalleProductoComponent,
     FooterComponent,
     AutorComponent,
-    CarroComponent
+    CarroComponent,
+    UserComponent,
+    CategoriaComponent
     
   ],
   imports: [
