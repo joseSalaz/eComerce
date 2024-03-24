@@ -3,6 +3,7 @@ import { AuthService } from '../../../Service/auth.service';
 import { Router } from '@angular/router';
 import { sesioncosntans } from '../../../constans/sesion.constans';
 import { Console, error, log } from 'console';
+import { CarroService } from '../../../Service/carro.service';
 
 @Component({
   selector: 'app-head',
@@ -13,14 +14,19 @@ export class HeadComponent implements OnInit {
   vernombre: boolean = false;
   displayname: string = "";
   mostrarCarrito = false;
-
+  totalItems: number = 0;
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private carroService:CarroService
   ) {}
 
   ngOnInit(): void {
     this.checkSession();
+    this.totalItems = this.carroService.obtenerCantidadProductos();
+    this.carroService.Libro.subscribe(libros => {
+      this.totalItems = libros.length;
+    });
   }
 
   checkSession(): void {

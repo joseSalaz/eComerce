@@ -40,12 +40,21 @@
                     <div *ngIf="mostrarCarrito">
                         <app-carro></app-carro>
                     </div>
-                    <button class="btn btn-link text-decoration-none text-dark" (click)="toggleCarrito()">
+                    <button class="btn btn-link text-decoration-none text-dark position-relative" (click)="toggleCarrito()">
                         <i class="fas fa-shopping-cart text-primary me-1"></i> 
                         Carrito
+                        <span *ngIf="totalItems > 0" class="contador-items">{{ totalItems }}</span>
                     </button>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+<div>
+    <table>
+        <td>Categoria</td>
+        <td>Categoria</td>
+        <td>Categoria</td>
+        <td>Categoria</td>
+    </table>
+</div>

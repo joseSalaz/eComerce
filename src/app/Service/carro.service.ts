@@ -41,12 +41,11 @@ export class CarroService {
     
   }
 
-  deleteLibro(index: number){
-    this.libro.splice(index,1)
-    this._libro.next(this.libro);
-  }  
-
   
+  deleteLibro(index: number) {
+    const libros = this._libro.value.filter((_, i) => i !== index);
+    this.updateStorage(libros);
+  }
 
 }
 
