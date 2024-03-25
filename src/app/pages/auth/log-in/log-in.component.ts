@@ -12,25 +12,8 @@ import { sesioncosntans } from '../../../constans/sesion.constans';
   styleUrl: './log-in.component.scss'
 })
 export class LogInComponent {
-constructor(
-  private authService:AuthService,
-  private router : Router
-){
+  constructor(private authService: AuthService) { }
+login() {
+  this.authService.login();
 }
-  onclick(){
-    this.authService.loginWhitgogle()
-    .then(response=>{
-      
-      console.log("==>",response);
-      let username =response.user.displayName;
-      if (username == null) {
-        username="";
-      }
-      sessionStorage.setItem(sesioncosntans.username,username)
-      sessionStorage.setItem(sesioncosntans.user,JSON.stringify(response.user))
-      this.router.navigate(['/inicio'])
-      
-    })
-    .catch(error=>console.log(error));
-  }
 }

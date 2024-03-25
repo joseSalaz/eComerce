@@ -1,35 +1,35 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          Log In
+<br>
+<h1></h1>
+<div class="text-center card container col-md-3">
+    <div class="mt-5 mb-5">
+        <img class="mb-4" src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72"
+            height="57">
+        <h1 class="h3 mb-3 fw-normal">Log In</h1>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
         </div>
-        <div class="card-body">
-          <form>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password">
-            </div>
-            <button type="submit" class="btn btn-primary">Log In</button>
-          </form>
+        <div class="form-floating mt-1">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
         </div>
-        <div class="card-footer">
-          <p class="text-center mb-0">Don't have an account? <a routerLink="/auth/sign-up">Sign in</a></p>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
         </div>
-        <div class="card-footer">
-          <button class="btn btn-light" (click)="onclick()">
-            <i class="fab fa-google"></i> Log In with Google
-          </button>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <div class="or-container">
+            <div class="line-separator"></div>
+            <div class="or-label">or</div>
+            <div class="line-separator"></div>
         </div>
-      </div>
+        <div class="row">
+            <button class="btn btn-lg btn-google btn-block text-uppercase btn-outline" (click)="login()">
+                <img src="https://img.icons8.com/color/22/000000/google-logo.png"> Sing in Google
+            </button>
+        </div>
     </div>
-  </div>
 </div>
 
   

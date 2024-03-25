@@ -22,6 +22,8 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { CarroComponent } from './pages/carro/carro.component';
 import { UserComponent } from './pages/user/user.component';
 import { CategoriaComponent } from './pages/categoria/categoria.component';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { DetalleVentaComponent } from './pages/carro/detalle-venta/detalle-venta.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { CategoriaComponent } from './pages/categoria/categoria.component';
     AutorComponent,
     CarroComponent,
     UserComponent,
-    CategoriaComponent
+    CategoriaComponent,
+    DetalleVentaComponent
     
   ],
   imports: [
@@ -46,10 +49,9 @@ import { CategoriaComponent } from './pages/categoria/categoria.component';
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
+    OAuthModule.forRoot(),
     HttpClientModule,
-    provideFirebaseApp(() => initializeApp({"projectId":"ecomercesa-3c1ff","appId":"1:600924951861:web:cdafa4c00800d3f6d0287c","storageBucket":"ecomercesa-3c1ff.appspot.com","apiKey":"AIzaSyDalTAm9ttdXOJll_8B89SHHyNCP8Jm_rM","authDomain":"ecomercesa-3c1ff.firebaseapp.com","messagingSenderId":"600924951861"})),
-    provideAuth(() => getAuth()),
-    
+
   ],
   providers: [
     provideClientHydration(),

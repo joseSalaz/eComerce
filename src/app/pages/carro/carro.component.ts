@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Libro } from '../../Interface/libro';
 import { DetalleProductoComponent } from '../detalle-producto/detalle-producto.component';
 import { CarroService } from '../../Service/carro.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-carro',
@@ -9,10 +10,15 @@ import { CarroService } from '../../Service/carro.service';
   styleUrls: ['./carro.component.scss']
 })
 export class CarroComponent {
+
+  private storageKey = 'carroLibros';
+  
   libros: Libro[] = [];
 
   constructor(private carroService: CarroService
-) { }
+) { 
+
+}
 
 
   mostrarCarro = true;

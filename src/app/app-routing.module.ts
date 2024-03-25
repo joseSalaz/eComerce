@@ -7,6 +7,7 @@ import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { DetalleProductoComponent } from './pages/detalle-producto/detalle-producto.component';
 import { AutorComponent } from './autor/autor.component';
 import { UserComponent } from './pages/user/user.component';
+import { DetalleVentaComponent } from './pages/carro/detalle-venta/detalle-venta.component'
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/inicio' },
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path:'detalle-producto/:id', component:DetalleProductoComponent},
   {path:'autor', component:AutorComponent},
   {path:'user',component:UserComponent},
+  {path:'detale-venta',component:DetalleVentaComponent},
   {
     path: 'auth',
     children: [

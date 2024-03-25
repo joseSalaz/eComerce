@@ -29,33 +29,23 @@ export class HeadComponent implements OnInit {
     });
   }
 
-  checkSession(): void {
-    let username = sessionStorage.getItem(sesioncosntans.username); 
-    if (username != null && username != "") {
-      let usuariotext = sessionStorage.getItem(sesioncosntans.user);
-      if (usuariotext) {
-        let objusuario = JSON.parse(usuariotext)
-        console.log(objusuario);
-      }
-      this.vernombre = true;
-      this.displayname = username;
-    } else {
-      this.vernombre = false;
-    }
-  }
+checkSession(): void {
+  const userProfile: any = this.authService.getProfile(); 
 
-  onClick() {
-    this.authService.logout()
-      .then(() => {
-        this.vernombre = false;
-        this.router.navigate(['/inicio']);
-        console.log("Sesión cerrada correctamente");
-      })
-      .catch(error => console.error('Error al hacer logout:', error));
+  if (userProfile && userProfile['name']) { 
+    console.log(userProfile['name']); 
+    this.vernombre = true; 
+    this.displayname = userProfile['name']; 
+  } else {
+    this.vernombre = false; 
   }
+  console.log(this.authService.getProfile());
+  
+}
+
 
   onSelectOption(event: any): void {
-    const option = event?.target?.value; // Utiliza el operador de encadenamiento opcional (?.) para evitar errores si event, target o value son null
+    const option = event?.target?.value; 
     if (option !== null && option !== undefined) {
       if (option === 'miperfil') {
         // Redirigir a la página de perfil
@@ -70,6 +60,16 @@ export class HeadComponent implements OnInit {
 
   toggleCarrito() {
     this.mostrarCarrito = !this.mostrarCarrito;
+  }
+
+  showData() {
+    const data = JSON.stringify(this.authService.getProfile())
+    console.log(data);
+  }
+
+  onClick() {
+    this.authService.logout();
+    this.router.navigate(['/inicio']);
   }
 }
 
