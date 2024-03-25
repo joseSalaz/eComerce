@@ -39,7 +39,7 @@
                 <li class="nav-item">
                     <!-- Utiliza *ngIf para mostrar u ocultar el componente del carrito -->
                     <div *ngIf="mostrarCarrito">
-                        <app-carro></app-carro>
+                    <app-carro></app-carro>
                     </div>
                     <button class="btn btn-link text-decoration-none text-dark position-relative" (click)="toggleCarrito()">
                         <i class="fas fa-shopping-cart text-primary me-1"></i> 
@@ -59,15 +59,12 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container-fluid">
         <div class="navbar-nav">
-            <a class="nav-link" *ngFor="let categoria of categorias" (click)="redireccionarALibros(categoria.idCategoria)">
+            <button class="nav-link" *ngFor="let categoria of categorias" (click)="redireccionarALibros(categoria.idCategoria)">
                 {{ categoria.categoria1 }}
-            </a>
+            </button>
         </div>
     </div>
 </nav>
-
-
-
 
 
 <button (click)="showData()"></button>

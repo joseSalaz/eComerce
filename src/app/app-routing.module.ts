@@ -8,6 +8,7 @@ import { DetalleProductoComponent } from './pages/detalle-producto/detalle-produ
 import { AutorComponent } from './autor/autor.component';
 import { UserComponent } from './pages/user/user.component';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component'
+import { CategoriaComponent } from './pages/categoria/categoria.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/inicio' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path:'autor', component:AutorComponent},
   {path:'user',component:UserComponent},
   {path:'detalle-venta',component:DetalleVentaComponent},
+  {path: 'categoria/:idCategoria/libros',component: CategoriaComponent},
   {
     path: 'auth',
     children: [

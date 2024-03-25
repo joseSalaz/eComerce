@@ -1,10 +1,14 @@
-<div class="card" >
+<app-head></app-head>
+<div class="card-container">
+  <div *ngFor="let libro of datas" class="card">
     <div class="img-wrapper">
-      <img src="./../../assets/imagenes/imagen 2.jpeg" alt="...">
+      <img [src]="libro.imagen" alt="...">
     </div> 
     <div class="card-body">
-      <h5 class="card-title">Card Title</h5>
+      <h5 class="card-title">{{ libro.titulo }}</h5>
       <h1 class="price">S/00.00</h1>
-      <!-- <button type="button" class="btn btn-success fs-5" [routerLink]="['/detalle-producto', element.idLibro]">Comprar</button> -->
+      <button type="button" class="btn btn-success fs-5" (click)="redireccionarAlDetalleProducto(libro.idLibro)">Comprar</button>
     </div>
   </div>
+</div>
+<app-footer></app-footer>

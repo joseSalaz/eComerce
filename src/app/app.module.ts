@@ -26,6 +26,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +42,8 @@ import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.compo
     CarroComponent,
     UserComponent,
     CategoriaComponent,
-    DetalleVentaComponent
+    DetalleVentaComponent,
+  
   
     
   ],
