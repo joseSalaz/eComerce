@@ -51,13 +51,23 @@
         </div>
     </div>
 </nav>
-<div>
-    <table>
-        <td>Categoria</td>
-        <td>Categoria</td>
-        <td>Categoria</td>
-        <td>Categoria</td>
-    </table>
-</div>
+<nav class="sidebar">
+    <div class="circle"></div>
+    <div class="line"></div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+        <div class="navbar-nav">
+            <a class="nav-link" *ngFor="let categoria of categorias" (click)="redireccionarALibros(categoria.idCategoria)">
+                {{ categoria.categoria1 }}
+            </a>
+        </div>
+    </div>
+</nav>
+
+
+
+
 
 <button (click)="showData()"></button>
