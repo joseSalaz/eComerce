@@ -19,11 +19,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HttpClientModule } from '@angular/common/http';
 import { AutorComponent } from './autor/autor.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { CarroComponent } from './pages/carro/carro.component';
+import { CarroComponent } from './pages/detalle-venta/carro/carro.component';
 import { UserComponent } from './pages/user/user.component';
 import { CategoriaComponent } from './pages/categoria/categoria.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { DetalleVentaComponent } from './pages/carro/detalle-venta/detalle-venta.component';
+import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { DetalleVentaComponent } from './pages/carro/detalle-venta/detalle-venta
     UserComponent,
     CategoriaComponent,
     DetalleVentaComponent
+  
     
   ],
   imports: [

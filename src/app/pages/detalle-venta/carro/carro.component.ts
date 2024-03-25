@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Libro } from '../../Interface/libro';
-import { DetalleProductoComponent } from '../detalle-producto/detalle-producto.component';
-import { CarroService } from '../../Service/carro.service';
+import { Libro } from '../../../Interface/libro'; 
+
+import { CarroService } from '../../../Service/carro.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
