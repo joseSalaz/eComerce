@@ -17,7 +17,7 @@
             <!-- Imagen del Producto (Parte Izquierda) -->
             <div class="col-md-3">
                 <div class="d-flex justify-content-center mb-3" style="width: 280px; height: 400px;">
-                    <img src={{libro.imagen}}  alt="Producto" class="img-fluid h-100 w-auto" style="object-fit: cover;">
+                    <img src={{libro?.imagen}}  alt="Producto" class="img-fluid h-100 w-auto" style="object-fit: cover;">
                 </div>
                 <!-- Tabla -->
                 <table class="table">
@@ -35,6 +35,7 @@
                         <tr>
                             <th scope="row">Editorial:</th>
                             <td>{{libro?.Editorial}}</td>
+                            <td>{{libro?.idLibro}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Año de publicación:</th>
@@ -68,11 +69,13 @@
                 <!-- Descripción del Producto -->
                 <div class="mb-3">
                     <h4 class="mb-3">Reseña:</h4>
-                    <p class="form-control p-3  " id="descripcion" rows="6" style="width: 100%; height: 300px;">
-                        {{libro?.descripcion}}
+                    <p class="form-control p-3" id="descripcion" rows="6" style="width: 100%; height: 300px;">
+                        {{ libro?.descripcion }}
                     </p>
                     <!-- Precio -->
-                    <p class="text-end mt-2 fs-4">S/00.00</p>
+                    <p class="text-end mt-2 fs-4" *ngIf="preciosDelLibro && preciosDelLibro.length > 0">
+                        Precio de venta: S/{{ getPrecioVenta(preciosDelLibro) }}
+                    </p>
                     <!-- Botones -->
                     <div class="d-flex justify-content-end">
                         <!-- Botón de Guardar en Favoritos -->
@@ -84,12 +87,14 @@
                     <div class="form-group mt-3 d-flex justify-content-start align-items-center">
                         <label for="cantidad" class="form-label me-3">Cantidad:</label>
                         <div class="input-group" style="max-width: 150px;">
-                            <button class="btn btn-outline-secondary" type="button"  (click)="decrementarCantidad()">-</button>
-                            <input type="number" class="form-control text-center"  [(ngModel)]="cantidad" readonly min="1"> 
-                            <button class="btn btn-outline-secondary" type="button"  (click)="incrementarCantidad()">+</button>
+                            <button class="btn btn-outline-secondary" type="button" (click)="decrementarCantidad()">-</button>
+                            <input type="number" class="form-control text-center" [(ngModel)]="cantidad" readonly min="1">
+                            <button class="btn btn-outline-secondary" type="button" (click)="incrementarCantidad()">+</button>
                         </div>
                     </div>
                 </div>
+                
+                
             </div>
         </div>
     </div>

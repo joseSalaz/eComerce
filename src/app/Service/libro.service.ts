@@ -32,5 +32,10 @@ export class LibroService {
   getLibrosPorSubcategoria(idSubcategoria: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.apiUrl}?idSubcategoria=${idSubcategoria}`);
   }
+
+  getLibrosPorPrecio(id: string): Observable<Libro[]>
+  {
+    return this.http.get<Libro[]>(`${this.apiUrl}/Precio/?idPrecio=${id}`);
+  }
   
 }

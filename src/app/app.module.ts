@@ -24,6 +24,7 @@ import { UserComponent } from './pages/user/user.component';
 import { CategoriaComponent } from './pages/categoria/categoria.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component';
+import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.compo
     CarroComponent,
     UserComponent,
     CategoriaComponent,
-    DetalleVentaComponent
+    DetalleVentaComponent,
+    PagoComponent
   
     
   ],

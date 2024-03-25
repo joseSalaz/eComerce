@@ -6,6 +6,8 @@ import { Categorium } from '../../Interface/categorium';
 import { CategoriaService } from '../../Service/categoria.service';
 import { LibroAutorService } from '../../Service/libro_autor.service';
 import { CarroService } from '../../Service/carro.service';
+import { Precio } from '../../Interface/precio';
+import { PrecioService } from '../../Service/precio.service';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -20,26 +22,27 @@ export class DetalleProductoComponent implements OnInit {
   cantidad: number = 1;
   altura: number = 0;
   ancho: number = 0;
+  preciosDelLibro?: Precio[];
 
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
     private categoriaService: CategoriaService,
     private libroAutorService: LibroAutorService,
-    private carroService:CarroService
+    private carroService:CarroService,
+    private precioService: PrecioService
   ) { 
     this.categoria = undefined;
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.idLibro = id;
-        this.obtenerDatosLibro(this.idLibro);
-      } else {
-      
-      }
+        const id = params.get('id');
+        if (id) {
+            this.idLibro = id;
+            this.obtenerDatosLibro(this.idLibro);
+            this.obtenerPrecios(this.idLibro);
+        }
     });
   }
 
@@ -107,6 +110,29 @@ export class DetalleProductoComponent implements OnInit {
       }
     );
   }
+
+  obtenerPrecios(libroId: string): void {
+    debugger
+    const idNumerico = parseInt(libroId);
+    if (!isNaN(idNumerico)) {
+      this.precioService.obtenerPreciosLibro(this.idLibro).subscribe(precios => {
+        this.preciosDelLibro = precios;
+        console.log('Precios relacionados con el libro:', this.preciosDelLibro);
+      });
+    } else {
+      console.error('El ID del libro no es un número válido:', libroId);
+    }
+  }
+
+  getPrecioVenta(precios: Precio[]): number | undefined {
+    if (precios && precios.length > 0) {
+        const precioLibro = precios.find(precio => precio.idLibro === parseInt(this.idLibro));
+        return precioLibro ? precioLibro.precioVenta : undefined;
+    }
+    return undefined;
+}
+
+
   
   incrementarCantidad(): void {
     this.cantidad++;
