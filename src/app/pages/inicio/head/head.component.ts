@@ -30,6 +30,7 @@ export class HeadComponent implements OnInit {
   }
 
   checkSession(): void {
+    debugger
     let username = sessionStorage.getItem(sesioncosntans.username); 
     if (username != null && username != "") {
       let usuariotext = sessionStorage.getItem(sesioncosntans.user);

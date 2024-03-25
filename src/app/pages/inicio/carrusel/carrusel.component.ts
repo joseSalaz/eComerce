@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular
 import { LibroService } from '../../../Service/libro.service';
 import { Libro } from '../../../Interface/libro';
 import { Router } from '@angular/router';
+
 declare var bootstrap: any; // Importar Bootstrap globalmente
 
 @Component({
@@ -29,22 +30,24 @@ export class CarruselComponent implements AfterViewInit {
   }
 
   mostrarLibro(): void {
-    this._libroServicio.getLibros().subscribe(libros => {
-
-      if (this.categoria) {
-        this.datas = libros.filter(libro => libro.idCategoria === parseInt(this.categoria.toString(), 10));
-      } else {
+    if (typeof this.categoria === 'string') {
+      const idSubcategoria = parseInt(this.categoria.toString(), 10);
+      this._libroServicio.getLibrosPorSubcategoria(idSubcategoria).subscribe((libros: Libro[]) => {
         this.datas = libros;
-      }
-      
-      
-      if (this.datas.length > 0) {
-        this.firstItemId = this.datas[0].idLibro;
-      }
-    });
+        if (this.datas.length > 0) {
+          this.firstItemId = this.datas[0].idLibro;
+        }
+      });
+    } else {
+      this._libroServicio.getLibros().subscribe((libros: Libro[]) => {
+        this.datas = libros;
+        if (this.datas.length > 0) {
+          this.firstItemId = this.datas[0].idLibro;
+        }
+      });
+    }
   }
-
-  ngAfterViewInit(): void {
+    ngAfterViewInit(): void {
    
     const multipleItemCarousel = this.carouselElement.nativeElement;
 
