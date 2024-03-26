@@ -1,9 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Injectable, Input } from '@angular/core';
 import { Libro } from '../../../Interface/libro'; 
 
 import { CarroService } from '../../../Service/carro.service';
 import { BehaviorSubject } from 'rxjs';
-
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-carro',
   templateUrl: './carro.component.html',

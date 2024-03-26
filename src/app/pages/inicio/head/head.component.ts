@@ -34,10 +34,8 @@ export class HeadComponent implements OnInit {
     });
   }
   obtenerCategorias(): void {
-    console.log('Obteniendo categorías...');
     this.categoriaService.getList().subscribe(
       categorias => {
-        console.log('Categorías obtenidas:', categorias);
         this.categorias = categorias;
       },
       error => {

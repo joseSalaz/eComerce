@@ -3,9 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { LibroService } from '../../Service/libro.service';
 import { Libro } from '../../Interface/libro';
 import { Categorium } from '../../Interface/categorium';
+import { switchMap } from 'rxjs/operators';
 import { CategoriaService } from '../../Service/categoria.service';
 import { LibroAutorService } from '../../Service/libro_autor.service';
 import { CarroService } from '../../Service/carro.service';
+import { SubCategoriaService } from '../../Service/subcategoria.service';
+import { SubCategoria } from '../../Interface/subcategoria';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -14,7 +17,7 @@ import { CarroService } from '../../Service/carro.service';
 })
 export class DetalleProductoComponent implements OnInit {
   libro: any;
-  categoria: any;
+  subcategoria: any;
   autores: any[] = []; 
   idLibro: string = '';
   cantidad: number = 1;
@@ -25,39 +28,30 @@ export class DetalleProductoComponent implements OnInit {
     private route: ActivatedRoute,
     private libroService: LibroService,
     private categoriaService: CategoriaService,
+    private subCategoriaService: SubCategoriaService,
     private libroAutorService: LibroAutorService,
     private carroService:CarroService
   ) { 
-    this.categoria = undefined;
+    this.subcategoria = undefined;
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.idLibro = id;
-        this.obtenerDatosLibro(this.idLibro);
+        this.obtenerLibro(id);
       } else {
-      
+        console.error('El ID del libro no está definido.');
       }
     });
   }
 
-  obtenerDatosLibro(id: string): void {
+  obtenerLibro(id: string): void {
     this.libroService.getLibroPorId(id).subscribe(
-      (data: Libro) => {
-        this.libro = data; 
-
-        if (this.libro.tamanno) {
-          const tamannoSplit = this.libro.tamanno.split('*');
-          if (tamannoSplit.length === 2) {
-            this.altura = parseFloat(tamannoSplit[0]);
-            this.ancho = parseFloat(tamannoSplit[1]);
-          }
-        }
-        
-        this.obtenerCategoriaPorId(this.libro.idCategoria.toString());
-        this.obtenerAutoresDeLibro(this.idLibro)
+      (libro: Libro) => {
+        this.libro = libro;
+        console.log('Detalles del libro:', this.libro);
+        this.obtenerSubCategoria(libro.idSubCategoria);
       },
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
@@ -65,27 +59,23 @@ export class DetalleProductoComponent implements OnInit {
     );
   }
 
+  obtenerSubCategoria(idSubCategoria: number): void {
+    if (idSubCategoria) {
+      this.subCategoriaService.getSubCategoriaPorId(idSubCategoria).subscribe(
+        (subcategoria: SubCategoria) => {
+          this.subcategoria = subcategoria;
+          console.log('Subcategoría del libro:', this.subcategoria);
+        },
+        (error: any) => {
+          console.error('Error al obtener los detalles de la subcategoría:', error);
+        }
+      );
+    }
+  }
  agregarAlCarrito(libro: Libro) {
         this.carroService.addNewProduct(libro);
   }
   
-
-  obtenerCategoriaPorId(id: number): void {
-    this.categoriaService.getCategoriaPorId(id).subscribe(
-      (categoriaData: Categorium) => {
-        if (categoriaData) {
-          this.categoria = categoriaData;
-          console.log('Categoría del libro:', this.categoria);
-        } else {
-          console.error('La categoría devuelta es nula o indefinida.');
-        }
-      },
-      (categoriaError: any) => {
-        console.error('Error al obtener los detalles de la categoría:', categoriaError);
-      }
-    );
-  }
-
   obtenerAutoresDeLibro(idLibro: string): void {
     this.libroAutorService.getAutoresDeLibro(parseInt(idLibro)).subscribe(
       (autores: any[]) => {

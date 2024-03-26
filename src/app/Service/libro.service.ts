@@ -17,17 +17,19 @@ export class LibroService {
     this.fetchLibros();
   }
 
-  private fetchLibros(): void {
-    this.http.get<Libro[]>(`${this.apiUrl}`).subscribe(libros => {
-      this.librosSubject.next(libros);
-    });
-  }
-
   getLibros(): Observable<Libro[]> {
     return this.libros$;
   }
   getLibroPorId(id: string): Observable<Libro> {
-    return this.http.get<Libro>(`${this.apiUrl}/${id}`);
+    const url = `${this.apiUrl}/${id}`;
+    console.log('Solicitando libro por ID:', url);
+    return this.http.get<Libro>(url);
+  }
+  private fetchLibros(): void {
+    this.http.get<Libro[]>(`${this.apiUrl}`).subscribe(libros => {
+      console.log('Libros obtenidos del servidor:', libros);
+      this.librosSubject.next(libros);
+    });
   }
   getLibrosPorSubcategoria(idSubcategoria: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.apiUrl}?idSubcategoria=${idSubcategoria}`);

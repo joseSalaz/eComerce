@@ -17,7 +17,7 @@
             <!-- Imagen del Producto (Parte Izquierda) -->
             <div class="col-md-3">
                 <div class="d-flex justify-content-center mb-3" style="width: 280px; height: 400px;">
-                    <img src={{libro.imagen}}  alt="Producto" class="img-fluid h-100 w-auto" style="object-fit: cover;">
+                    <img src={{libro?.imagen}}  alt="Producto" class="img-fluid h-100 w-auto" style="object-fit: cover;">
                 </div>
                 <!-- Tabla -->
                 <table class="table">
@@ -58,7 +58,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Categoria:</th>
-                            <td>{{categoria?.categoria1}}</td>
+                            <td>{{subcategoria?.Descripcion}}</td>
                         </tr>
                     </tbody>
                 </table>
