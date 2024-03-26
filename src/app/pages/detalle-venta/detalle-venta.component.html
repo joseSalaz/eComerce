@@ -1,1 +1,16 @@
 <app-head></app-head>
+<div class="text-center">
+    <h1>Finalizar Compra</h1>
+</div>
+
+<div class="mt-5">
+    <h6>Productos</h6>
+    <hr style="border-top: 1px solid black;">
+    <div *ngFor="let libro of librosCarro; let indice=index">
+        <span><img src="{{ libro.imagen }}" alt="" style="max-width: 100%; max-height: 100px;"></span>
+        <p>{{ libro.titulo }}</p>
+        <button class="eliminar-item" (click)="delete(indice)"><i class="fas fa-times"></i></button> 
+    </div>
+</div>
+
+<button [routerLink]="librosCarro.length > 0 ? '/pago' : null" [disabled]="librosCarro.length === 0" class="btn btn-primary">Ir a Pago</button>

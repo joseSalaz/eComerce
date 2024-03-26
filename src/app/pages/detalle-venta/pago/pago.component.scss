@@ -1,0 +1,17 @@
+.form-container {
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 700px; /* Ajusta el ancho del contenedor del formulario */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    margin-left: 0; /* Agrega un margen izquierdo automático */
+    margin-right: auto; /* Elimina el margen derecho */
+  }
+  .form-container h2 {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .form-container i {
+    font-size: 24px;
+    vertical-align: middle;
+  }

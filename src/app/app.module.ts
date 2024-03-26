@@ -24,6 +24,7 @@ import { UserComponent } from './pages/user/user.component';
 import { CategoriaComponent } from './pages/categoria/categoria.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component';
+import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
 
 
 
@@ -43,6 +44,7 @@ import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.compo
     UserComponent,
     CategoriaComponent,
     DetalleVentaComponent,
+    PagoComponent,
   
   
     

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, BehaviorSubject, catchError, throwError } from 'rxjs';
 import { Libro } from '../Interface/libro';
 import { environment } from '../../environments/environment';
+import { Precio } from '../Interface/precio';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,24 @@ export class LibroService {
   }
   getLibrosPorSubcategoria(idSubcategoria: number): Observable<Libro[]> {
     return this.http.get<Libro[]>(`${this.apiUrl}?idSubcategoria=${idSubcategoria}`);
+  }
+  
+  getPreciosPorIdLibro(libroId: number): Observable<Precio[]> {
+    const url = `${this.apiUrl}/precios/${libroId}`;
+    return this.http.get<Precio[]>(url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Error desconocido';
+        if (error.error instanceof ErrorEvent) {
+          // Error del cliente
+          errorMessage = `Error: ${error.error.message}`;
+        } else {
+          // Error del servidor
+          errorMessage = `Código de error ${error.status}: ${error.error}`;
+        }
+        console.error(errorMessage);
+        return throwError(errorMessage);
+      })
+    );
   }
   
 }

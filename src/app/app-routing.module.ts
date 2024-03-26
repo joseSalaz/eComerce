@@ -9,6 +9,8 @@ import { AutorComponent } from './autor/autor.component';
 import { UserComponent } from './pages/user/user.component';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component'
 import { CategoriaComponent } from './pages/categoria/categoria.component';
+import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
+import { PagoGuard } from './Guard/pago.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/inicio' },
@@ -18,6 +20,7 @@ const routes: Routes = [
   {path:'user',component:UserComponent},
   {path:'detalle-venta',component:DetalleVentaComponent},
   {path: 'categoria/:idCategoria/libros',component: CategoriaComponent},
+  { path: 'pago', component: PagoComponent, canActivate: [PagoGuard] },
   {
     path: 'auth',
     children: [
