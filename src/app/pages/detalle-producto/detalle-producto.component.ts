@@ -7,6 +7,8 @@ import { CategoriaService } from '../../Service/categoria.service';
 import { LibroAutorService } from '../../Service/libro_autor.service';
 import { CarroService } from '../../Service/carro.service';
 import { Precio } from '../../Interface/precio';
+import { SubCategoria } from '../../Interface/subcategoria';
+import { SubCategoriaService } from '../../Service/subcategoria.service';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -15,7 +17,7 @@ import { Precio } from '../../Interface/precio';
 })
 export class DetalleProductoComponent implements OnInit {
   libro: any;
-  categoria: any;
+  subcategoria: any;
   autores: any[] = []; 
   idLibro: number = 0; // Cambié el tipo de 'idLibro' de string a number
   cantidad: number = 1;
@@ -28,65 +30,52 @@ export class DetalleProductoComponent implements OnInit {
     private libroService: LibroService,
     private categoriaService: CategoriaService,
     private libroAutorService: LibroAutorService,
-    private carroService:CarroService
+    private carroService:CarroService,
+    private subCategoriaService: SubCategoriaService,
   ) { 
-    this.categoria = undefined;
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.idLibro = parseInt(id); // Convertir 'id' a número
-        this.obtenerDatosLibro(this.idLibro.toString()); // Convertir 'id' a string para compatibilidad con la función
-        this.obtenerPrecioVenta(); // Llamar a la función para obtener el precio de venta
+        this.obtenerLibro(id);
       } else {
-      
+        console.error('El ID del libro no está definido.');
       }
     });
   }
 
-  obtenerDatosLibro(id: string): void {
+  obtenerLibro(id: string): void {
     this.libroService.getLibroPorId(id).subscribe(
-      (data: Libro) => {
-        this.libro = data; 
-
-        if (this.libro.tamanno) {
-          const tamannoSplit = this.libro.tamanno.split('*');
-          if (tamannoSplit.length === 2) {
-            this.altura = parseFloat(tamannoSplit[0]);
-            this.ancho = parseFloat(tamannoSplit[1]);
-          }
-        }
-        
-        this.obtenerCategoriaPorId(this.libro.idCategoria.toString());
-        this.obtenerAutoresDeLibro(this.idLibro)
+      (libro: Libro) => {
+        this.libro = libro;
+        this.obtenerSubCategoria(libro.idSubCategoria);
       },
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
       }
     );
   }
+  obtenerSubCategoria(idSubCategoria: number): void {
+    if (idSubCategoria) {
+      this.subCategoriaService.getSubCategoriaPorId(idSubCategoria).subscribe(
+        (subCategoria: SubCategoria) => {
+          this.subcategoria = subCategoria;
+          console.log('Subcategoría del libro:', this.subcategoria);
+        },
+        (error: any) => {
+          console.error('Error al obtener los detalles de la subcategoría:', error);
+        }
+      );
+    }
+  }
+
 
   agregarAlCarrito(libro: Libro) {
     this.carroService.addNewProduct(libro);
   }
 
-  obtenerCategoriaPorId(id: number): void {
-    this.categoriaService.getCategoriaPorId(id).subscribe(
-      (categoriaData: Categorium) => {
-        if (categoriaData) {
-          this.categoria = categoriaData;
-          console.log('Categoría del libro:', this.categoria);
-        } else {
-          console.error('La categoría devuelta es nula o indefinida.');
-        }
-      },
-      (categoriaError: any) => {
-        console.error('Error al obtener los detalles de la categoría:', categoriaError);
-      }
-    );
-  }
 
   obtenerAutoresDeLibro(idLibro: number): void {
     this.libroAutorService.getAutoresDeLibro(idLibro).subscribe(
