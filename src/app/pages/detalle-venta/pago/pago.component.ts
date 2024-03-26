@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrl: './pago.component.scss'
 })
 export class PagoComponent {
+<<<<<<< HEAD
   mostrarOpcionesEnvio: boolean = false;
   alturaCaja: string = 'auto';
 
@@ -13,4 +14,7 @@ export class PagoComponent {
     this.mostrarOpcionesEnvio = !this.mostrarOpcionesEnvio;
     this.alturaCaja = this.mostrarOpcionesEnvio ? '50px' : 'auto';
   }
+=======
+
+>>>>>>> José
 }

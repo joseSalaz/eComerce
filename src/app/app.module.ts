@@ -45,11 +45,8 @@ import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
     CategoriaComponent,
     DetalleVentaComponent,
 
-    PagoComponent
 
-
-  
-    
+    PagoComponent,   
   ],
   imports: [
     BrowserModule,

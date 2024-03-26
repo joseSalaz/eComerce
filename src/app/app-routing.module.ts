@@ -8,11 +8,15 @@ import { DetalleProductoComponent } from './pages/detalle-producto/detalle-produ
 import { AutorComponent } from './autor/autor.component';
 import { UserComponent } from './pages/user/user.component';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component'
-<<<<<<< HEAD
+
 import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
-=======
+
 import { CategoriaComponent } from './pages/categoria/categoria.component';
->>>>>>> 23ba463b8f2820bbd59359a000c746ea2aa1d365
+
+
+
+import { PagoGuard } from './Guard/pago.guard';
+
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/inicio' },
@@ -21,11 +25,15 @@ const routes: Routes = [
   {path:'autor', component:AutorComponent},
   {path:'user',component:UserComponent},
   {path:'detalle-venta',component:DetalleVentaComponent},
-<<<<<<< HEAD
+
   {path:'pago',component:PagoComponent},
-=======
+
   {path: 'categoria/:idCategoria/libros',component: CategoriaComponent},
->>>>>>> 23ba463b8f2820bbd59359a000c746ea2aa1d365
+
+
+
+  { path: 'pago', component: PagoComponent, canActivate: [PagoGuard] },
+
   {
     path: 'auth',
     children: [

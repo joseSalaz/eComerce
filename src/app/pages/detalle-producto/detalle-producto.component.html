@@ -69,13 +69,24 @@
                 <!-- Descripción del Producto -->
                 <div class="mb-3">
                     <h4 class="mb-3">Reseña:</h4>
+<<<<<<< HEAD
                     <p class="form-control p-3" id="descripcion" rows="6" style="width: 100%; height: 300px;">
                         {{ libro?.descripcion }}
+=======
+                    <p class="form-control p-3 bg-white border-0 " id="descripcion" rows="6" style="width: 100%; height: 300px;">
+                        {{libro?.descripcion}}
+>>>>>>> José
                     </p>
+                    
                     <!-- Precio -->
+<<<<<<< HEAD
                     <p class="text-end mt-2 fs-4" *ngIf="preciosDelLibro && preciosDelLibro.length > 0">
                         Precio de venta: S/{{ getPrecioVenta(preciosDelLibro) }}
                     </p>
+=======
+                    <p class="text-end mt-2 fs-4">S/{{ precioVenta | number: '1.2-2' }}</p>
+
+>>>>>>> José
                     <!-- Botones -->
                     <div class="d-flex justify-content-end">
                         <!-- Botón de Guardar en Favoritos -->

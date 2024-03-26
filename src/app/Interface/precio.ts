@@ -4,4 +4,8 @@ export interface Precio {
     porcUtilidad?: number;
     idLibro: number;
     idPublicoObjetivo?: number;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> José
