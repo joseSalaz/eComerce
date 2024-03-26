@@ -75,4 +75,77 @@ select option:first-child {
     align-items: center;
     font-size: 12px;
 }
+/* Estilos personalizados para el navbar */
+.navbar-nav .nav-link {
+    color: #333; /* Color del texto */
+    font-size: 16px; /* Tamaño de fuente */
+    padding: 10px 15px; /* Espaciado interno */
+    transition: all 0.3s ease; /* Transición suave al pasar el ratón */
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #f0f0f0; /* Color de fondo al pasar el ratón */
+    color: #555; /* Color del texto al pasar el ratón */
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: bold; /* Texto en negrita para la categoría activa */
+}
+.navbar-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.navbar-nav .nav-link {
+    white-space: nowrap;
+    padding-right: 1rem;
+}
+/* Estilos para el navbar de categorías */
+.navbar-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 10px; /* Ajusta el padding según sea necesario */
+    border-radius: 15px; /* Bordes redondeados */
+    background-color: #f8f9fa; /* Color de fondo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.navbar-nav .nav-link {
+    color: #333; /* Color del texto */
+    font-size: 16px; /* Tamaño de fuente */
+    padding: 10px 15px; /* Espaciado interno */
+    transition: all 0.3s ease; /* Transición suave al pasar el ratón */
+    margin-right: 10px; /* Espaciado entre enlaces */
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #e9ecef; /* Color de fondo al pasar el ratón */
+    color: #555; /* Color del texto al pasar el ratón */
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: bold; /* Texto en negrita para la categoría activa */
+}
+
+.navbar-nav {
+    overflow-x: auto; /* Hace que la barra de navegación tenga desplazamiento horizontal */
+    white-space: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
+    scrollbar-width: thin; /* Establece el ancho de la barra de desplazamiento */
+}
+
+/* Estilo de la barra de desplazamiento */
+.navbar-nav::-webkit-scrollbar {
+    height: 8px; /* Altura de la barra de desplazamiento */
+}
+
+.navbar-nav::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Color de fondo del "pomo" de la barra de desplazamiento */
+    border-radius: 4px; /* Bordes redondeados del "pomo" */
+}
+
+.navbar-nav::-webkit-scrollbar-track {
+    background-color: transparent; /* Color de fondo del área de la barra de desplazamiento */
+}
 

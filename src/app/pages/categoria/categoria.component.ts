@@ -1,37 +1,36 @@
-import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { LibroService } from '../../Service/libro.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CategoriaService } from '../../Service/categoria.service';
 import { Libro } from '../../Interface/libro';
+import { switchMap } from 'rxjs/operators'; // Importa switchMap
 
 @Component({
   selector: 'app-categoria',
   templateUrl: './categoria.component.html',
   styleUrls: ['./categoria.component.scss']
 })
-export class CategoriaComponent {
+export class CategoriaComponent implements OnInit {
   datas: Libro[] = [];
-  firstItemId: number = 0;
 
-  @Input() categoria: string=""; 
+  constructor(
+     private categoriaService: CategoriaService,
+     private router: Router,
+     private route: ActivatedRoute
+   ) {}
 
-  // constructor(
-  //   private _libroServicio: LibroService,
-  //   private router: Router
-  // ) {
-  //   this.obtenerLibrosPorCategoria();
-  // }
+   ngOnInit(): void {
+     // Utiliza paramMap para suscribirte a los cambios de parámetros de ruta
+     this.route.paramMap.pipe(
+       switchMap(params => {
+         const idCategoria = Number(params.get('idCategoria'));
+         return this.categoriaService.getLibrosPorCategoriaId(idCategoria);
+       })
+     ).subscribe(libros => {
+       this.datas = libros; 
+     });
+   }
 
-  // obtenerLibrosPorCategoria() {
-  //   this._libroServicio.getLibrosPorCategoria(this.categoria).subscribe(libros => {
-  //     this.datas = libros;
-  //     if (this.datas.length > 0) {
-  //       this.firstItemId = this.datas[0].idLibro;
-  //     }
-  //   });
-  // }
-
-  // comprar(libroId: number) {
-  //   this.router.navigate(['/detalle-producto', libroId]);
-  // }
+   redireccionarAlDetalleProducto(libroId: number) {
+     this.router.navigate(['/detalle-producto', libroId]);
+   }
 }
-

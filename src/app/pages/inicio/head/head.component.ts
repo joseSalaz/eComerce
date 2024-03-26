@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { sesioncosntans } from '../../../constans/sesion.constans';
 import { Console, error, log } from 'console';
 import { CarroService } from '../../../Service/carro.service';
+import { CategoriaService } from '../../../Service/categoria.service';
+import { Categorium } from '../../../Interface/categorium';
 
 @Component({
   selector: 'app-head',
@@ -15,10 +17,12 @@ export class HeadComponent implements OnInit {
   displayname: string = "";
   mostrarCarrito = false;
   totalItems: number = 0;
+  categorias: Categorium[] = [];
   constructor(
     private authService: AuthService,
     private router: Router,
-    private carroService:CarroService
+    private carroService:CarroService,
+    private categoriaService:CategoriaService
   ) {}
 
   ngOnInit(): void {
@@ -26,9 +30,22 @@ export class HeadComponent implements OnInit {
     this.totalItems = this.carroService.obtenerCantidadProductos();
     this.carroService.Libro.subscribe(libros => {
       this.totalItems = libros.length;
+      this.obtenerCategorias();
     });
   }
-
+  obtenerCategorias(): void {
+    console.log('Obteniendo categorías...');
+    this.categoriaService.getList().subscribe(
+      categorias => {
+        console.log('Categorías obtenidas:', categorias);
+        this.categorias = categorias;
+      },
+      error => {
+        console.error('Error al obtener las categorías:', error);
+      }
+    );
+  }
+  
 checkSession(): void {
   const userProfile: any = this.authService.getProfile(); 
 
@@ -71,5 +88,8 @@ checkSession(): void {
     this.authService.logout();
     this.router.navigate(['/inicio']);
   }
+  redireccionarALibros(idCategoria: number) {
+    this.router.navigate(['/categoria', idCategoria, 'libros']);
+}
 }
 

@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 
 import { identifierName } from '@angular/compiler';
 import { Categorium } from '../Interface/categorium';
+import { Libro } from '../Interface/libro';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,10 +15,14 @@ export class CategoriaService {
   constructor(private http: HttpClient) {}
 
   getList(): Observable<Categorium[]> {
-    return this.http.get<Categorium[]>(`${this.apiUrl}/lista`);
+    return this.http.get<Categorium[]>(this.apiUrl);
   } 
   getCategoriaPorId(idCategoria: number): Observable<Categorium> {
     return this.http.get<Categorium>(`${this.apiUrl}/${idCategoria}`);
   }
+  getLibrosPorCategoriaId(idCategoria: number): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.apiUrl}/${idCategoria}/libros`);
+  }
+  
 }
 

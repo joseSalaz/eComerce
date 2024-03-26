@@ -27,6 +27,7 @@ import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.compo
 import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +44,10 @@ import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
     UserComponent,
     CategoriaComponent,
     DetalleVentaComponent,
+
     PagoComponent
+
+
   
     
   ],

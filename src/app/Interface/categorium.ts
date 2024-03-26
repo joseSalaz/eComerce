@@ -1,5 +1,5 @@
 export interface Categorium {
     idCategoria: number;
-    nombreCategoria: string;
+    categoria1: string;
   }
   

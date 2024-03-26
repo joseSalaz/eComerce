@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input,Output,EventEmitter } from '@angular/core';
 import { LibroService } from '../../../Service/libro.service';
 import { Libro } from '../../../Interface/libro';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ declare var bootstrap: any; // Importar Bootstrap globalmente
 })
 export class CarruselComponent implements AfterViewInit {
   @Input() categoria: number | string = '';
+  @Output() comprarLibro: EventEmitter<number> = new EventEmitter<number>();
   @ViewChild('carousel') carouselElement!: ElementRef;
   private carousel: any;
   private currentIndex: number = 0;
