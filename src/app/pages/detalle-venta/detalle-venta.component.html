@@ -1,1 +1,37 @@
 <app-head></app-head>
+
+ <div>
+    <h1 class="text-center">Finaliza tu compra</h1>
+</div>
+
+<div class="mt-5"> 
+    <div class="ml-auto" style="margin-left: 100px;">
+        <h6 class="">Productos</h6>
+    </div>
+</div>
+
+<hr style="border-top: 2px solid black; margin-left: 100px; margin-right: auto; width: calc(100% - 100px);">
+
+
+<div class="mt-3">
+    <div class="ml-auto" style="margin-left: 100px;">
+        <ul class="libros-carrito">
+            <li *ngFor="let libro of librosCarro" class="libro-item">
+                <img src="{{ libro.imagen }}" alt="" class="libro-imagen">
+                <span class="libro-titulo">{{ libro.titulo }}</span>
+            </li>
+        </ul>
+    </div>
+    <div class="col-4 resumen-compra ">
+        <h6>Resumen de la compra</h6>
+        <ul>
+            <li *ngFor="let libro of librosCarro">
+                <span>{{ libro.titulo }}</span>
+                <span>precio</span>
+            </li>
+            <!-- Precio total -->
+            <li>Total:00</li>
+        </ul>
+        <button [routerLink]="librosCarro.length > 0 ? '/pago' : null" [disabled]="librosCarro.length === 0" class="btn btn-primary">Ir a Pago</button>
+    </div>
+</div>

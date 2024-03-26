@@ -1,0 +1,33 @@
+.libros-carrito {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.libro-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.libro-imagen {
+    max-width: 100%;
+    max-height: 100px;
+    margin-right: 10px; /* Ajusta el espacio entre la imagen y el título */
+}
+
+.libro-titulo {
+    font-size: 16px;
+    /* Añade estilos adicionales según sea necesario */
+}
+
+.resumen-compra {
+    background-color: rgba(208, 195, 195, 0.766); /* Color de fondo del cuadrado */
+    padding: 10px;
+    border-radius: 5px;
+    position: sticky; /* Fija la posición del cuadrado al hacer scroll */
+    top: 50px; /* Ajusta la distancia desde la parte superior */
+    height: fit-content; /* Ajusta la altura automáticamente según el contenido */
+    margin-left: 100px;
+}
+

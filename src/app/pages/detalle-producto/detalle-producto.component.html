@@ -35,6 +35,7 @@
                         <tr>
                             <th scope="row">Editorial:</th>
                             <td>{{libro?.Editorial}}</td>
+                            <td>{{libro?.idLibro}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Año de publicación:</th>
@@ -58,7 +59,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Categoria:</th>
-                            <td>{{subcategoria?.Descripcion}}</td>
+                            <td>{{categoria?.Descripcion}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -68,11 +69,15 @@
                 <!-- Descripción del Producto -->
                 <div class="mb-3">
                     <h4 class="mb-3">Reseña:</h4>
-                    <p class="form-control p-3  " id="descripcion" rows="6" style="width: 100%; height: 300px;">
-                        {{libro?.descripcion}}
-                    </p>
+
+                    <p class="form-control p-3" id="descripcion" rows="6" style="width: 100%; height: 300px;">
+                        {{ libro?.descripcion }}
+
+                    </p>    
+                    
                     <!-- Precio -->
-                    <p class="text-end mt-2 fs-4">S/00.00</p>
+                    <p class="text-end mt-2 fs-4">S/{{ precioVenta | number: '1.2-2' }}</p>
+
                     <!-- Botones -->
                     <div class="d-flex justify-content-end">
                         <!-- Botón de Guardar en Favoritos -->
