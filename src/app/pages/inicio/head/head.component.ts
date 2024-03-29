@@ -6,6 +6,7 @@ import { Console, error, log } from 'console';
 import { CarroService } from '../../../Service/carro.service';
 import { CategoriaService } from '../../../Service/categoria.service';
 import { Categorium } from '../../../Interface/categorium';
+import { ItemCarrito } from '../../../Interface/carrito';
 
 @Component({
   selector: 'app-head',
@@ -28,8 +29,8 @@ export class HeadComponent implements OnInit {
   ngOnInit(): void {
     this.checkSession();
     this.totalItems = this.carroService.obtenerCantidadProductos();
-    this.carroService.Libro.subscribe(libros => {
-      this.totalItems = libros.length;
+    this.carroService.itemsCarrito.subscribe((items: ItemCarrito[]) => {
+      this.totalItems = items.reduce((acc, item) => acc + item.cantidad, 0);
       this.obtenerCategorias();
     });
   }

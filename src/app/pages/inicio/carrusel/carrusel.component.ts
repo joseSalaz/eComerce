@@ -31,22 +31,32 @@ export class CarruselComponent implements AfterViewInit {
   }
 
   mostrarLibro(): void {
+    let idSubcategoria: number;
+  
     if (typeof this.categoria === 'string') {
-      const idSubcategoria = parseInt(this.categoria.toString(), 10);
-      this._libroServicio.getLibrosPorSubcategoria(idSubcategoria).subscribe((libros: Libro[]) => {
-        this.datas = libros;
-        if (this.datas.length > 0) {
-          this.firstItemId = this.datas[0].idLibro;
-        }
-      });
+      idSubcategoria = parseInt(this.categoria, 10);
     } else {
-      this._libroServicio.getLibros().subscribe((libros: Libro[]) => {
-        this.datas = libros;
-        if (this.datas.length > 0) {
-          this.firstItemId = this.datas[0].idLibro;
-        }
-      });
+      idSubcategoria = this.categoria;
     }
+  
+    this._libroServicio.getLibrosPorSubcategoria(idSubcategoria).subscribe((libros: Libro[]) => {
+      this.datas = libros;
+      
+      // Si hay libros en la respuesta, asignamos el ID del primero para la lógica del carrusel
+      if (this.datas.length > 0) {
+        this.firstItemId = this.datas[0].idLibro;
+      }
+  
+      // Llamamos a obtener el precio para cada libro
+      this.datas.forEach((libro, index) => {
+        this._libroServicio.getPreciosPorIdLibro(libro.idLibro).subscribe(precios => {
+          if (precios.length > 0 && precios[0].precioVenta != null) {
+            // Asignamos el precio al libro correspondiente
+            this.datas[index].precioVenta = precios[0].precioVenta;
+          }
+        });
+      });
+    });
   }
     ngAfterViewInit(): void {
    

@@ -9,6 +9,7 @@ import { CarroService } from '../../Service/carro.service';
 import { Precio } from '../../Interface/precio';
 import { SubCategoria } from '../../Interface/subcategoria';
 import { SubCategoriaService } from '../../Service/subcategoria.service';
+import { ItemCarrito } from '../../Interface/carrito';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -16,8 +17,8 @@ import { SubCategoriaService } from '../../Service/subcategoria.service';
   styleUrls: ['./detalle-producto.component.scss']
 })
 export class DetalleProductoComponent implements OnInit {
-  libro: any;
-  subcategoria: any;
+  libro: Libro | null = null;
+  subcategoria: SubCategoria | null = null;  
   autores: any[] = []; 
   idLibro: number = 0; // Cambié el tipo de 'idLibro' de string a number
   cantidad: number = 1;
@@ -50,7 +51,9 @@ export class DetalleProductoComponent implements OnInit {
     this.libroService.getLibroPorId(id).subscribe(
       (libro: Libro) => {
         this.libro = libro;
+        this.idLibro = libro.idLibro; // Asegurándonos de que idLibro tenga el valor correcto
         this.obtenerSubCategoria(libro.idSubCategoria);
+        this.obtenerPrecioVenta(); // Ahora llamamos a obtenerPrecioVenta aquí
       },
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
@@ -72,9 +75,23 @@ export class DetalleProductoComponent implements OnInit {
   }
 
 
-  agregarAlCarrito(libro: Libro) {
-    this.carroService.addNewProduct(libro);
+  agregarAlCarrito(): void {
+    if (!this.libro || this.precioVenta <= 0 || this.cantidad <= 0) {
+      this.mostrarError('Datos inválidos. No se puede agregar al carrito.');
+      return;
+    }
+  
+    const itemCarrito: ItemCarrito = {
+      libro: this.libro,
+      precioVenta: this.precioVenta,
+      cantidad: this.cantidad
+    };
+    this.carroService.addNewProduct(itemCarrito);
   }
+mostrarError(mensaje: string): void {
+  alert(mensaje);
+}
+
 
 
   obtenerAutoresDeLibro(idLibro: number): void {
@@ -98,28 +115,16 @@ export class DetalleProductoComponent implements OnInit {
       }
     );
   }
-
-  obtenerPrecioVenta() {
+  obtenerPrecioVenta(): void {
+    if (!this.idLibro) return;
+    
     this.libroService.getPreciosPorIdLibro(this.idLibro).subscribe(
-      (precios: Precio[]) => { // Asegúrate de tipar precios como un arreglo de objetos de tipo Precio
-        // Verifica si precios es un arreglo de objetos de tipo Precio
-        if (Array.isArray(precios)) {
-          // Encontrar el precioVenta correspondiente si está presente
-          const precioVenta = precios.find(precio => precio.precioVenta !== undefined)?.precioVenta;
-          if (precioVenta !== undefined) {
-            this.precioVenta = precioVenta;
-            console.log("este es el precio venta ",precioVenta);
-            
-          } else {
-            console.error('No se encontró precioVenta en los precios:', precios);
-          }
-        } else {
-          console.error('precios no es un arreglo:', precios);
-        }
+      (precios: Precio[]) => {
+        const precioConVenta = precios.find(precio => precio.precioVenta != null);
+        this.precioVenta = precioConVenta!.precioVenta ?? 0;
       },
       error => {
         console.error('Error al obtener el precio de venta:', error);
-
       }
     );
   }

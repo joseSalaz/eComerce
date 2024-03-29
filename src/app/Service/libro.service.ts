@@ -58,5 +58,8 @@ export class LibroService {
       })
     );
   }
+  getStockPorIdLibro(libroId: number): Observable<number> { // Cambia any por tu tipo de dato de stock
+    return this.http.get<number>(`${this.apiUrl}/stock/${libroId}`)
+  }
   
 }

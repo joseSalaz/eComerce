@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Editorial:</th>
-                            <td>{{libro?.Editorial}}</td>
+                            <!-- <td>{{libro?.Editorial}}</td> -->
                             <td>{{libro?.idLibro}}</td>
                         </tr>
                         <tr>
@@ -83,7 +83,7 @@
                         <!-- Botón de Guardar en Favoritos -->
                         <button type="button" class="btn btn-outline-primary mb-3 me-3 fs-5">Guardar en Favoritos</button>
                         <!-- Botón de Agregar al Carrito -->
-                        <button type="button" class="btn btn-primary mb-3 me-3 fs-5" (click)="agregarAlCarrito(libro)">Agregar al Carrito</button>
+                        <button type="button" class="btn btn-primary mb-3 me-3 fs-5" (click)="agregarAlCarrito()">Agregar al Carrito</button>
                     </div>
                     <!-- Cantidad -->
                     <div class="form-group mt-3 d-flex justify-content-start align-items-center">
@@ -127,12 +127,3 @@
     </div>
 </section>
 <app-footer></app-footer>
-
-
-
-
-
-
-
-  
-  

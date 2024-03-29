@@ -1,52 +1,55 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Libro } from '../Interface/libro';
+  import { Injectable } from '@angular/core';
+  import { BehaviorSubject, Observable } from 'rxjs';
+  import { ItemCarrito } from '../Interface/carrito';
+  import { HttpClient } from '@angular/common/http';
+import { Datallecarrito } from '../Interface/detallecarrito';
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CarroService {
+    private storageKey = 'carroItems';
+    private _itemsCarrito: BehaviorSubject<ItemCarrito[]>;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class CarroService {
+    constructor(
+      private http: HttpClient
+    ) {
+      const storedItems = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+      this._itemsCarrito = new BehaviorSubject<ItemCarrito[]>(storedItems);
+      
+    }
 
-  private _libro: BehaviorSubject<Libro[]>;
-  private storageKey = 'carroLibros';
+    obtenerCantidadProductos(): number {
+      return this._itemsCarrito.value.reduce((acc, curr) => acc + curr.cantidad, 0);
+    }
 
+    get itemsCarrito() {
+      return this._itemsCarrito.asObservable();
+    }
 
-  private libro: Libro [] = [];
+    addNewProduct(item: ItemCarrito) {
+      const itemsActualizados = [...this._itemsCarrito.value, item];
+      this.updateStorage(itemsActualizados);
+    }
 
+    deleteLibro(index: number) {
+      const itemsActualizados = this._itemsCarrito.value.filter((_, i) => i !== index);
+      this.updateStorage(itemsActualizados);
+    }
 
-  constructor(){
-    const storedLibros = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
-    this._libro = new BehaviorSubject<Libro[]>(storedLibros);
-  }
-
-  obtenerCantidadProductos(): number {
-    return this._libro.value.length;
-  }
-
-  get Libro() {
-    return this._libro.asObservable();
-  }
-
-  addNewProduct(libro: Libro) {
-    const libros = [...this._libro.value, libro];
-    this.updateStorage(libros);
-  }
-
-
-
-  private updateStorage(libros: Libro[]) {
-    this._libro.next(libros);
-    localStorage.setItem(this.storageKey, JSON.stringify(libros));
-    console.log(libros);
-    
-  }
-
+    private updateStorage(items: ItemCarrito[]) {
+      this._itemsCarrito.next(items);
+      localStorage.setItem(this.storageKey, JSON.stringify(items));
+    }
+    enviarCarritoAlBackend(): Observable<any> {
+      const carritoActual = this._itemsCarrito.value;
+      const totalAmount = carritoActual.reduce((acc, item) => acc + (item.precioVenta * item.cantidad), 0);
   
-  deleteLibro(index: number) {
-    const libros = this._libro.value.filter((_, i) => i !== index);
-    this.updateStorage(libros);
+      const detalleCarrito: Datallecarrito = {
+        Items: carritoActual,
+        TotalAmount: totalAmount
+      };
+  
+      return this.http.post('http://localhost:7143/api/Paypal/create-payment', detalleCarrito);
+    }
+  
   }
-
-}
-
-

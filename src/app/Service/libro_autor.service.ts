@@ -15,7 +15,7 @@ export class LibroAutorService {
 
   // Obtener los autores asociados a un libro por su ID
   getAutoresDeLibro(idLibro: number): Observable<LibroAutor[]> {
-    // Modificar la URL para incluir el ID del libro como parámetro de la consulta
+   
     const url = `${this.apiUrl}?idLibro=${idLibro}`;
     
     return this.http.get<LibroAutor[]>(url).pipe(
