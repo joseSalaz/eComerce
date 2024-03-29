@@ -4,7 +4,7 @@
         <h6>Productos</h6>
         <ul class="items-carrito">
             <li *ngFor="let item of itemsCarrito" class="item-carrito">
-                <img src="{{ item.libro.imagen }}" alt="" class="item-imagen">
+                <img src="{{ item.libro.imagen }}" alt="" class="libro-imagen">
                 <div class="item-detalle">
                     <span class="item-titulo">{{ item.libro.titulo }}</span>
                     <div>Cantidad: {{ item.cantidad }}</div>

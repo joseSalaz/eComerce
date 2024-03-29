@@ -34,6 +34,10 @@ const routes: Routes = [
 
   { path: 'pago', component: PagoComponent, canActivate: [PagoGuard] },
 
+  { path: 'payment-redirect', component: PagoComponent },
+  { path: 'payment-success', component: PagoComponent },
+  { path: 'payment-error', component: PagoComponent },
+
   {
     path: 'auth',
     children: [

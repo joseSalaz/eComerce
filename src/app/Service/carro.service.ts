@@ -49,7 +49,7 @@ import { Datallecarrito } from '../Interface/detallecarrito';
         TotalAmount: totalAmount
       };
   
-      return this.http.post('http://localhost:7143/api/Paypal/create-payment', detalleCarrito);
+      return this.http.post('https://localhost:7143/api/Cart', detalleCarrito);
     }
   
   }

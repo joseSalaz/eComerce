@@ -41,6 +41,8 @@ export class DetalleProductoComponent implements OnInit {
       const id = params.get('id');
       if (id) {
         this.obtenerLibro(id);
+        console.log(this.libro);
+        
       } else {
         console.error('El ID del libro no está definido.');
       }
