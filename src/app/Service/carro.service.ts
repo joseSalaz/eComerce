@@ -51,5 +51,12 @@ import { Datallecarrito } from '../Interface/detallecarrito';
   
       return this.http.post('https://localhost:7143/api/Cart', detalleCarrito);
     }
+    confirmarPago(paymentId: string, payerId: string) {
+      const url = 'https://localhost:7143/api/Paypal/execute-payment'; 
+      const body = { PaymentId: paymentId, PayerID: payerId };
+      console.log(body);
+      
+      return this.http.post(url, body);
+    }
   
   }
