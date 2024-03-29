@@ -11,8 +11,8 @@
 }
 
 .libro-imagen {
-    width: 100px;
-    height: 100px;
+    max-width: 100%;
+    max-height: 100px;
     margin-right: 10px; /* Ajusta el espacio entre la imagen y el título */
 }
 

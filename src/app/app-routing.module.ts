@@ -25,7 +25,7 @@ const routes: Routes = [
   {path:'autor', component:AutorComponent},
   {path:'user',component:UserComponent},
   {path:'detalle-venta',component:DetalleVentaComponent},
-
+  { path: 'detalle-venta/:paymentId/:PayerID', component: DetalleVentaComponent },
   {path:'pago',component:PagoComponent},
 
   {path: 'categoria/:idCategoria/libros',component: CategoriaComponent},
