@@ -21,6 +21,7 @@ export class PagoComponent implements OnInit {
     private router: Router
     ) {}
 
+
   ngOnInit(): void {
      // Ahora usamos activatedRoute aquí
      this.activatedRoute.queryParams.subscribe((params: any) => { // Debes reemplazar 'any' por el tipo adecuado si es posible

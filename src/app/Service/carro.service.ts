@@ -2,7 +2,10 @@
   import { BehaviorSubject, Observable } from 'rxjs';
   import { ItemCarrito } from '../Interface/carrito';
   import { HttpClient } from '@angular/common/http';
-import { Datallecarrito } from '../Interface/detallecarrito';
+  import { Datallecarrito } from '../Interface/detallecarrito';
+  import { ExchangeRateService } from './exchange-rate.service';
+  import { switchMap } from 'rxjs/operators';
+
   @Injectable({
     providedIn: 'root'
   })
@@ -11,7 +14,8 @@ import { Datallecarrito } from '../Interface/detallecarrito';
     private _itemsCarrito: BehaviorSubject<ItemCarrito[]>;
 
     constructor(
-      private http: HttpClient
+      private http: HttpClient,
+      private exchangeRateService: ExchangeRateService
     ) {
       const storedItems = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
       this._itemsCarrito = new BehaviorSubject<ItemCarrito[]>(storedItems);
@@ -41,16 +45,26 @@ import { Datallecarrito } from '../Interface/detallecarrito';
       localStorage.setItem(this.storageKey, JSON.stringify(items));
     }
     enviarCarritoAlBackend(): Observable<any> {
-      const carritoActual = this._itemsCarrito.value;
-      const totalAmount = carritoActual.reduce((acc, item) => acc + (item.precioVenta * item.cantidad), 0);
-  
-      const detalleCarrito: Datallecarrito = {
-        Items: carritoActual,
-        TotalAmount: totalAmount
-      };
-  
-      return this.http.post('https://localhost:7143/api/Cart', detalleCarrito);
+      
+      return this.exchangeRateService.getExchangeRate().pipe(
+        switchMap(tasaDeCambio => {
+          const carritoActual = this._itemsCarrito.value.map(item => ({
+            ...item,
+            precioVenta: item.precioVenta * tasaDeCambio 
+          }));
+          const totalAmount = carritoActual.reduce((acc, item) => acc + (item.precioVenta * item.cantidad), 0);
+    
+          const detalleCarrito: Datallecarrito = {
+            Items: carritoActual,
+            TotalAmount: totalAmount 
+          };
+    
+          return this.http.post('https://localhost:7143/api/Cart', detalleCarrito);
+        })
+      );
     }
+
+
     confirmarPago(paymentId: string, payerId: string) {
       const url = 'https://localhost:7143/api/Paypal/execute-payment'; 
       const body = { PaymentId: paymentId, PayerID: payerId };
