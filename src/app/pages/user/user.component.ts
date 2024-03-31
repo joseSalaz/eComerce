@@ -24,18 +24,29 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkSession();
+     this.authService.sesion$.subscribe(userProfile => {
+      if (userProfile && userProfile.usu && userProfile.usu.length > 0) {
+        // Asumiendo que 'usu' es un arreglo y que los datos de perfil están en el primer elemento
+        const profileData = userProfile.usu[0];
+        this.vernombre = !!profileData.name; 
+        this.displayname = profileData.name || '';
+        this.email=profileData.email;
+        this.photoURL=profileData.picture
+        
+      } else {
+        this.vernombre = false;
+        this.displayname = '';
+      }
+    });
   }
 
 
   checkSession(): void {
-    let usuariotext:any = this.authService.getProfile(); 
-      console.log("Usuario:", usuariotext.name);
-      this.vernombre = true;
-      this.displayname = usuariotext.name;
-      this.photoURL = usuariotext.picture.replace(/^"(.*)"$/, '$1');
-      console.log("foto"+this.photoURL);
-      this.email=usuariotext.email;
-      console.log("Foto sin comillas"+this.photoURL);
+    const userProfile: any = this.authService.getProfile(); 
+    if (userProfile && userProfile['name']) {  
+      this.vernombre = true; 
+      this.displayname = userProfile.name; 
+    } 
   }
   prevpage():void{
     this.router.navigate(['/inicio']);

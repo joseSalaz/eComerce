@@ -17,7 +17,7 @@ export class AuthService {
   private sesionSource = new BehaviorSubject<any>(null);
 
   sesion$ = this.sesionSource.asObservable();
-
+  private verifyUserUrl = 'https://tuapi.com/api/usuario/verificar';
 
   constructor(
     private oauthService: OAuthService,
@@ -94,9 +94,13 @@ export class AuthService {
     }
     const usuario: UsuarioGoogle = {
       email: claims['email'],
-      EBB: claims['identificador de google'],
+      sub: claims['sub'],
     };
+    console.log('Datos del usuario que serán enviados al backend:', usuario);
     return this.http.post<UsuarioGoogle>(this.perfilUrl, usuario);
+  }
+  verificarUsuario(usuario: UsuarioGoogle): Observable<any> {
+    return this.http.post(this.verifyUserUrl, usuario);
   }
 
 }

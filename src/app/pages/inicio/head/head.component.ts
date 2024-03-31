@@ -7,6 +7,7 @@ import { CarroService } from '../../../Service/carro.service';
 import { CategoriaService } from '../../../Service/categoria.service';
 import { Categorium } from '../../../Interface/categorium';
 import { ItemCarrito } from '../../../Interface/carrito';
+import { UsuarioGoogle } from '../../../Interface/usuario';
 
 @Component({
   selector: 'app-head',
@@ -42,12 +43,31 @@ export class HeadComponent implements OnInit {
         const profileData = userProfile.usu[0];
         this.vernombre = !!profileData.name; 
         this.displayname = profileData.name || '';
+        this.registrarOVerificarUsuario(profileData);
       } else {
         this.vernombre = false;
         this.displayname = '';
       }
     });
     
+  }
+  registrarOVerificarUsuario(profileData:any) {
+    // Creas un objeto con los datos necesarios para el registro
+    const usuarioParaRegistrar: UsuarioGoogle = {
+      email: profileData.email,
+      sub: profileData.sub,
+      // y cualquier otro dato que necesites enviar para el registro
+    };
+  
+    this.authService.verificarUsuario(usuarioParaRegistrar).subscribe(
+      (usuarioRegistrado:any) => {
+        localStorage.setItem('usuarioData', JSON.stringify(usuarioRegistrado));
+      },
+      (error:any) => {
+        // Manejo del error
+        console.error('Hubo un error al registrar o verificar al usuario', error);
+      }
+    );
   }
   
   obtenerCategorias(): void {
@@ -63,12 +83,6 @@ export class HeadComponent implements OnInit {
   
 checkSession(): void {
   const userProfile: any = this.authService.getProfile(); 
-  if (userProfile && userProfile['name']) {  
-    this.vernombre = true; 
-    this.displayname = userProfile.name; 
-  } else {
-    this.vernombre = false; 
-  }
 }
 
 @HostListener('document:click', ['$event'])
