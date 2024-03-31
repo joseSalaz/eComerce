@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from '../../../Service/auth.service';
 import { Router } from '@angular/router';
 import { sesioncosntans } from '../../../constans/sesion.constans';
@@ -19,6 +19,9 @@ export class HeadComponent implements OnInit {
   mostrarCarrito = false;
   totalItems: number = 0;
   categorias: Categorium[] = [];
+  isMenuVisible: boolean = false;
+
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -27,13 +30,26 @@ export class HeadComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.checkSession();
     this.totalItems = this.carroService.obtenerCantidadProductos();
     this.carroService.itemsCarrito.subscribe((items: ItemCarrito[]) => {
       this.totalItems = items.reduce((acc, item) => acc + item.cantidad, 0);
-      this.obtenerCategorias();
+      this.obtenerCategorias(); // Asegúrate de que este método no dependa de `items`
     });
+  
+    this.authService.sesion$.subscribe(userProfile => {
+      if (userProfile && userProfile.usu && userProfile.usu.length > 0) {
+        // Asumiendo que 'usu' es un arreglo y que los datos de perfil están en el primer elemento
+        const profileData = userProfile.usu[0];
+        this.vernombre = !!profileData.name; 
+        this.displayname = profileData.name || '';
+      } else {
+        this.vernombre = false;
+        this.displayname = '';
+      }
+    });
+    
   }
+  
   obtenerCategorias(): void {
     this.categoriaService.getList().subscribe(
       categorias => {
@@ -47,41 +63,41 @@ export class HeadComponent implements OnInit {
   
 checkSession(): void {
   const userProfile: any = this.authService.getProfile(); 
-  if (userProfile && userProfile['name']) { 
-    console.log(userProfile.name); 
+  if (userProfile && userProfile['name']) {  
     this.vernombre = true; 
     this.displayname = userProfile.name; 
   } else {
     this.vernombre = false; 
   }
-  console.log(this.authService.getProfile());
+}
+
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: Event): void {
+  this.isMenuVisible = false;
+}
+
+toggleMenu(event: MouseEvent): void {
+  // Evita que el evento de clic se propague a elementos superiores
+  event.stopPropagation();
   
+  // Alterna la visibilidad del menú desplegable
+  this.isMenuVisible = !this.isMenuVisible;
 }
 
 
-  onSelectOption(event: any): void {
-    const option = event?.target?.value; 
-    if (option !== null && option !== undefined) {
-      if (option === 'miperfil') {
-        // Redirigir a la página de perfil
-        this.router.navigate(['/user']);
-      } else if (option === 'cerrarSesion') {
-        // Cerrar sesión
-        this.onClick();
-      }
-    }
+onSelectOption(option: string): void {
+  this.isMenuVisible = false; // Cierra el menú al seleccionar una opción
+  if (option === 'miperfil') {
+    this.router.navigate(['/user']);
+  } else if (option === 'cerrarSesion') {
+    this.authService.logout();
+    this.router.navigate(['/inicio']);
   }
+}
 
 
   toggleCarrito() {
     this.mostrarCarrito = !this.mostrarCarrito;
-  }
-
-  showData() {
-    // let use:any=this.authService.getProfile();
-    // console.log(use);
-    
-    // console.log(use.name);
   }
 
   onClick() {

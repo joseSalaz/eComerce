@@ -13,6 +13,7 @@ import { sesioncosntans } from '../../../constans/sesion.constans';
 })
 export class LogInComponent {
   constructor(private authService: AuthService) { }
+
 login() {
   this.authService.login();
 }

@@ -28,7 +28,6 @@ export class LibroService {
   }
   private fetchLibros(): void {
     this.http.get<Libro[]>(`${this.apiUrl}`).subscribe(libros => {
-      console.log('Libros obtenidos del servidor:', libros);
       this.librosSubject.next(libros);
     });
   }

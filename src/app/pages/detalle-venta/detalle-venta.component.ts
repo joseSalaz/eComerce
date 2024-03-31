@@ -53,19 +53,25 @@ export class DetalleVentaComponent {
   confirmarPago() {
     if (this.paymentId && this.payerId) {
       this.carroService.confirmarPago(this.paymentId, this.payerId).subscribe({
-        next: (response:any) => {
-          // Aquí podrías redirigir al usuario a una página de éxito o mostrar un mensaje
+        next: (response: any) => {
+          // Pago confirmado con éxito
           console.log('Pago confirmado con éxito:', response);
-          // this.router.navigate(['/exito']); // Redirige a una ruta de éxito en tu app
+          
+          // Redirige al usuario a una página de éxito
+          this.router.navigate(['/exito']);
         },
-        error: (error:any) => {
-          // Aquí manejas los errores, como mostrar un mensaje al usuario
+        error: (error: any) => {
+          // Manejo de errores
           console.error('Error al confirmar el pago:', error);
+          // Aquí puedes decidir no limpiar el carro y, posiblemente, mostrar un mensaje de error o
+          // redirigir a una página de error.
+          this.router.navigate(['/error']);
         }
       });
     } else {
       console.error('Payment ID o Payer ID no están disponibles.');
     }
   }
+  
 
 }

@@ -1,10 +1,10 @@
   import { Injectable } from '@angular/core';
-  import { BehaviorSubject, Observable } from 'rxjs';
+  import { BehaviorSubject, Observable, throwError } from 'rxjs';
   import { ItemCarrito } from '../Interface/carrito';
   import { HttpClient } from '@angular/common/http';
   import { Datallecarrito } from '../Interface/detallecarrito';
   import { ExchangeRateService } from './exchange-rate.service';
-  import { switchMap } from 'rxjs/operators';
+  import { switchMap, tap } from 'rxjs/operators';
 
   @Injectable({
     providedIn: 'root'
@@ -68,7 +68,10 @@
     confirmarPago(paymentId: string, payerId: string): Observable<any> {
       // Recuperar el carrito del almacenamiento local
       const carritoActual = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
-      const totalAmount = carritoActual.reduce((acc:any, item:any) => acc + (item.precioVenta * item.cantidad), 0);
+      if (carritoActual.length === 0) {
+        return throwError(new Error('El carrito de compras está vacío.'));
+      }
+      const totalAmount = carritoActual.reduce((acc: any, item: any) => acc + (item.precioVenta * item.cantidad), 0);
     
       // Preparar el cuerpo de la solicitud incluyendo el ID de pago, ID del pagador y el carrito
       const body = {
@@ -80,11 +83,28 @@
         }
       };
     
-      console.log('Cuerpo de la solicitud para confirmar el pago:', body);
-    
       // Hacer la petición POST al backend para ejecutar el pago
-      return this.http.post(this.executePaymentUrl, body);
+      return this.http.post(this.executePaymentUrl, body).pipe(
+        tap({
+          next: (response: any) => {
+            // Si el pago es exitoso, limpiar el carro de compras.
+            this.limpiarCarroCompleto();
+          },
+          error: (error: any) => {
+            // Manejar errores específicos del pago si es necesario.
+            console.error('Error durante la confirmación del pago:', error);
+          }
+        })
+      );
     }
     
-  
+      limpiarCarroCompleto(): void {
+    // Limpiar el BehaviorSubject
+    this._itemsCarrito.next([]);
+
+    // Limpiar el localStorage
+    localStorage.removeItem(this.storageKey);
+  }
+
+    
   }
