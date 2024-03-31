@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
-
+import { UsuarioGoogle } from '../Interface/usuario';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly perfilUrl = '/api/usuario/perfil';
 
-  constructor(private oauthService: OAuthService) {
+  constructor(
+    private oauthService: OAuthService,
+    private http: HttpClient,) 
+    {
     this.initLogin();
   }
 
@@ -25,8 +31,9 @@ export class AuthService {
         this.oauthService.loadDiscoveryDocumentAndTryLogin();
     }
 }
-
-
+public get estaAutenticado(): boolean {
+  return this.oauthService.hasValidAccessToken();
+}
   login() {
     this.oauthService.initLoginFlow();
   }
@@ -38,7 +45,18 @@ export class AuthService {
   getProfile() {
     return this.oauthService.getIdentityClaims();
   }
-
-  
-  
+  public obtenerPerfilUsuario(): Observable<UsuarioGoogle> {
+    const claims = this.oauthService.getIdentityClaims();
+    if (!claims) {
+      throw new Error('No hay claims de identidad disponibles');
+    }
+    const usuario: UsuarioGoogle = {
+      email: claims['email'],
+      EBB: claims['identificador de google'],
+    };
+    return this.http.post<UsuarioGoogle>(this.perfilUrl, usuario);
+  }
 }
+  
+  
+
