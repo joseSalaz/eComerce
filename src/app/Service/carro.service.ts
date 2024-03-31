@@ -4,7 +4,12 @@
   import { HttpClient } from '@angular/common/http';
   import { Datallecarrito } from '../Interface/detallecarrito';
   import { ExchangeRateService } from './exchange-rate.service';
+<<<<<<< HEAD
   import { switchMap, tap } from 'rxjs/operators';
+=======
+  import { switchMap } from 'rxjs/operators';
+  import { tap } from 'rxjs/operators';
+>>>>>>> acaf4dcf8bca8d4e89b34c7a9a1eb9c6dd2c04fd
 
   @Injectable({
     providedIn: 'root'
@@ -85,6 +90,7 @@
     
       // Hacer la petición POST al backend para ejecutar el pago
       return this.http.post(this.executePaymentUrl, body).pipe(
+<<<<<<< HEAD
         tap({
           next: (response: any) => {
             // Si el pago es exitoso, limpiar el carro de compras.
@@ -107,4 +113,19 @@
   }
 
     
+=======
+        tap(response => {
+          // Si el pago se confirma exitosamente, limpia el carrito
+          this.limpiarCarrito();
+        })
+      ); 
+    }
+    private limpiarCarrito(): void {
+      // Limpia el carrito del almacenamiento local
+      localStorage.removeItem(this.storageKey);
+      // Actualiza el BehaviorSubject con un carrito vacío
+      this._itemsCarrito.next([]);
+    }
+  
+>>>>>>> acaf4dcf8bca8d4e89b34c7a9a1eb9c6dd2c04fd
   }
