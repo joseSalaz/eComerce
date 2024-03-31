@@ -24,18 +24,21 @@
                         </a>
                     </div>
                 </li>
+                
                 <ng-template #templateRegister>
                     <li class="nav-item" *ngIf="vernombre" style="height: 40px;">
-                        <div class="d-flex align-items-center">
-                            <select (change)="onSelectOption($event)" class="form-select form-select-sm">
-                                <option>{{ displayname }}</option>
-                                <option value="miperfil">Mi perfil</option>
-                                <option value="cerrarSesion">Cerrar sesión</option>
-                            </select>
+                      <div class="d-flex align-items-center">
+                        <span (click)="toggleMenu($event)" class="form-select form-select-sm cursor-pointer">
+                          {{ displayname }}
+                        </span>
+                        <div *ngIf="isMenuVisible" class="dropdown-menu">
+                          <button class="dropdown-item" (click)="onSelectOption('miperfil')">Mi perfil</button>
+                          <button class="dropdown-item" (click)="onSelectOption('cerrarSesion')">Cerrar sesión</button>
                         </div>
+                      </div>
                     </li>
-                </ng-template>
-                <button (click)="onClick()">salir</button>
+                  </ng-template>
+                  
                 <li class="nav-item">
                     <!-- Utiliza *ngIf para mostrar u ocultar el componente del carrito -->
                     <div *ngIf="mostrarCarrito">
@@ -67,4 +70,4 @@
 </nav>
 
 
-<button (click)="showData()"></button>
+

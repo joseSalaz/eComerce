@@ -16,6 +16,7 @@ import { CategoriaComponent } from './pages/categoria/categoria.component';
 
 
 import { PagoGuard } from './Guard/pago.guard';
+import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas.component';
 
 
 const routes: Routes = [
@@ -34,9 +35,7 @@ const routes: Routes = [
 
   { path: 'pago', component: PagoComponent, canActivate: [PagoGuard] },
 
-  { path: 'payment-redirect', component: PagoComponent },
-  { path: 'payment-success', component: PagoComponent },
-  { path: 'payment-error', component: PagoComponent },
+  {path:'respuesta',component:RespuestasComponent},
 
   {
     path: 'auth',

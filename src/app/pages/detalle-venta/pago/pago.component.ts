@@ -31,19 +31,17 @@ export class PagoComponent implements OnInit {
       if (paymentId && payerId) {
         // El usuario ha sido redirigido desde PayPal con los parámetros necesarios
         this.pago.executePayment(paymentId, payerId).subscribe({
-          next: (response) => {
-            // El pago se ejecutó correctamente, procede según corresponda
-            this.router.navigate(['/pago']); // Redirige a la página de éxito
-          },
           error: (error) => {
             // Maneja el error
             console.error(error);
-            this.router.navigate(['/error']); // Redirige a la página de error
+            this.router.navigate(['']); // Redirige a la página de error
           }
         });
       }
     });
   }
+
+
 
   toggleOpcionesEnvio(): void {
     this.mostrarOpcionesEnvio = !this.mostrarOpcionesEnvio;
@@ -57,6 +55,7 @@ export class PagoComponent implements OnInit {
         // Asumiendo que el backend envía la URL de aprobación en la respuesta.
         const approvalUrl = response.approvalUrl; // Asegúrate de que la propiedad coincida con lo que envía tu backend
         window.location.href = approvalUrl; // Redirige al usuario a PayPal
+        // this.carroService.limpiarCarro();
       },
       error: (error) => {
         // Aquí manejas los errores, como mostrar un mensaje al usuario

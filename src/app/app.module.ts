@@ -25,6 +25,7 @@ import { CategoriaComponent } from './pages/categoria/categoria.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component';
 import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
+import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas.component';
 
 
 
@@ -46,7 +47,8 @@ import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
     DetalleVentaComponent,
 
 
-    PagoComponent,   
+    PagoComponent,
+        RespuestasComponent,   
   ],
   imports: [
     BrowserModule,
