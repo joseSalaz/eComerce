@@ -12,7 +12,7 @@
   export class CarroService {
     private storageKey = 'carroItems';
     private _itemsCarrito: BehaviorSubject<ItemCarrito[]>;
-
+    private executePaymentUrl = 'https://localhost:7143/api/Paypal/execute-payment';
     constructor(
       private http: HttpClient,
       private exchangeRateService: ExchangeRateService
@@ -65,12 +65,26 @@
     }
 
 
-    confirmarPago(paymentId: string, payerId: string) {
-      const url = 'https://localhost:7143/api/Paypal/execute-payment'; 
-      const body = { PaymentId: paymentId, PayerID: payerId };
-      console.log(body);
-      
-      return this.http.post(url, body);
+    confirmarPago(paymentId: string, payerId: string): Observable<any> {
+      // Recuperar el carrito del almacenamiento local
+      const carritoActual = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+      const totalAmount = carritoActual.reduce((acc:any, item:any) => acc + (item.precioVenta * item.cantidad), 0);
+    
+      // Preparar el cuerpo de la solicitud incluyendo el ID de pago, ID del pagador y el carrito
+      const body = {
+        PaymentId: paymentId,
+        PayerID: payerId,
+        Carrito: {
+          Items: carritoActual,
+          TotalAmount: totalAmount
+        }
+      };
+    
+      console.log('Cuerpo de la solicitud para confirmar el pago:', body);
+    
+      // Hacer la petición POST al backend para ejecutar el pago
+      return this.http.post(this.executePaymentUrl, body);
     }
+    
   
   }

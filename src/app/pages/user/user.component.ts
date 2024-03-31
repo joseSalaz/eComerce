@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { sesioncosntans } from '../../constans/sesion.constans';
 import { log } from 'console';
 import { Router } from '@angular/router';
+import { AuthService } from '../../Service/auth.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -12,27 +13,29 @@ export class UserComponent implements OnInit {
   displayname: string = "";
   photoURL: string = "";
   email:string="";
+  currentSection: 'profile' | 'addirec' | 'pedidos'|'misfav'= 'profile';
   constructor(
-    private router:Router
+    private router:Router,
+    private authService:AuthService
   ) {}
+  mostrarSeccion(seccion: 'profile' | 'addirec' | 'pedidos'|'misfav'): void {
+    this.currentSection = seccion;
+  }
 
   ngOnInit(): void {
     this.checkSession();
   }
 
+
   checkSession(): void {
-    let usuariotext = sessionStorage.getItem(sesioncosntans.user);
-    if (usuariotext) {
-      let objusuario = JSON.parse(usuariotext);
-      console.log("Usuario:", objusuario);
+    let usuariotext:any = this.authService.getProfile(); 
+      console.log("Usuario:", usuariotext.name);
       this.vernombre = true;
-      this.displayname = objusuario.displayName;
-      this.photoURL = objusuario.photoURL.replace(/^"(.*)"$/, '$1');
-      this.email=objusuario.email;
+      this.displayname = usuariotext.name;
+      this.photoURL = usuariotext.picture.replace(/^"(.*)"$/, '$1');
+      console.log("foto"+this.photoURL);
+      this.email=usuariotext.email;
       console.log("Foto sin comillas"+this.photoURL);
-    } else {
-      this.vernombre = false;
-    }
   }
   prevpage():void{
     this.router.navigate(['/inicio']);

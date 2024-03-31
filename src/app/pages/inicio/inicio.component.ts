@@ -13,11 +13,6 @@ constructor(
 ){
   
 }
-
-
   ngOnInit(): void {
-
-    
-  }
-  
+  } 
 }

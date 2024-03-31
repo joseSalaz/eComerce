@@ -1,5 +1,5 @@
 export const sesioncosntans = {
-    name :"name",
+    name :"",
     user:"",
-    
+    usu:[]
 }

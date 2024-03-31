@@ -47,11 +47,10 @@ export class HeadComponent implements OnInit {
   
 checkSession(): void {
   const userProfile: any = this.authService.getProfile(); 
-
   if (userProfile && userProfile['name']) { 
-    console.log(userProfile['name']); 
+    console.log(userProfile.name); 
     this.vernombre = true; 
-    this.displayname = userProfile['name']; 
+    this.displayname = userProfile.name; 
   } else {
     this.vernombre = false; 
   }
@@ -79,8 +78,10 @@ checkSession(): void {
   }
 
   showData() {
-    const data = JSON.stringify(this.authService.getProfile())
-    console.log(data);
+    // let use:any=this.authService.getProfile();
+    // console.log(use);
+    
+    // console.log(use.name);
   }
 
   onClick() {
