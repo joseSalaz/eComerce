@@ -5,6 +5,7 @@
   import { Datallecarrito } from '../Interface/detallecarrito';
   import { ExchangeRateService } from './exchange-rate.service';
   import { switchMap } from 'rxjs/operators';
+  import { tap } from 'rxjs/operators';
 
   @Injectable({
     providedIn: 'root'
@@ -83,8 +84,18 @@
       console.log('Cuerpo de la solicitud para confirmar el pago:', body);
     
       // Hacer la petición POST al backend para ejecutar el pago
-      return this.http.post(this.executePaymentUrl, body);
+      return this.http.post(this.executePaymentUrl, body).pipe(
+        tap(response => {
+          // Si el pago se confirma exitosamente, limpia el carrito
+          this.limpiarCarrito();
+        })
+      ); 
     }
-    
+    private limpiarCarrito(): void {
+      // Limpia el carrito del almacenamiento local
+      localStorage.removeItem(this.storageKey);
+      // Actualiza el BehaviorSubject con un carrito vacío
+      this._itemsCarrito.next([]);
+    }
   
   }
