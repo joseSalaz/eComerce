@@ -8,6 +8,7 @@ import { CategoriaService } from '../../../Service/categoria.service';
 import { Categorium } from '../../../Interface/categorium';
 import { ItemCarrito } from '../../../Interface/carrito';
 import { UsuarioGoogle } from '../../../Interface/usuario';
+import { UsuarioRegistradoResponse } from '../../../Interface/usuarioRegistradoResponse';
 
 @Component({
   selector: 'app-head',
@@ -52,23 +53,21 @@ export class HeadComponent implements OnInit {
     
   }
   registrarOVerificarUsuario(profileData:any) {
-    // Creas un objeto con los datos necesarios para el registro
+    // Asegúrate de que estás accediendo correctamente a la propiedad 'email' y 'sub'
     const usuarioParaRegistrar: UsuarioGoogle = {
-      email: profileData.email,
-      sub: profileData.sub,
-      // y cualquier otro dato que necesites enviar para el registro
+        correo: profileData.email,  // Asegúrate de que 'email' es la propiedad correcta
+        sub: profileData.sub,
     };
-  
+
     this.authService.verificarUsuario(usuarioParaRegistrar).subscribe(
-      (usuarioRegistrado:any) => {
-        localStorage.setItem('usuarioData', JSON.stringify(usuarioRegistrado));
-      },
-      (error:any) => {
-        // Manejo del error
-        console.error('Hubo un error al registrar o verificar al usuario', error);
-      }
+        (usuarioRegistrado: UsuarioRegistradoResponse) => {
+            localStorage.setItem('usuarioData', JSON.stringify(usuarioRegistrado));
+        },
+        (error:any) => {
+            console.error('Hubo un error al registrar o verificar al usuario', error);
+        }
     );
-  }
+}
   
   obtenerCategorias(): void {
     this.categoriaService.getList().subscribe(

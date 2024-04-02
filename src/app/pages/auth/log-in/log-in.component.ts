@@ -6,13 +6,17 @@ import { Router } from '@angular/router';
 import { Session } from 'inspector';
 import { sesioncosntans } from '../../../constans/sesion.constans';
 
+
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.scss'
 })
 export class LogInComponent {
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+  ){}
+  
 
 login() {
   this.authService.login();

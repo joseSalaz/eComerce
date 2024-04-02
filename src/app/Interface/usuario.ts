@@ -1,5 +1,5 @@
 export interface UsuarioGoogle {
-    email: string ; 
+    correo: string ; 
     sub: string;
   }
   

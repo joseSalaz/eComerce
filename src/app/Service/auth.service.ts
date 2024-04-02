@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -12,12 +13,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
 
-  private readonly perfilUrl = '/api/usuario/perfil';
+  private endPoint:string = environment.endPoint; 
+  private apiUrl:string = this.endPoint + "Persona";
 
   private sesionSource = new BehaviorSubject<any>(null);
 
   sesion$ = this.sesionSource.asObservable();
-  private verifyUserUrl = 'https://tuapi.com/api/usuario/verificar';
 
   constructor(
     private oauthService: OAuthService,
@@ -93,14 +94,14 @@ export class AuthService {
       throw new Error('No hay claims de identidad disponibles');
     }
     const usuario: UsuarioGoogle = {
-      email: claims['email'],
+      correo: claims['email'],
       sub: claims['sub'],
     };
     console.log('Datos del usuario que serán enviados al backend:', usuario);
-    return this.http.post<UsuarioGoogle>(this.perfilUrl, usuario);
+    return this.http.post<UsuarioGoogle>(`${this.apiUrl}/verificar`, usuario);
   }
   verificarUsuario(usuario: UsuarioGoogle): Observable<any> {
-    return this.http.post(this.verifyUserUrl, usuario);
+    return this.http.post(`${this.apiUrl}/verificar`, usuario);
   }
 
 }
