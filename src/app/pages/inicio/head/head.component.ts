@@ -22,6 +22,7 @@ export class HeadComponent implements OnInit {
   totalItems: number = 0;
   categorias: Categorium[] = [];
   isMenuVisible: boolean = false;
+  isProcessing: boolean=false;
 
 
   constructor(
@@ -52,21 +53,25 @@ export class HeadComponent implements OnInit {
     });
     
   }
-  registrarOVerificarUsuario(profileData:any) {
-    // Asegúrate de que estás accediendo correctamente a la propiedad 'email' y 'sub'
-    const usuarioParaRegistrar: UsuarioGoogle = {
-        correo: profileData.email,  // Asegúrate de que 'email' es la propiedad correcta
+registrarOVerificarUsuario(profileData:any) {
+    if (this.isProcessing) return; // Previene ejecuciones duplicadas
+
+    this.isProcessing = true; // Estado de carga activo
+    const usuarioParaRegistrar = {
+        correo: profileData.email,
         sub: profileData.sub,
     };
 
-    this.authService.verificarUsuario(usuarioParaRegistrar).subscribe(
-        (usuarioRegistrado: UsuarioRegistradoResponse) => {
+    this.authService.verificarUsuario(usuarioParaRegistrar).subscribe({
+        next: (usuarioRegistrado) => {
             localStorage.setItem('usuarioData', JSON.stringify(usuarioRegistrado));
+            this.isProcessing = false; // Restablece el estado de carga
         },
-        (error:any) => {
+        error: (error) => {
             console.error('Hubo un error al registrar o verificar al usuario', error);
+            this.isProcessing = false; // Restablece el estado de carga
         }
-    );
+    });
 }
   
   obtenerCategorias(): void {
