@@ -14,7 +14,9 @@ export class LibroService {
   private librosSubject: BehaviorSubject<Libro[]> = new BehaviorSubject<Libro[]>([]);
   public libros$: Observable<Libro[]> = this.librosSubject.asObservable();
 
-  constructor(private http: HttpClient) { 
+  constructor(
+    private http: HttpClient
+    ) { 
     this.fetchLibros();
   }
 
@@ -61,4 +63,10 @@ export class LibroService {
     return this.http.get<number>(`${this.apiUrl}/stock/${libroId}`)
   }
   
+  getLibrosAutoComplete(titulo: string): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.apiUrl}/filtroComplete?titulo=${encodeURIComponent(titulo)}`)
+  }
+
+
+
 }

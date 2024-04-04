@@ -1,13 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container px-4 px-lg-5">
         <!-- Texto en la esquina izquierda -->
-        <a class="navbar-brand position-absolute top-0 start-0" style="margin-top: 5px; padding-top: 0; margin-left: 150px; margin-right: 30px;">
+        <a class="navbar-brand position-absolute top-0 start-0" style="margin-top: 15px; padding-top: 0; margin-left: 150px; margin-right: 30px;">
             <span style="color: blue; text-shadow: 0 0 10px rgba(0, 255, 0, 0.8); font-size: 24px; font-weight: bold;" routerLink="/inicio">Libreria Saber</span>
         </a>
         <!-- Campo de búsqueda en el centro -->
-        <form class="d-flex flex-grow-1 justify-content-center">
-            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-        </form>
+        <app-res-busquedad></app-res-busquedad>
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
