@@ -26,6 +26,8 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component';
 import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
 import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas.component';
+import { ResBusquedadComponent } from './pages/inicio/head/res-busquedad/res-busquedad.component';
+
 
 
 
@@ -45,10 +47,9 @@ import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas
     UserComponent,
     CategoriaComponent,
     DetalleVentaComponent,
-
-
     PagoComponent,
-        RespuestasComponent,   
+    RespuestasComponent,   
+    ResBusquedadComponent,
   ],
   imports: [
     BrowserModule,

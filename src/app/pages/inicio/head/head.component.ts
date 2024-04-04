@@ -25,11 +25,12 @@ export class HeadComponent implements OnInit {
   isProcessing: boolean=false;
 
 
+
   constructor(
     private authService: AuthService,
     private router: Router,
     private carroService:CarroService,
-    private categoriaService:CategoriaService
+    private categoriaService:CategoriaService,
   ) {}
 
   ngOnInit(): void {
@@ -125,5 +126,6 @@ onSelectOption(option: string): void {
   redireccionarALibros(idCategoria: number) {
     this.router.navigate(['/categoria', idCategoria, 'libros']);
 }
+
 }
 
