@@ -14,7 +14,7 @@
           <img src="{{ item.libro.imagen }}" alt="" style="max-width: 100%; max-height: 100px;">
         </span>
         <span>{{ item.libro.titulo }}</span>
-        <span>{{ item.cantidad }} x {{ item.precioVenta | currency:'USD':true }}</span>
+        <span>{{ item.cantidad }} x {{ item.precioVenta | currency:'S/':true }}</span>
         <button class="eliminar-item" (click)="delete(indice)">
           <i class="fas fa-times"></i>
         </button>
