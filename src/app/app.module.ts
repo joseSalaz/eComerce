@@ -28,6 +28,8 @@ import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
 import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas.component';
 import { ResBusquedadComponent } from './pages/inicio/head/res-busquedad/res-busquedad.component';
 import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategoria.component';
+import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.component';
+
 
 
 
@@ -51,7 +53,7 @@ import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategor
     DetalleVentaComponent,
     PagoComponent,
     RespuestasComponent,   
-    ResBusquedadComponent, SubcategoriaComponent, 
+    ResBusquedadComponent, SubcategoriaComponent, FiltradorComponent 
   ],
   imports: [
     BrowserModule,

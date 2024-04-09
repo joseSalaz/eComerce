@@ -125,7 +125,7 @@ onSelectOption(option: string): void {
     this.authService.logout();
     this.router.navigate(['/inicio']);
   }
-  redireccionarALibros(idCategoria: number) {
+redireccionarALibros(idCategoria: number) {
     this.router.navigate(['/categoria', idCategoria, 'libros']);
 }
 cargarSubcategorias(idCategoria: number): void {
@@ -141,8 +141,6 @@ cargarSubcategorias(idCategoria: number): void {
     console.error('Error al cargar subcategorías', error);
   });
 }
-
-
   redireccionarALibrosSubcategoria(idSubcategoria: number) {
     this.router.navigate(['/subcategoria', idSubcategoria, 'libros']);
   }

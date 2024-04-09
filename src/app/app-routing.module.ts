@@ -13,6 +13,7 @@ import { CategoriaComponent } from './pages/categoria/categoria.component';
 import { PagoGuard } from './Guard/pago.guard';
 import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas.component';
 import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategoria.component';
+import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.component';
 
 
 const routes: Routes = [
@@ -28,7 +29,6 @@ const routes: Routes = [
   {path:'subcategoria/:idSubCategoria/libros',component:SubcategoriaComponent},
   { path: 'pago', component: PagoComponent, canActivate: [PagoGuard] },
   {path:'respuesta',component:RespuestasComponent},
-
   {
     path: 'auth',
     children: [
