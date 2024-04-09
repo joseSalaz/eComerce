@@ -27,6 +27,8 @@ import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.compo
 import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
 import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas.component';
 import { ResBusquedadComponent } from './pages/inicio/head/res-busquedad/res-busquedad.component';
+import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategoria.component';
+
 
 
 
@@ -49,7 +51,7 @@ import { ResBusquedadComponent } from './pages/inicio/head/res-busquedad/res-bus
     DetalleVentaComponent,
     PagoComponent,
     RespuestasComponent,   
-    ResBusquedadComponent,
+    ResBusquedadComponent, SubcategoriaComponent, 
   ],
   imports: [
     BrowserModule,

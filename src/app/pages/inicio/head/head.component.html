@@ -57,16 +57,26 @@
     <div class="circle"></div>
     <div class="line"></div>
 </nav>
-
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <!-- ...otro código... -->
     <div class="container-fluid">
         <div class="navbar-nav">
-            <button class="nav-link" *ngFor="let categoria of categorias" (click)="redireccionarALibros(categoria.idCategoria)">
-                {{ categoria.categoria1 }}
-            </button>
+            <div *ngFor="let categoria of categorias" class="nav-item dropdown"
+                 (mouseenter)="cargarSubcategorias(categoria.idCategoria)"
+                 (mouseleave)="hoveredCategoriaId=null">
+                <button class="nav-link dropdown-toggle"
+                (click)="redireccionarALibros(categoria.idCategoria)"
+                        aria-expanded="false">
+                    {{ categoria.categoria1 }}
+                </button>
+                <div class="dropdown-menu" *ngIf="categoria.idCategoria===hoveredCategoriaId">
+                    <a *ngFor="let sub of categoria.subcategorias"
+                       class="dropdown-item"
+                       (click)="redireccionarALibrosSubcategoria(sub.id)">
+                        {{ sub.descripcion }}
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
-
-
-

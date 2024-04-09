@@ -1,5 +1,5 @@
 export interface SubCategoria{
-    Id: number;
-    Descripcion: string | null;
+    id: number;
+    descripcion: string ;
     IdCategoria: number;
 }

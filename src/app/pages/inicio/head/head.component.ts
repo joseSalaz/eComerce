@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from '../../../Service/auth.service';
-import { Router } from '@angular/router';
+import { NavigationError, Router } from '@angular/router';
 import { sesioncosntans } from '../../../constans/sesion.constans';
 import { Console, error, log } from 'console';
 import { CarroService } from '../../../Service/carro.service';
@@ -9,6 +9,7 @@ import { Categorium } from '../../../Interface/categorium';
 import { ItemCarrito } from '../../../Interface/carrito';
 import { UsuarioGoogle } from '../../../Interface/usuario';
 import { UsuarioRegistradoResponse } from '../../../Interface/usuarioRegistradoResponse';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-head',
@@ -23,14 +24,14 @@ export class HeadComponent implements OnInit {
   categorias: Categorium[] = [];
   isMenuVisible: boolean = false;
   isProcessing: boolean=false;
-
-
-
+  hoveredCategoriaId: number | null = null;
+  
   constructor(
     private authService: AuthService,
     private router: Router,
     private carroService:CarroService,
     private categoriaService:CategoriaService,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +39,7 @@ export class HeadComponent implements OnInit {
     this.carroService.itemsCarrito.subscribe((items: ItemCarrito[]) => {
       this.totalItems = items.reduce((acc, item) => acc + item.cantidad, 0);
       this.obtenerCategorias(); // Asegúrate de que este método no dependa de `items`
+      
     });
   
     this.authService.sesion$.subscribe(userProfile => {
@@ -126,6 +128,31 @@ onSelectOption(option: string): void {
   redireccionarALibros(idCategoria: number) {
     this.router.navigate(['/categoria', idCategoria, 'libros']);
 }
-
+cargarSubcategorias(idCategoria: number): void {
+  this.categoriaService.getSubCategoriasPorId(idCategoria).subscribe(subcategorias => {
+    const categoriaIndex = this.categorias.findIndex(c => c.idCategoria === idCategoria);
+    if (categoriaIndex !== -1) {
+      this.categorias[categoriaIndex].subcategorias = subcategorias;
+      this.categorias = [...this.categorias];
+      this.hoveredCategoriaId = idCategoria;
+      this.cd.detectChanges(); 
+    }
+  }, (error: any) => {
+    console.error('Error al cargar subcategorías', error);
+  });
 }
+
+
+  redireccionarALibrosSubcategoria(idSubcategoria: number) {
+    this.router.navigate(['/subcategoria', idSubcategoria, 'libros']);
+  }
+  mostrarSubcategorias(categoriaId: number): boolean {
+    return categoriaId === this.hoveredCategoriaId;
+  }
+  esconderSubcategorias(): void {
+    this.hoveredCategoriaId = null;
+}
+}
+
+
 

@@ -8,15 +8,11 @@ import { DetalleProductoComponent } from './pages/detalle-producto/detalle-produ
 import { AutorComponent } from './autor/autor.component';
 import { UserComponent } from './pages/user/user.component';
 import { DetalleVentaComponent } from './pages/detalle-venta/detalle-venta.component'
-
 import { PagoComponent } from './pages/detalle-venta/pago/pago.component';
-
 import { CategoriaComponent } from './pages/categoria/categoria.component';
-
-
-
 import { PagoGuard } from './Guard/pago.guard';
 import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas.component';
+import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategoria.component';
 
 
 const routes: Routes = [
@@ -28,13 +24,9 @@ const routes: Routes = [
   {path:'detalle-venta',component:DetalleVentaComponent},
   { path: 'detalle-venta/:paymentId/:PayerID', component: DetalleVentaComponent },
   {path:'pago',component:PagoComponent},
-
   {path: 'categoria/:idCategoria/libros',component: CategoriaComponent},
-
-
-
+  {path:'subcategoria/:idSubCategoria/libros',component:SubcategoriaComponent},
   { path: 'pago', component: PagoComponent, canActivate: [PagoGuard] },
-
   {path:'respuesta',component:RespuestasComponent},
 
   {

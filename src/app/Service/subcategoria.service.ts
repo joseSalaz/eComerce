@@ -18,8 +18,8 @@ export class SubCategoriaService {
   getList(): Observable<SubCategoria[]> {
     return this.http.get<SubCategoria[]>(this.apiUrl);
   } 
-  getLibrosPorSubCategoriaId(IdCategoria: number): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${this.apiUrl}/${IdCategoria}/libros`);
+  getLibrosPorSubCategoriaId(IdSubCategoria: number): Observable<Libro[]> {
+    return this.http.get<Libro[]>(`${this.apiUrl}/librosbysubcategoria/${IdSubCategoria}`);
   }
   getSubCategoriaPorId(IdCategoria: number): Observable<SubCategoria> {
     const url = `${this.apiUrl}/${IdCategoria}`;
