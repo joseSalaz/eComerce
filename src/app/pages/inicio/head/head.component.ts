@@ -4,12 +4,11 @@ import { NavigationError, Router } from '@angular/router';
 import { sesioncosntans } from '../../../constans/sesion.constans';
 import { Console, error, log } from 'console';
 import { CarroService } from '../../../Service/carro.service';
-import { CategoriaService } from '../../../Service/categoria.service';
-import { Categorium } from '../../../Interface/categorium';
 import { ItemCarrito } from '../../../Interface/carrito';
 import { UsuarioGoogle } from '../../../Interface/usuario';
 import { UsuarioRegistradoResponse } from '../../../Interface/usuarioRegistradoResponse';
-import { Subscription } from 'rxjs';
+import { Persona} from '../../../Interface/persona';
+
 
 @Component({
   selector: 'app-head',
@@ -21,25 +20,19 @@ export class HeadComponent implements OnInit {
   displayname: string = "";
   mostrarCarrito = false;
   totalItems: number = 0;
-  categorias: Categorium[] = [];
   isMenuVisible: boolean = false;
   isProcessing: boolean=false;
-  hoveredCategoriaId: number | null = null;
   
   constructor(
     private authService: AuthService,
     private router: Router,
     private carroService:CarroService,
-    private categoriaService:CategoriaService,
-    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.totalItems = this.carroService.obtenerCantidadProductos();
     this.carroService.itemsCarrito.subscribe((items: ItemCarrito[]) => {
       this.totalItems = items.reduce((acc, item) => acc + item.cantidad, 0);
-      this.obtenerCategorias(); // Asegúrate de que este método no dependa de `items`
-      
     });
   
     this.authService.sesion$.subscribe(userProfile => {
@@ -66,8 +59,9 @@ registrarOVerificarUsuario(profileData:any) {
     };
 
     this.authService.verificarUsuario(usuarioParaRegistrar).subscribe({
-        next: (usuarioRegistrado) => {
+        next: (usuarioRegistrado:Persona) => {
             localStorage.setItem('usuarioData', JSON.stringify(usuarioRegistrado));
+            console.log('ID del usuario:', usuarioRegistrado.idPersona);
             this.isProcessing = false; // Restablece el estado de carga
         },
         error: (error) => {
@@ -77,16 +71,6 @@ registrarOVerificarUsuario(profileData:any) {
     });
 }
   
-  obtenerCategorias(): void {
-    this.categoriaService.getList().subscribe(
-      categorias => {
-        this.categorias = categorias;
-      },
-      error => {
-        console.error('Error al obtener las categorías:', error);
-      }
-    );
-  }
   
 checkSession(): void {
   const userProfile: any = this.authService.getProfile(); 
@@ -125,31 +109,7 @@ onSelectOption(option: string): void {
     this.authService.logout();
     this.router.navigate(['/inicio']);
   }
-redireccionarALibros(idCategoria: number) {
-    this.router.navigate(['/categoria', idCategoria, 'libros']);
-}
-cargarSubcategorias(idCategoria: number): void {
-  this.categoriaService.getSubCategoriasPorId(idCategoria).subscribe(subcategorias => {
-    const categoriaIndex = this.categorias.findIndex(c => c.idCategoria === idCategoria);
-    if (categoriaIndex !== -1) {
-      this.categorias[categoriaIndex].subcategorias = subcategorias;
-      this.categorias = [...this.categorias];
-      this.hoveredCategoriaId = idCategoria;
-      this.cd.detectChanges(); 
-    }
-  }, (error: any) => {
-    console.error('Error al cargar subcategorías', error);
-  });
-}
-  redireccionarALibrosSubcategoria(idSubcategoria: number) {
-    this.router.navigate(['/subcategoria', idSubcategoria, 'libros']);
-  }
-  mostrarSubcategorias(categoriaId: number): boolean {
-    return categoriaId === this.hoveredCategoriaId;
-  }
-  esconderSubcategorias(): void {
-    this.hoveredCategoriaId = null;
-}
+
 }
 
 

@@ -46,7 +46,7 @@
       localStorage.setItem(this.storageKey, JSON.stringify(items));
     }
     enviarCarritoAlBackend(): Observable<any> {
-      
+      const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
       return this.exchangeRateService.getExchangeRate().pipe(
         switchMap(tasaDeCambio => {
           const carritoActual = this._itemsCarrito.value.map(item => ({
@@ -57,9 +57,10 @@
     
           const detalleCarrito: Datallecarrito = {
             Items: carritoActual,
-            TotalAmount: totalAmount 
+            TotalAmount: totalAmount,
+            IdCliente: usuarioData.idPersona //idCliente 
           };
-    
+          
           return this.http.post('https://localhost:7143/api/Cart', detalleCarrito);
         })
       );

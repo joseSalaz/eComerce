@@ -50,6 +50,7 @@ export class PagoComponent implements OnInit {
   procesarPago(): void {
     // Aquí asumimos que `enviarCarritoAlBackend` es un método de tu servicio
     // que realiza una solicitud HTTP al backend y devuelve la URL de aprobación de PayPal.
+    
     this.carroService.enviarCarritoAlBackend().subscribe({
       next: (response) => {
         // Asumiendo que el backend envía la URL de aprobación en la respuesta.
