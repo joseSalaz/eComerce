@@ -53,8 +53,10 @@ export class DetalleVentaComponent {
   }
   confirmarPago() {
     if (this.paymentId && this.payerId) {
+
       this.isLoading = true;
       console.log(this.paymentId+'payer id'+this.payerId);
+
       this.carroService.confirmarPago(this.paymentId, this.payerId).subscribe({
         next: (response: any) => {
           // Pago confirmado con éxito

@@ -61,7 +61,7 @@ registrarOVerificarUsuario(profileData:any) {
     this.authService.verificarUsuario(usuarioParaRegistrar).subscribe({
         next: (usuarioRegistrado:Persona) => {
             localStorage.setItem('usuarioData', JSON.stringify(usuarioRegistrado));
-            console.log('ID del usuario:', usuarioRegistrado.idPersona);
+            // console.log('ID del usuario:', usuarioRegistrado.idPersona);
             this.isProcessing = false; // Restablece el estado de carga
         },
         error: (error) => {

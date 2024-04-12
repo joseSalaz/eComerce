@@ -58,9 +58,8 @@
           const detalleCarrito: Datallecarrito = {
             Items: carritoActual,
             TotalAmount: totalAmount,
-            IdCliente: usuarioData.idPersona //idCliente 
-          };
-          
+            Persona: usuarioData //idCliente 
+          };  
           return this.http.post('https://localhost:7143/api/Cart', detalleCarrito);
         })
       );
@@ -71,14 +70,15 @@
       // Recuperar el carrito del almacenamiento local
       const carritoActual = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
       const totalAmount = carritoActual.reduce((acc:any, item:any) => acc + (item.precioVenta * item.cantidad), 0);
-    
+      const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
       // Preparar el cuerpo de la solicitud incluyendo el ID de pago, ID del pagador y el carrito
       const body = {
         PaymentId: paymentId,
         PayerID: payerId,
         Carrito: {
           Items: carritoActual,
-          TotalAmount: totalAmount
+          TotalAmount: totalAmount,
+          Persona: usuarioData,
         }
       };
     
