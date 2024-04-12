@@ -60,7 +60,6 @@ export class PagoComponent implements OnInit {
     this.isLoading=true;    
     this.carroService.enviarCarritoAlBackend().subscribe({
       next: (response) => {
-        this.isLoading = true;
         // Asumiendo que el backend envía la URL de aprobación en la respuesta.
         const approvalUrl = response.approvalUrl; // Asegúrate de que la propiedad coincida con lo que envía tu backend
         window.location.href = approvalUrl; // Redirige al usuario a PayPal

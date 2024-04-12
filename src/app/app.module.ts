@@ -33,9 +33,6 @@ import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.comp
 
 
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
