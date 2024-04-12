@@ -23,4 +23,7 @@
         <button (click)="irAPago()" [disabled]="itemsCarrito.length === 0" class="btn btn-primary">Ir a Pago</button>
     </div>
 </div>
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
 <app-footer></app-footer>

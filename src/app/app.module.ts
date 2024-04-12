@@ -35,6 +35,7 @@ import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.comp
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +54,9 @@ import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.comp
     DetalleVentaComponent,
     PagoComponent,
     RespuestasComponent,   
-    ResBusquedadComponent, SubcategoriaComponent, FiltradorComponent 
+    ResBusquedadComponent, 
+    SubcategoriaComponent, 
+    FiltradorComponent, 
   ],
   imports: [
     BrowserModule,

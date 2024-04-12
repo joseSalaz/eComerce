@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DetalleVentaComponent {
 
+  isLoading = false;
   librosCarro: Libro[] = [];
   itemsCarrito: ItemCarrito[] = [];
   paymentId: string | null = null;
@@ -52,6 +53,7 @@ export class DetalleVentaComponent {
   }
   confirmarPago() {
     if (this.paymentId && this.payerId) {
+      this.isLoading = true;
       console.log(this.paymentId+'payer id'+this.payerId);
       this.carroService.confirmarPago(this.paymentId, this.payerId).subscribe({
         next: (response: any) => {

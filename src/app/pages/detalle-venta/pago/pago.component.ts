@@ -11,6 +11,8 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
 })
 export class PagoComponent implements OnInit {
 
+  isLoading = false;
+
   mostrarOpcionesEnvio: boolean = false;
 
   constructor(
@@ -22,24 +24,30 @@ export class PagoComponent implements OnInit {
     ) {}
 
 
-  ngOnInit(): void {
-     // Ahora usamos activatedRoute aquí
-     this.activatedRoute.queryParams.subscribe((params: any) => { // Debes reemplazar 'any' por el tipo adecuado si es posible
-      const paymentId = params['paymentId'];
-      const payerId = params['PayerID'];
-
-      if (paymentId && payerId) {
-        // El usuario ha sido redirigido desde PayPal con los parámetros necesarios
-        this.pago.executePayment(paymentId, payerId).subscribe({
-          error: (error) => {
-            // Maneja el error
-            console.error(error);
-            this.router.navigate(['']); // Redirige a la página de error
-          }
-        });
-      }
-    });
-  }
+    ngOnInit(): void {
+      // Escuchar los parámetros de consulta para el proceso de pago con PayPal
+      this.activatedRoute.queryParams.subscribe(params => {
+        const paymentId = params['paymentId'];
+        const payerId = params['PayerID'];
+    
+        // Verifica si la URL contiene los parámetros esperados de PayPal
+        if (paymentId && payerId) {
+          this.isLoading = true; // Activa el indicador de carga al iniciar el proceso de ejecución del pago
+          this.pago.executePayment(paymentId, payerId).subscribe({
+            next: (response) => {
+              this.isLoading = false; // Desactiva el indicador de carga después de completar el proceso
+            },
+            error: (error) => {
+              // Manejar el error
+              console.error('Error al confirmar el pago:', error);
+              this.router.navigate(['']); // Considera redirigir al usuario a una página de error específica
+              this.isLoading = false; // Desactiva el indicador de carga también en caso de error
+            }
+          });
+        }
+      });
+    }
+    
 
 
 
@@ -48,15 +56,15 @@ export class PagoComponent implements OnInit {
   }
 
   procesarPago(): void {
-    // Aquí asumimos que `enviarCarritoAlBackend` es un método de tu servicio
-    // que realiza una solicitud HTTP al backend y devuelve la URL de aprobación de PayPal.
-    
+
+    this.isLoading=true;    
     this.carroService.enviarCarritoAlBackend().subscribe({
       next: (response) => {
+        this.isLoading = true;
         // Asumiendo que el backend envía la URL de aprobación en la respuesta.
         const approvalUrl = response.approvalUrl; // Asegúrate de que la propiedad coincida con lo que envía tu backend
         window.location.href = approvalUrl; // Redirige al usuario a PayPal
-        // this.carroService.limpiarCarro();
+        
       },
       error: (error) => {
         // Aquí manejas los errores, como mostrar un mensaje al usuario

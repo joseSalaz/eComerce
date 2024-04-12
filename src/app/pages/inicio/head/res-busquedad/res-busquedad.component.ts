@@ -45,13 +45,10 @@ export class ResBusquedadComponent {
           this.resultados = libros;
         },
         error: (error) => {
-          console.error(error);
           this.resultados = [];
         }
       });
-    } else {
-      this.resultados = [];
-    }
+    } 
   }
   
 }
