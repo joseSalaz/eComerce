@@ -3,7 +3,7 @@ import { AuthConfig, OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
 import { UsuarioGoogle } from '../Interface/usuario';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -22,7 +22,9 @@ export class AuthService {
 
   constructor(
     private oauthService: OAuthService,
-    private http: HttpClient,) 
+    private http: HttpClient,
+    private router: Router,
+    ) 
     {
     this.initLogin();
     this.oauthService.events.subscribe((event) => {
@@ -69,7 +71,16 @@ export class AuthService {
   }
 
   login() {
+    const attemptedRoute = localStorage.getItem('redirectAfterLogin') || '/';
     this.oauthService.initLoginFlow();
+    this.oauthService.events.subscribe((event) => {
+      if (event.type === 'token_received') {
+        // ... código para manejar la autenticación exitosa
+        const redirectRoute = localStorage.getItem('redirectAfterLogin') || '/';
+        localStorage.removeItem('redirectAfterLogin'); // Limpia la ruta de redirección
+        this.router.navigate([redirectRoute]);
+      }
+    });
   }
 
   logout() {
@@ -105,6 +116,3 @@ export class AuthService {
   }
 
 }
-  
-  
-

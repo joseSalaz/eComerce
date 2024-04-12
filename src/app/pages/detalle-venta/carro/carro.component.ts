@@ -5,6 +5,8 @@ import { CarroService } from '../../../Service/carro.service';
 import { BehaviorSubject } from 'rxjs';
 import { LibroService } from '../../../Service/libro.service';
 import { ItemCarrito } from '../../../Interface/carrito';
+import { AuthService } from '../../../Service/auth.service';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,18 +16,37 @@ import { ItemCarrito } from '../../../Interface/carrito';
   styleUrls: ['./carro.component.scss']
 })
 export class CarroComponent {
-
+  mostrarModalCompra: boolean = false;
   private storageKey = 'carroLibros';
   
   libros: Libro[] = [];
   itemsCarrito: ItemCarrito[] = [];
   constructor(
     private carroService: CarroService,
-    private libroService:LibroService
+    private libroService:LibroService,
+    private authService: AuthService,
+    private router: Router
     ) { }
 
 
   mostrarCarro = true;
+
+  finalizarCompra() {
+    const profile = this.authService.getProfile();
+    if (!profile) {
+      // Indicar el intento de compra
+      localStorage.setItem('intentoCompra', 'true');
+      this.mostrarModalCompra = localStorage.getItem('intentoCompra') === 'true';
+      // Iniciar el flujo de login
+      this.router.navigate(['auth/log-in'])
+    } else {
+   
+      // Proceder con la compra
+      this.router.navigate(['/detalle-venta']);
+    }
+  }
+  
+  
 
   // Método para abrir el componente Carro
   abrirCarro() {

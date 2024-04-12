@@ -44,7 +44,7 @@ select option:first-child {
 .navbar {
   background-color: #fff;
   z-index: 998;
-  overflow: visible; /* Asegúrate de que no es 'hidden' */
+  overflow-y: visible; /* Asegúrate de que no es 'hidden' */
 }
 
 /* Para el posicionamiento de los menús desplegables */
