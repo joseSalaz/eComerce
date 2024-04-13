@@ -3,6 +3,8 @@ import { sesioncosntans } from '../../constans/sesion.constans';
 import { log } from 'console';
 import { Router } from '@angular/router';
 import { AuthService } from '../../Service/auth.service';
+import { DetalleVentaService } from '../../Service/detalle-venta.service';
+import { DetalleVenta } from '../../Interface/detalle_venta';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -14,7 +16,10 @@ export class UserComponent implements OnInit {
   photoURL: string = "";
   email:string="";
   currentSection: 'profile' | 'addirec' | 'pedidos'|'misfav'= 'profile';
+  detallesVenta: DetalleVenta[] = [];
+  usuarioId: number=0;
   constructor(
+    private detalleVentaService: DetalleVentaService,
     private router:Router,
     private authService:AuthService
   ) {}
@@ -23,6 +28,9 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
+    this.usuarioId = usuarioData.idPersona;
+    this.obtenerDetallesVenta();
     this.checkSession();
      this.authService.sesion$.subscribe(userProfile => {
       if (userProfile && userProfile.usu && userProfile.usu.length > 0) {
@@ -32,7 +40,6 @@ export class UserComponent implements OnInit {
         this.displayname = profileData.name || '';
         this.email=profileData.email;
         this.photoURL=profileData.picture
-        
       } else {
         this.vernombre = false;
         this.displayname = '';
@@ -40,7 +47,16 @@ export class UserComponent implements OnInit {
     });
   }
 
-
+  obtenerDetallesVenta(): void {
+    this.detalleVentaService.getDetalleVentaporPersonaId(this.usuarioId).subscribe(
+      (detalles: DetalleVenta[]) => {
+        this.detallesVenta = Array.isArray(detalles) ? detalles : [detalles]; 
+      },
+      (error) => {
+        console.error('Error al obtener los detalles de venta:', error);
+      }
+    );
+  }
   checkSession(): void {
     const userProfile: any = this.authService.getProfile(); 
     if (userProfile && userProfile['name']) {  

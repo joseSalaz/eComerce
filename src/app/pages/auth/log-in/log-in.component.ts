@@ -14,6 +14,7 @@ import { sesioncosntans } from '../../../constans/sesion.constans';
 })
 export class LogInComponent {
   mostrarModalCompra: boolean = false;
+
   constructor(
     private router: Router,
     private authService: AuthService,
