@@ -6,7 +6,12 @@
     </div> 
     <div class="card-body">
       <h5 class="card-title">{{ libro.titulo }}</h5>
-      <h1 class="price">S/00.00</h1>
+      <h1 class="price" *ngIf="libro.precioVenta; else loading">
+        S/{{ libro.precioVenta | number:'1.2-2' }}
+      </h1>
+      <ng-template #loading>
+        <span>Cargando precio...</span>
+      </ng-template>
       <button type="button" class="btn btn-success fs-5" (click)="redireccionarAlDetalleProducto(libro.idLibro)">Comprar</button>
     </div>
   </div>
