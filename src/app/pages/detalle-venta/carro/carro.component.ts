@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./carro.component.scss']
 })
 export class CarroComponent {
-  mostrarModalCompra: boolean = false;
+
   private storageKey = 'carroLibros';
   
   libros: Libro[] = [];
@@ -36,7 +36,6 @@ export class CarroComponent {
     if (!profile) {
       // Indicar el intento de compra
       localStorage.setItem('intentoCompra', 'true');
-      this.mostrarModalCompra = localStorage.getItem('intentoCompra') === 'true';
       // Iniciar el flujo de login
       this.router.navigate(['auth/log-in'])
     } else {
