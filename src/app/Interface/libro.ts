@@ -8,7 +8,7 @@ export interface Libro {
     impresion?: string;
     tipoTapa?: string;
     estado?: boolean;
-    idSubCategoria: number;
+    idSubcategoria: number;
     idTipoPapel: number;
     idProveedor: number;
     imagen: string ;

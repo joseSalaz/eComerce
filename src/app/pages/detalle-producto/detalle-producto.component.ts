@@ -10,6 +10,8 @@ import { Precio } from '../../Interface/precio';
 import { SubCategoria } from '../../Interface/subcategoria';
 import { SubCategoriaService } from '../../Service/subcategoria.service';
 import { ItemCarrito } from '../../Interface/carrito';
+import { Autor } from '../../Interface/autor';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -25,7 +27,7 @@ export class DetalleProductoComponent implements OnInit {
   altura: number = 0;
   ancho: number = 0;
   precioVenta: number=0; // Inicializado precioVenta a 0
-
+  idSubCategoria: number =0;
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
@@ -41,21 +43,27 @@ export class DetalleProductoComponent implements OnInit {
       const id = params.get('id');
       if (id) {
         this.obtenerLibro(id);
-        console.log(this.libro);
-        
+        this.obtenerAutoresDeLibro(+id);
       } else {
         console.error('El ID del libro no está definido.');
       }
     });
+    
   }
 
   obtenerLibro(id: string): void {
     this.libroService.getLibroPorId(id).subscribe(
       (libro: Libro) => {
         this.libro = libro;
+        this.idSubCategoria = libro.idSubcategoria;
+        console.log(this.idSubCategoria);
+        if (libro.tamanno) {
+          this.extraerDimensiones(libro.tamanno);
+        }
         this.idLibro = libro.idLibro; // Asegurándonos de que idLibro tenga el valor correcto
-        this.obtenerSubCategoria(libro.idSubCategoria);
+        this.obtenerSubCategoria(libro.idSubcategoria);
         this.obtenerPrecioVenta(); // Ahora llamamos a obtenerPrecioVenta aquí
+
       },
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
@@ -67,7 +75,6 @@ export class DetalleProductoComponent implements OnInit {
       this.subCategoriaService.getSubCategoriaPorId(idSubCategoria).subscribe(
         (subCategoria: SubCategoria) => {
           this.subcategoria = subCategoria;
-          console.log('Subcategoría del libro:', this.subcategoria);
         },
         (error: any) => {
           console.error('Error al obtener los detalles de la subcategoría:', error);
@@ -82,7 +89,6 @@ export class DetalleProductoComponent implements OnInit {
       this.mostrarError('Datos inválidos. No se puede agregar al carrito.');
       return;
     }
-  
     const itemCarrito: ItemCarrito = {
       libro: this.libro,
       precioVenta: this.precioVenta,
@@ -96,27 +102,26 @@ mostrarError(mensaje: string): void {
 
 
 
-  obtenerAutoresDeLibro(idLibro: number): void {
-    this.libroAutorService.getAutoresDeLibro(idLibro).subscribe(
-      (autores: any[]) => {
-        autores.forEach(autor => {
-          if (autor.idLibro === idLibro) {
-            this.libroAutorService.getAutorPorId(autor.idAutor).subscribe(
-              (autorDetalle: any) => {
-                this.autores.push(autorDetalle);
-              },
-              (error: any) => {
-                console.error('Error al obtener los detalles del autor:', error);
-              }
-            );
-          }
-        });
-      },
-      (error: any) => {
-        console.error('Error al obtener los autores del libro:', error);
-      }
-    );
+obtenerAutoresDeLibro(idLibro: number): void {
+  this.libroAutorService.getAutoresDeLibro(idLibro).subscribe(
+    (autores: Autor[]) => {
+      this.autores = autores;
+    },
+    (error: any) => {
+      console.error('Error al obtener los autores del libro:', error);
+    }
+  );
+}
+private extraerDimensiones(tamanno: string): void {
+  const tamannoConPuntos = tamanno.replace(/,/g, '.');
+  const dimensiones = tamannoConPuntos.match(/(\d+(\.\d+)?)/g);
+  if (dimensiones) {
+    this.ancho = parseFloat(dimensiones[0]);
+    this.altura = dimensiones.length > 1 ? parseFloat(dimensiones[1]) : this.altura;
   }
+}
+
+
   obtenerPrecioVenta(): void {
     if (!this.idLibro) return;
     

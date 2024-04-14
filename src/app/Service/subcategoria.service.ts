@@ -23,7 +23,6 @@ export class SubCategoriaService {
   }
   getSubCategoriaPorId(IdCategoria: number): Observable<SubCategoria> {
     const url = `${this.apiUrl}/${IdCategoria}`;
-    console.log('Solicitando subcategoría por ID:', url);
     return this.http.get<SubCategoria>(url);
   }
 }

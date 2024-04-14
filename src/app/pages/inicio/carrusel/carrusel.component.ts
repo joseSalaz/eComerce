@@ -1,8 +1,8 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Input,Output,EventEmitter } from '@angular/core';
-import { LibroService } from '../../../Service/libro.service';
 import { Libro } from '../../../Interface/libro';
 import { Router } from '@angular/router';
-
+import { LibroService } from '../../../Service/libro.service';
+import { CategoriaService } from '../../../Service/categoria.service';
 declare var bootstrap: any; // Importar Bootstrap globalmente
 
 @Component({
@@ -22,8 +22,9 @@ export class CarruselComponent implements AfterViewInit {
   categoriaFiltrada: number | string = '';
 
   constructor(
-    private _libroServicio: LibroService,
-    private router: Router
+    private CategoriaService: CategoriaService,
+    private router: Router,
+    private _libroServicio:LibroService
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +40,7 @@ export class CarruselComponent implements AfterViewInit {
       idSubcategoria = this.categoria;
     }
   
-    this._libroServicio.getLibrosPorSubcategoria(idSubcategoria).subscribe((libros: Libro[]) => {
+    this.CategoriaService.getLibrosPorCategoriaId(idSubcategoria).subscribe((libros: Libro[]) => {
       this.datas = libros;
       
       // Si hay libros en la respuesta, asignamos el ID del primero para la lógica del carrusel
