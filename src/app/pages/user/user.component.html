@@ -32,10 +32,10 @@
                   <tbody>
                     <tr *ngFor="let detalle of detallesVenta">
                       <td>{{ detalle.nombreProducto }}</td>
-                      <td>{{ detalle.precioUnit | currency }}</td>
+                      <td>S/{{ detalle.precioUnit}}</td>
                       <td>{{ detalle.cantidad }}</td>
                       <td>{{ detalle.estado }}</td>
-                      <td>{{ detalle.importe | currency }}</td>
+                      <td>S/{{ detalle.importe }}</td>
                     </tr>
                   </tbody>
                 </table>

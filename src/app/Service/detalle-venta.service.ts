@@ -9,11 +9,11 @@ import { environment } from '../../environments/environment';
 })
 export class DetalleVentaService {
   private endPoint:string = environment.endPoint;
-  private apiUrl:string = this.endPoint + "detalleVenta";
+  private apiUrl:string = this.endPoint + "DetalleVenta";
   constructor(private http: HttpClient) { 
 
   }
   getDetalleVentaporPersonaId(idPersona: number): Observable<DetalleVenta[]> {
-    return this.http.get<DetalleVenta[]>(`${this.apiUrl}/${idPersona}`);
+    return this.http.get<DetalleVenta[]>(`${this.apiUrl}/traer/${idPersona}`);
   }
 }

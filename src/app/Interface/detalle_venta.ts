@@ -3,6 +3,6 @@ export interface DetalleVenta {
     precioUnit:number;
     cantidad:number;
     estado: string;
-    importe:number
+    importe:number;
   }
   

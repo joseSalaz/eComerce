@@ -51,10 +51,9 @@
         switchMap(tasaDeCambio => {
           const carritoActual = this._itemsCarrito.value.map(item => ({
             ...item,
-            precioVenta: item.precioVenta * tasaDeCambio 
+            precioVenta: parseFloat((item.precioVenta * tasaDeCambio).toFixed(2))
           }));
-          const totalAmount = carritoActual.reduce((acc, item) => acc + (item.precioVenta * item.cantidad), 0);
-    
+          const totalAmount = parseFloat(carritoActual.reduce((acc, item) => acc + (item.precioVenta * item.cantidad), 0).toFixed(2));
           const detalleCarrito: Datallecarrito = {
             Items: carritoActual,
             TotalAmount: totalAmount,
