@@ -16,6 +16,7 @@ import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategor
 import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.component';
 
 
+
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/inicio' },
   { path: 'inicio', component: InicioComponent },
@@ -36,6 +37,7 @@ const routes: Routes = [
       { path: 'log-in', component: LogInComponent }
     ]
   },
+
   // Agregar una ruta para redirigir al inicio si la ruta no está definida
   { path: '**', redirectTo: '/inicio' }
   

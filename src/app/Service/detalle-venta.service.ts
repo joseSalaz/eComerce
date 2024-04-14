@@ -15,5 +15,5 @@ export class DetalleVentaService {
   }
   getDetalleVentaporPersonaId(idPersona: number): Observable<DetalleVenta[]> {
     return this.http.get<DetalleVenta[]>(`${this.apiUrl}/traer/${idPersona}`);
-  }
+  } 
 }
