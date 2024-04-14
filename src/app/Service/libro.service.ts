@@ -25,7 +25,6 @@ export class LibroService {
   }
   getLibroPorId(id: string): Observable<Libro> {
     const url = `${this.apiUrl}/${id}`;
-    console.log('Solicitando libro por ID:', url);
     return this.http.get<Libro>(url);
   }
   private fetchLibros(): void {

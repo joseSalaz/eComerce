@@ -27,27 +27,22 @@
                             <td >
                                 <div *ngFor="let autor of autores">
                                     <p class="d-inline me-4" style="white-space: nowrap;">
-                                        {{ autor.nombre }} {{ autor.apellido }}
+                                        {{ autor.nombre }} 
                                     </p>
                                 </div>
                             </td>                           
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <th scope="row">Editorial:</th>
-                            <!-- <td>{{libro?.Editorial}}</td> -->
-                            <td>{{libro?.idLibro}}</td>
+                            <td>{{libro?.Editorial}}</td> 
+                        </tr> -->
+                        <tr>
+                            <th scope="row">Impresinó:</th>
+                            <td>{{libro?.impresion}}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Año de publicación:</th>
-                            <td>Descripción</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Páginas:</th>
-                            <td>Descripción</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Peso:</th>
-                            <td>Descripción</td>
+                            <th scope="row">Tipo Tapa</th>
+                            <td>{{libro?.tipoTapa}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Ancho:</th>
@@ -56,10 +51,6 @@
                         <tr>
                             <th scope="row">Alto:</th>
                             <td>{{altura}} cm</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Categoria:</th>
-                            <td>{{subcategoria?.descripcion}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -99,7 +90,10 @@
         </div>
     </div>
 </div>
-
+<h2 class="demas-items">LIBROS QUE TAMBIÉN TE PEUDEN INTERESAR</h2>
+<ng-container *ngIf="idSubCategoria">
+    <app-carrusel [categoria]="idSubCategoria||1"></app-carrusel>
+  </ng-container>
 <section class="mt-4">
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
