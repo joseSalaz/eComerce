@@ -91,6 +91,8 @@ export class DetalleProductoComponent implements OnInit {
   obtenerKardex(libroId: number): void {
     this.libroService.getKardexPorIdLibro(libroId).subscribe(
       (kardex: Kardex) => {
+        console.log(kardex);
+        
         // Asumiendo que el servicio devuelve un objeto que se ajusta a la interfaz Kardex
         this.stockDisponible = kardex.stock;
       },
