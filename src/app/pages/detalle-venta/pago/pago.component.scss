@@ -1,29 +1,31 @@
-.form-container {
-  border: 1px solid black;
-  padding: 20px;
-  border-radius: 5px;
-  max-width: 700px; /* Ajusta el ancho del contenedor del formulario /
-  margin: 0 auto; / Centra el contenedor horizontalmente /
-  margin-left: 0; / Agrega un margen izquierdo automático /
-  margin-right: auto; / Elimina el margen derecho /
-}
-.form-container h2 {
-  display: inline-block;
-  margin-right: 10px;
-}
-.form-container i {
-  font-size: 24px;
-  vertical-align: middle;
+/* Estilos.css (o como prefieras llamar a tu hoja de estilos) */
 
+.text-center {
+  text-align: center;
 }
 
-.comprimido {
-  height: 100px; / Ajusta la altura comprimida según tus necesidades /
-  transition: height 0.5s ease-in-out; / Agrega una transición suave */
-
-
+.container h2 {
+  margin-bottom: 1rem;
 }
 
+.btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-lg {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: 0.3rem;
+  background-color: transparent;
+  border: 1px solid #007bff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
+}
 
 .loading-overlay {
   position: fixed;
@@ -31,32 +33,29 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
-  z-index: 9999;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 10000; /* Aumento del z-index para asegurar que esté sobre otros elementos */
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column; // Agregamos esta línea para mostrar los elementos en columna
+  flex-direction: column;
 }
 
 .loading-spinner {
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
+  border-top-color: #3498db;
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
-  margin-bottom: 10px; // Añadimos margen inferior para separar el texto
 }
 
 .loading-text {
-  font-size: 16px;
+  font-size: 1rem;
   color: #333;
-  margin-top: 10px; // Ajustamos el margen superior para separar el círculo
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-

@@ -12,6 +12,7 @@ import { SubCategoriaService } from '../../Service/subcategoria.service';
 import { ItemCarrito } from '../../Interface/carrito';
 import { Autor } from '../../Interface/autor';
 import { switchMap } from 'rxjs/operators';
+import { Kardex } from '../../Interface/kardex';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -28,6 +29,8 @@ export class DetalleProductoComponent implements OnInit {
   ancho: number = 0;
   precioVenta: number=0; // Inicializado precioVenta a 0
   idSubCategoria: number =0;
+  stockDisponible: number = 0;
+  kardex: Kardex | null = null;  
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
@@ -44,31 +47,32 @@ export class DetalleProductoComponent implements OnInit {
       if (id) {
         this.obtenerLibro(id);
         this.obtenerAutoresDeLibro(+id);
+        this.obtenerKardex(+id);
       } else {
         console.error('El ID del libro no está definido.');
       }
     });
     
   }
-
+  mostrarError(mensaje: string): void {
+    alert(mensaje);
+  }
   obtenerLibro(id: string): void {
     this.libroService.getLibroPorId(id).subscribe(
       (libro: Libro) => {
         this.libro = libro;
         this.idSubCategoria = libro.idSubcategoria;
-        console.log(this.idSubCategoria);
         if (libro.tamanno) {
           this.extraerDimensiones(libro.tamanno);
         }
         this.idLibro = libro.idLibro; // Asegurándonos de que idLibro tenga el valor correcto
         this.obtenerSubCategoria(libro.idSubcategoria);
         this.obtenerPrecioVenta(); // Ahora llamamos a obtenerPrecioVenta aquí
-
       },
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
       }
-    );
+    ); 
   }
   obtenerSubCategoria(idSubCategoria: number): void {
     if (idSubCategoria) {
@@ -83,10 +87,23 @@ export class DetalleProductoComponent implements OnInit {
     }
   }
 
-
+ 
+  obtenerKardex(libroId: number): void {
+    this.libroService.getKardexPorIdLibro(libroId).subscribe(
+      (kardex: Kardex) => {
+        console.log(kardex);
+        
+        // Asumiendo que el servicio devuelve un objeto que se ajusta a la interfaz Kardex
+        this.stockDisponible = kardex.stock;
+      },
+      (error: any) => {
+        console.error('Error al obtener el kardex del libro:', error);
+      }
+    );
+  }
   agregarAlCarrito(): void {
-    if (!this.libro || this.precioVenta <= 0 || this.cantidad <= 0) {
-      this.mostrarError('Datos inválidos. No se puede agregar al carrito.');
+    if (!this.libro || this.precioVenta <= 0 || this.cantidad <= 0 || this.cantidad > this.stockDisponible || this.stockDisponible <= 0) {
+      this.mostrarError('Datos inválidos. No se puede agregar al carrito o la cantidad excede el stock disponible.');
       return;
     }
     const itemCarrito: ItemCarrito = {
@@ -96,12 +113,12 @@ export class DetalleProductoComponent implements OnInit {
     };
     this.carroService.addNewProduct(itemCarrito);
   }
-mostrarError(mensaje: string): void {
-  alert(mensaje);
-}
-
-
-
+  verificarStock() {
+    if (this.cantidad > this.stockDisponible) {
+      this.mostrarError('La cantidad excede el stock disponible.');
+      this.cantidad = this.stockDisponible;
+    }
+  }
 obtenerAutoresDeLibro(idLibro: number): void {
   this.libroAutorService.getAutoresDeLibro(idLibro).subscribe(
     (autores: Autor[]) => {
@@ -120,8 +137,6 @@ private extraerDimensiones(tamanno: string): void {
     this.altura = dimensiones.length > 1 ? parseFloat(dimensiones[1]) : this.altura;
   }
 }
-
-
   obtenerPrecioVenta(): void {
     if (!this.idLibro) return;
     

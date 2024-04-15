@@ -1,28 +1,27 @@
 <app-head></app-head>
 
-<div>
-  <h1 class="text-center">Finaliza tu compra</h1>
+<div class="text-center">
+  <h1>Finaliza tu compra</h1>
 </div>
 
-<div  class="container mt-5">
-  <div id="paypal-button-container"></div>
+<!-- Sección de Método de Pago -->
+<div class="container mt-5 text-center">
+  <h2>Método de Pago</h2>
+  <!-- Botón de PayPal con texto en azul -->
+  <button (click)="procesarPago()" class="btn btn-outline-primary btn-lg">
+    Pagar con <i class="fab fa-paypal"></i> PayPal
+  </button>
 </div>
 
-<div class="container mt-5" *ngIf="mostrarOpcionesEnvio">
+<!-- Sección de opciones de envío oculta por ahora -->
+<!--
+<div class="container mt-5">
   <h2>Opciones de Envío</h2>
-  <!-- Agrega aquí las opciones de envío, como recojo en tienda o envío a domicilio -->
+   Agrega aquí las opciones de envío, como recojo en tienda o envío a domicilio 
 </div>
-
-<!-- Este botón podría usarse para mostrar las opciones de envío, por ejemplo -->
-<button (click)="toggleOpcionesEnvio()" class="btn btn-primary">Opciones de Envío</button>
-<button (click)="procesarPago()" style="font-size:24px; color: blue; background-color: transparent; border: none; cursor: pointer;">
-  <i class="fab fa-paypal"></i> PayPal
-</button>
+-->
 
 <div *ngIf="isLoading" class="loading-overlay">
   <div class="loading-spinner"></div>
   <div class="loading-text">Redirigiendo...</div>
 </div>
-
-
-

@@ -29,8 +29,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
-    this.usuarioId = usuarioData.idPersona;
-    console.log("Usuario ID:", this.usuarioId); 
+    this.usuarioId = usuarioData.idPersona; 
     this.obtenerDetallesVenta();
     this.checkSession();
      this.authService.sesion$.subscribe(userProfile => {
@@ -51,9 +50,7 @@ export class UserComponent implements OnInit {
   obtenerDetallesVenta(): void {
     this.detalleVentaService.getDetalleVentaporPersonaId(this.usuarioId).subscribe(
       (detalles: DetalleVenta[]) => {
-        console.log("Detalles recibidos:", detalles);
         this.detallesVenta = Array.isArray(detalles) ? detalles : [detalles]; 
-        
       },
       (error) => {
         console.error('Error al obtener los detalles de venta:', error);

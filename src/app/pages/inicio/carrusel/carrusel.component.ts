@@ -11,6 +11,7 @@ declare var bootstrap: any; // Importar Bootstrap globalmente
   styleUrls: ['./carrusel.component.scss']
 })
 export class CarruselComponent implements AfterViewInit {
+  
   @Input() categoria: number | string = '';
   @Output() comprarLibro: EventEmitter<number> = new EventEmitter<number>();
   @ViewChild('carousel') carouselElement!: ElementRef;

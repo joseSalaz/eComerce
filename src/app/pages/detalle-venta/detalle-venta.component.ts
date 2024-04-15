@@ -61,11 +61,6 @@ export class DetalleVentaComponent {
 
       this.carroService.confirmarPago(this.paymentId, this.payerId).subscribe({
         next: (response: any) => {
-          // Pago confirmado con éxito
-
-          console.log('Pago confirmado con éxito:', response);
-          
-          // Redirige al usuario a una página de éxito
           this.router.navigate(['/exito']);
           this.showPaymentModal = true;
         },

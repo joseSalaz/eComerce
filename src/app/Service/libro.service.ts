@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, catchError, throwError } from 'rxjs';
 import { Libro } from '../Interface/libro';
 import { environment } from '../../environments/environment';
 import { Precio } from '../Interface/precio';
+import { Kardex } from '../Interface/kardex';
 
 @Injectable({
   providedIn: 'root'
@@ -58,8 +59,9 @@ export class LibroService {
       })
     );
   }
-  getStockPorIdLibro(libroId: number): Observable<number> { // Cambia any por tu tipo de dato de stock
-    return this.http.get<number>(`${this.apiUrl}/stock/${libroId}`)
+  getKardexPorIdLibro(libroId: number): Observable<Kardex> {
+    return this.http.get<Kardex>(`${this.apiUrl}/kardex/${libroId}`);
+    
   }
   
   getLibrosAutoComplete(titulo: string): Observable<Libro[]> {
