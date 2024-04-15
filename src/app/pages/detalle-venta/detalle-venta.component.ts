@@ -15,6 +15,8 @@ export class DetalleVentaComponent {
   itemsCarrito: ItemCarrito[] = [];
   paymentId: string | null = null;
   payerId: string | null = null;
+  showPaymentModal = false;
+
   constructor(
     private route: ActivatedRoute,
     private carroService: CarroService,
@@ -65,6 +67,7 @@ export class DetalleVentaComponent {
           
           // Redirige al usuario a una página de éxito
           this.router.navigate(['/exito']);
+          this.showPaymentModal = true;
         },
         error: (error: any) => {
           // Manejo de errores

@@ -6,14 +6,17 @@
   import { ExchangeRateService } from './exchange-rate.service';
   import { switchMap } from 'rxjs/operators';
   import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
   @Injectable({
     providedIn: 'root'
   })
   export class CarroService {
     private storageKey = 'carroItems';
+    private endPoint: string = environment.endPoint;
+    private apiUrl: string = `${this.endPoint}Cart`;
     private _itemsCarrito: BehaviorSubject<ItemCarrito[]>;
-    private executePaymentUrl = 'https://localhost:7143/api/Paypal/execute-payment';
+    private executePaymentUrl = 'https://apilibsaber.azurewebsites.net/Paypal/execute-payment';
     constructor(
       private http: HttpClient,
       private exchangeRateService: ExchangeRateService
@@ -59,7 +62,7 @@
             TotalAmount: totalAmount,
             Persona: usuarioData //idCliente 
           };  
-          return this.http.post('https://localhost:7143/api/Cart', detalleCarrito);
+          return this.http.post(this.apiUrl,detalleCarrito);
         })
       );
     }
@@ -94,3 +97,5 @@
   
   }
 
+
+  

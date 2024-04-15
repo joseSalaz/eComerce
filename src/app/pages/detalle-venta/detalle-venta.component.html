@@ -26,7 +26,9 @@
         </div>
     </div>
 </div>
+<app-respuestas  *ngIf="showPaymentModal"></app-respuestas>
 <div *ngIf="isLoading" class="loading-overlay">
     <div class="loading-spinner"></div>
 </div>
 <app-footer></app-footer>
+
