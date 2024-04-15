@@ -8,12 +8,15 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    align-items: flex-start; 
 }
 
 .libro-imagen {
-    max-width: 100%;
-    max-height: 100px;
-    margin-right: 10px; /* Ajusta el espacio entre la imagen y el título */
+    width: 100px; /* Tamaño fijo para la imagen */
+    height: auto; /* Altura automática para mantener la proporción */
+    margin-right: 20px; /* Espacio entre la imagen y los detalles */
+    object-fit: cover; /* Asegúrate de que la imagen cubra todo el espacio asignado sin perder la proporción */
+    border-radius: 0.25rem; 
 }
 
 .libro-titulo {
@@ -58,4 +61,28 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  
+  .container {
+    max-width: 1200px; /* Ajusta según el ancho deseado para el contenedor */
+}
+
+.media img {
+    border-radius: 0.25rem; /* Da un borde redondeado a las imágenes */
+}
+
+.media-body {
+    background-color: #f8f9fa; /* Fondo claro para el detalle de cada libro */
+    padding: 1rem;
+    border-radius: 0.25rem; /* Borde redondeado para el detalle */
+    margin-left: 1rem;
+    flex: 1; /* El cuerpo ocupa el espacio restante después de la imagen */
+    background-color: #f8f9fa; /* Fondo claro para el detalle de cada libro */
+    padding: 1rem;
+    border-radius: 0.25rem;
+}
+
+.sticky-top {
+    background-color: #f8f9fa; /* Fondo claro para el resumen de la compra */
+    padding: 1rem;
+    border-radius: 0.25rem; /* Borde redondeado para el resumen */
+}
+

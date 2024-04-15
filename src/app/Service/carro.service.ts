@@ -79,10 +79,7 @@
           TotalAmount: totalAmount,
           Persona: usuarioData,
         }
-      };
-    
-      console.log('Cuerpo de la solicitud para confirmar el pago:', body);
-    
+      };    
       return this.http.post(this.executePaymentUrl, body).pipe(
         tap(response => {
           // Si el pago se confirma exitosamente, limpia el carrito

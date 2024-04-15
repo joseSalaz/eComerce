@@ -77,13 +77,15 @@
                         <button type="button" class="btn btn-primary mb-3 me-3 fs-5" (click)="agregarAlCarrito()">Agregar al Carrito</button>
                     </div>
                     <!-- Cantidad -->
+                    <!-- En tu archivo detalle-producto.component.html -->
                     <div class="form-group mt-3 d-flex justify-content-start align-items-center">
                         <label for="cantidad" class="form-label me-3">Cantidad:</label>
                         <div class="input-group" style="max-width: 150px;">
-                            <button class="btn btn-outline-secondary" type="button"  (click)="decrementarCantidad()">-</button>
-                            <input type="number" class="form-control text-center"  [(ngModel)]="cantidad" readonly min="1"> 
-                            <button class="btn btn-outline-secondary" type="button"  (click)="incrementarCantidad()">+</button>
+                        <button class="btn btn-outline-secondary" type="button" (click)="decrementarCantidad()" [disabled]="cantidad <= 1">-</button>
+                        <input type="number" class="form-control text-center" [(ngModel)]="cantidad" (ngModelChange)="verificarStock()" min="1" [max]="stockDisponible">
+                        <button class="btn btn-outline-secondary" type="button" (click)="incrementarCantidad()" [disabled]="cantidad >= stockDisponible">+</button>
                         </div>
+                        <div *ngIf="stockDisponible <= 0" class="text-danger">No disponible</div>
                     </div>
                 </div>
             </div>
@@ -92,21 +94,23 @@
 </div>
 <h2 class="demas-items">LIBROS QUE TAMBIÉN TE PEUDEN INTERESAR</h2>
 <ng-container *ngIf="idSubCategoria">
-    <app-carrusel [categoria]="idSubCategoria||1"></app-carrusel>
+    <app-carrusel [categoria]="idSubCategoria"></app-carrusel>
   </ng-container>
 <section class="mt-4">
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="d-flex justify-content-between">
-                    <img src="https://escaparateliterario.com/wp-content/uploads/2018/07/promocion-de-escritores-y-libros.jpg" class="d-block img-fluid" alt="Slide 1" style="max-height: 200px; width: calc(100% / 3);">
-                    <img src="https://pbs.twimg.com/media/Ezqk2fiXEAIPtkN?format=jpg&name=4096x4096" class="d-block img-fluid" alt="Slide 2" style="max-height: 200px; width: calc(100% / 3);">
-                    <img src="https://www.apj.org.pe/photos/shares/Nosotros%20Fondo%20Editorial/Fondo_Concursable.jpg" class="d-block img-fluid" alt="Slide 3" style="max-height: 200px; width: calc(100% / 3);">
+                    <img src="https://libsaberapi.blob.core.windows.net/imagenes/alberto-cognetti-TmFHrKk6aBI-unsplash.jpg" class="d-block img-fluid" alt="Slide 1" style="max-height: 200px; width: calc(100% / 3);">
+                    <img src="https://libsaberapi.blob.core.windows.net/imagenes/sanika-v-J75vNLEr4aE-unsplash.jpg" class="d-block img-fluid" alt="Slide 2" style="max-height: 200px; width: calc(100% / 3);">
+                    <img src="https://libsaberapi.blob.core.windows.net/imagenes/pexels-karolina-grabowska-5632377.jpg" class="d-block img-fluid" alt="Slide 3" style="max-height: 200px; width: calc(100% / 3);">
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="d-flex justify-content-between">
-                    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.xataka.com%2Fn%2Fno-solo-japon-vive-manga-asi-como-autores-espanoles-han-hecho-suyo-este-estilo&psig=AOvVaw1VtJT3LiBGElnOu89wn4YX&ust=1710200728942000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKiehqrw6oQDFQAAAAAdAAAAABAS" class="d-block img-fluid" alt="Slide 4" style="max-height: 200px; width: calc(100% / 3);">
+                    <img src="https://libsaberapi.blob.core.windows.net/imagenes/pexels-karolina-grabowska-5632390.jpg" class="d-block img-fluid" alt="Slide 4" style="max-height: 200px; width: calc(100% / 3);">
+                    <img src="https://libsaberapi.blob.core.windows.net/imagenes/DALLE_2024-04-15_11.33.34_-_Create_a_vibrant_and_animated-style_promotional_image_for_a_bookstore._The_image_should_feature_a_cute_animal_character_like_a_fox_happily_reading_a.jpg" class="d-block img-fluid" alt="Slide 5" style="max-height: 200px; width: calc(100% / 3);">
+                    <img src="https://libsaberapi.blob.core.windows.net/imagenes/imagen.jpeg" class="d-block img-fluid" alt="Slide 6" style="max-height: 200px; width: calc(100% / 3);">
                 </div>
             </div>
         </div>

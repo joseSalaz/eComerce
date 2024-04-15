@@ -108,7 +108,6 @@ export class AuthService {
       correo: claims['email'],
       sub: claims['sub'],
     };
-    console.log('Datos del usuario que serán enviados al backend:', usuario);
     return this.http.post<UsuarioGoogle>(`${this.apiUrl}/verificar`, usuario);
   }
   verificarUsuario(usuario: UsuarioGoogle): Observable<any> {
