@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    endPoint: 'https://apilibsaber.azurewebsites.net/',
+    endPoint: 'https://localhost:7143/',
   };
