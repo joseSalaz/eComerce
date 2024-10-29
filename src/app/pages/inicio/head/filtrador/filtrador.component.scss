@@ -1,0 +1,81 @@
+.form-control {
+    width: 70%;
+}
+.navbar-brand {
+  margin-top: 5px;
+  padding-top: 0;
+  margin-left: 150px;
+  margin-right: 30px;
+}
+select option:first-child {
+  display: none;
+}
+.contador-items {
+  position: absolute;
+  top: 0px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+/* Estilos personalizados para el navbar */
+.navbar-nav .nav-link {
+  color: #333; /* Color del texto */
+  font-size: 16px; /* Tamaño de fuente */
+  padding: 10px 15px; /* Espaciado interno */
+  transition: all 0.3s ease; /* Transición suave al pasar el ratón */
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: #f0f0f0; /* Color de fondo al pasar el ratón */
+  color: #555; /* Color del texto al pasar el ratón */
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: bold; /* Texto en negrita para la categoría activa */
+}
+/* Asegúrate de que el contenedor principal de la navbar no restrinja los elementos internos con overflow */
+.navbar {
+  background-color: #fff;
+  z-index: 998;
+  overflow-y: visible; /* Asegúrate de que no es 'hidden' */
+}
+
+/* Para el posicionamiento de los menús desplegables */
+.nav-item.dropdown {
+  position: relative; /* Contexto para el posicionamiento absoluto de los menús desplegables */
+}
+
+.dropdown-menu {
+  display: none; /* Inicialmente oculto */
+  position: absolute; /* Se posicionará en relación al .nav-item más cercano con position: relative */
+  left: 0;
+  top: 100%; /* Colocarlo justo debajo del elemento .nav-item */
+  z-index: 999; /* Asegúrate de que esté por encima de otros contenidos */
+}
+
+/* Para mostrar el menú desplegable cuando se pasa el ratón por encima */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block; /* Se muestra cuando se pasa el ratón por encima */
+}
+
+/* Estilos para los elementos dentro del menú desplegable */
+.dropdown-item {
+  color: #000;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  color: #16181b;
+  background-color: #f8f9fa;
+}

@@ -1,0 +1,20 @@
+<!-- respuestas.component.html -->
+<div *ngIf="showModal" class="modal fade show d-block" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">{{ isSuccess ? 'Pago con éxito' : 'Error en el pago' }}</h5>
+          <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <h1>{{ isSuccess ? '¡Pago realizado con éxito!' : 'No se pudo completar el pago.' }}</h1>
+          <p>{{ isSuccess ? 'Gracias por tu compra.' : 'Por favor, intenta de nuevo más tarde.' }}</p>
+        </div>
+        <div class="modal-footer">
+          <button routerLink="/inicio" class="btn btn-primary">Volver al inicio</button>
+          <button *ngIf="isSuccess" routerLink="/pedidos" class="btn btn-secondary">Ir a tus pedidos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

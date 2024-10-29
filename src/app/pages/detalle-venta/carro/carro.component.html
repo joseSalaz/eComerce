@@ -1,0 +1,28 @@
+<div *ngIf="mostrarCarro" class="fondo-semi-transparente" (click)="cerrarCarro()"></div>
+<div *ngIf="mostrarCarro" class="carro-overlay">
+  <div class="cerrar-btn" (click)="cerrarCarro()">
+    <i class="fas fa-times"></i>
+  </div>
+  <div class="carro-container">
+    <div style="text-align: center;">
+      <i class="fas fa-shopping-cart fa-3x"></i>
+    </div>
+    <h2>Carrito de Compras</h2>
+    <div *ngFor="let item of itemsCarrito; let indice = index" class="tarjeta-item">
+      <div class="contenido-tarjeta">
+        <span>
+          <img src="https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" alt="" style="max-width: 100%; max-height: 100px;">
+        </span>
+        <span>{{ item.libro.titulo }}</span>
+        <span>{{ item.cantidad }} x {{ item.precioVenta | currency:'S/':true }}</span>
+        <button class="eliminar-item" (click)="delete(indice)">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary fs-5" style="position: absolute; bottom: 10px; left: 80%; transform: translateX(-50%); width: 200px; margin-bottom: 10px;" (click)="finalizarCompra()" >
+      Finalizar Compra
+    </button>
+  </div>
+</div>
+
