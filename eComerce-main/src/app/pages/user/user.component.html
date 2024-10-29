@@ -1,0 +1,112 @@
+<div class="bg-base">
+  <app-head></app-head>
+<div class=" container mt-4"></div>
+  <div class="row justify-content-center">
+  <!-- Contenedor central -->
+  
+      <!-- Columna de botones de navegación -->
+      <div class="col-md-8">
+        <div class="user-image-container   d-flex align-items-center mb-3">
+          <img [src]="photoURL" alt="User Image" class="user-image img-fluid rounded-circle" style="width: 100px;">
+          <div class="ml-3 mt-4">
+            <p style="margin: 0;"> Hola!</p>
+        </div>
+        </div>
+          <div class="row ">
+            <div class="col-md-3 text-center">
+        <div class="nav flex-column text-center">
+          <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('profile')" [class.active]="currentSection === 'profile'">Perfil</button>
+          <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('addirec')" [class.active]="currentSection === 'addirec'">Direcciones</button>
+          <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('pedidos')" [class.active]="currentSection === 'pedidos'">Pedidos</button>
+          <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('misfav')" [class.active]="currentSection === 'misfav'">Mis Favoritos</button>
+          <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="prevpage()">Salir</button>
+        </div>
+      </div>
+      
+      <!-- Columna de contenido -->
+      <div class="col-md-9">
+        <!-- Sección de Pedidos -->
+        <div *ngIf="currentSection === 'pedidos'">
+          <div *ngIf="detallesVenta.length > 0; else noPedidos">
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detalle of detallesVentaInversos">
+                  <td>{{ detalle.nombreProducto }}</td>
+                  <td>S/{{ detalle.precioUnit }}</td>
+                  <td>{{ detalle.cantidad }}</td>
+                  <td>{{ detalle.estado }}</td>
+                  <td>S/{{ detalle.importe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #noPedidos>
+            <div class="alert alert-warning" role="alert">
+              No tienes pedidos aún.
+            </div>
+          </ng-template>
+        </div>
+        
+        <!-- Sección de Direcciones -->
+        <div *ngIf="currentSection === 'addirec'">
+          <div class="container">
+            <h2 class="text-center my-4">Gestión de Direcciones</h2>
+            <p>La gestión de direcciones no está implementada por el momento.</p>
+          </div>
+        </div>
+
+        <!-- Sección de Perfil -->
+        <div *ngIf="currentSection === 'profile'">
+          <div class="user-details-container p-3 border rounded">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="user-detail">
+                  <h5 class="detail-label text-success">Nombres:</h5>
+                  <span class="detail-value">{{ displayname }}</span>
+                </div>
+                <div class="user-detail">
+                  <h5 class="detail-label text-success">Apellidos:</h5>
+                  <span class="detail-value">Apellido del Usuario</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="user-detail">
+                  <h5 class="detail-label text-success">Email:</h5>
+                  <span class="detail-value">{{ email }}</span>
+                </div>
+                <div class="user-detail">
+                  <h5 class="detail-label text-success">Documento de Identidad:</h5>
+                  <span class="detail-value">Documento del Usuario</span>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="user-detail">
+                  <h5 class="detail-label text-success">Fecha de Nacimiento:</h5>
+                  <span class="detail-value">Fecha de Nacimiento del Usuario</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="user-detail">
+                  <h5 class="detail-label text-success">Teléfono:</h5>
+                  <span class="detail-value">Teléfono del Usuario</span>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-success btn-lg btn-block mt-3">Editar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
