@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CarroService } from '../../../Service/carro.service';
 import { Libro } from '../../../Interface/libro';
@@ -10,6 +10,8 @@ import { ItemCarrito } from '../../../Interface/carrito';
   styleUrl: './respuestas.component.scss'
 })
 export class RespuestasComponent {
+  @Input() showModal: boolean = false;  // Variable para controlar la visibilidad del modal
+  @Input() isSuccess: boolean = false;
   librosCarro: Libro[] = [];
   itemsCarrito: ItemCarrito[] = [];
   paymentId: string | null = null;
@@ -38,6 +40,12 @@ export class RespuestasComponent {
     } else {
       console.error('Payment ID o Payer ID no están disponibles.');
     }
+  }
+
+ 
+
+  close() {
+    this.showModal = false;
   }
 
 }
