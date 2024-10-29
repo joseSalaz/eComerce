@@ -11,6 +11,7 @@ import { DetalleVenta } from '../../Interface/detalle_venta';
   styleUrl: './user.component.scss'
 })
 export class UserComponent implements OnInit {
+  detallesVentaInversos: any[] = [];
   vernombre: boolean = true;
   displayname: string = "";
   photoURL: string = "";
@@ -51,7 +52,9 @@ export class UserComponent implements OnInit {
     this.detalleVentaService.getDetalleVentaporPersonaId(this.usuarioId).subscribe(
       (detalles: DetalleVenta[]) => {
         this.detallesVenta = Array.isArray(detalles) ? detalles : [detalles]; 
+        this.detallesVentaInversos = this.detallesVenta.reverse();
       },
+      
       (error) => {
         console.error('Error al obtener los detalles de venta:', error);
       }
