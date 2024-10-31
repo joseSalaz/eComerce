@@ -1,4 +1,4 @@
-.img-wrapper {
+.img-wrapper { 
     max-width: 310px; 
     max-height: 441px; 
     overflow: hidden; 
@@ -9,50 +9,85 @@ img {
     width: 100%;
     height: 100%; 
     object-fit: cover; 
+    margin: 20px 0;
 }
 
 @media screen and (min-width:576px) {
-    .carousel-inner {
+    .swiper-wrapper {
         display: flex;
-        overflow-x: auto;
-        overflow-x: hidden;
     }
-    .carousel-item {
-        display: block;
-        margin-right: 0;
-        flex: 0 0 calc(100% / 5);
+    .swiper-slide {
+        display: flex; 
+        justify-content: center; 
+        flex: 0 0 calc(100% / 5); // Muestra 5 imágenes en pantallas grandes
+        margin: 0 40px;
     }
     .img-wrapper {
-        height: 23vw;
-    }
-    .carousel-item:last-child {
-        margin-right: 0; 
+        height: 23vw; 
     }
 }
-.carousel-inner {
+
+@media (max-width: 768px) {
+    .mySwiper {
+        .swiper-slide {
+            flex: 0 0 calc(100% / 3); // Muestra 3 imágenes en pantallas medianas
+        }
+    }
+    .card-title {
+        font-size: 0.9rem; // Ajusta el tamaño del texto
+        white-space: normal; // Permite que el texto ocupe más de una línea si es necesario
+    }
+}
+
+@media (max-width: 576px) {
+    .img-wrapper {
+        height: auto;
+    }
+    .card {
+        width: 100%; // Ancho completo en pantallas pequeñas
+        margin: 10px 0;
+    }
+    .swiper-button-prev, .swiper-button-next {
+        width: 25px;
+        height: 25px;
+    }
+
+    .btn {
+        width: 100%;
+        height: 40px;
+    }
+
+    .mySwiper {
+        .swiper-slide {
+            flex: 0 0 calc(100% / 2); // Muestra 2 imágenes en pantallas pequeñas
+        }
+    }
+    .card-title {
+        font-size: 0.8rem; // Reduce aún más el tamaño del texto
+    }
+}
+
+.mySwiper {
     padding: 1em;
 }
+
 .card {
     width: 310px;
-    margin: 30px;
-    /* border-radius: 0; */
+    margin: 40px 0;
     border: none;
     box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, .18);
 }
 
-.carousel-control-antes, .carousel-control-siguiente{
-    width: 6vh;
-    height: 6vh;
-    background-color: floralwhite;
+.swiper-button-prev, .swiper-button-next {
+    background-color: floralwhite; 
     border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: .5;
+    opacity: 0.5;
 }
-.carousel-control-antes:hover, 
-.carousel-control-siguiente:hover{
+
+.swiper-button-prev:hover, .swiper-button-next:hover {
     opacity: 1;
 }
+
 .card-body {
     padding: 1rem; 
     text-align: center; 
@@ -73,47 +108,17 @@ img {
 .card:hover .btn {
     display: block;
 }
+
 .card-title {
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis;
     font-size: 1rem; 
-  }
-
-
-.card-title {
     position: relative; 
-    z-index: 2; /* Asegura que el título esté por encima del botón */
+    z-index: 2; 
 }
+
 .card:hover .price,
 .card:hover .btn {
     opacity: 1;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px; 
-    height: 40px; 
-    background-color: transparent; 
-    border: none; 
-    border-radius: 50%; 
-    // box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
-    
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: black; 
-    border-radius: 50%; 
-}
-
-.carousel-control-prev {
-    left: 0;
-}
-
-.carousel-control-next {
-    right: 0;
 }

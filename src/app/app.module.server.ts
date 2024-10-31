@@ -3,16 +3,10 @@ import { ServerModule } from '@angular/platform-server';
 import { FormsModule } from '@angular/forms';
 import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
-@NgModule({
-  imports: [
-    AppModule,
-    ServerModule,
-    FormsModule,
-    HttpClientModule,
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ bootstrap: [AppComponent], imports: [AppModule,
+        ServerModule,
+        FormsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppServerModule {}

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,9 +16,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AutorComponent } from './autor/autor.component';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import {  withFetch } from '@angular/common/http';
 import { CarroComponent } from './pages/detalle-venta/carro/carro.component';
 import { UserComponent } from './pages/user/user.component';
 import { CategoriaComponent } from './pages/categoria/categoria.component';
@@ -29,47 +29,46 @@ import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas
 import { ResBusquedadComponent } from './pages/inicio/head/res-busquedad/res-busquedad.component';
 import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategoria.component';
 import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { register } from 'swiper/element/bundle';
+// register Swiper custom elements
+register();
 
 
 
-
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    InicioComponent,
-    CarruselComponent,
-    HeaderComponent,
-    HeadComponent,
-    SignUpComponent,
-    LogInComponent,
-    DetalleProductoComponent,
-    FooterComponent,
-    AutorComponent,
-    CarroComponent,
-    UserComponent,
-    CategoriaComponent,
-    DetalleVentaComponent,
-    PagoComponent,
-    RespuestasComponent,   
-    ResBusquedadComponent, 
-    SubcategoriaComponent, 
-    FiltradorComponent, 
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule,
-    ReactiveFormsModule,
-    FormsModule,
-    OAuthModule.forRoot(),
-    HttpClientModule,
-
-  ],
-  providers: [
-    provideClientHydration(),
-    provideAnimationsAsync(),
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        InicioComponent,
+        CarruselComponent,
+        HeaderComponent,
+        HeadComponent,
+        SignUpComponent,
+        LogInComponent,
+        DetalleProductoComponent,
+        FooterComponent,
+        AutorComponent,
+        CarroComponent,
+        UserComponent,
+        CategoriaComponent,
+        DetalleVentaComponent,
+        PagoComponent,
+        RespuestasComponent,
+        ResBusquedadComponent,
+        SubcategoriaComponent,
+        FiltradorComponent,
+    ],
+    bootstrap: [AppComponent], imports: [
+        BrowserAnimationsModule,
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        ReactiveFormsModule,
+        FormsModule,
+        OAuthModule.forRoot()], providers: [
+        provideClientHydration(),
+        provideAnimationsAsync(),
+        provideHttpClient(withInterceptorsFromDi()),
+    ], 
+    schemas:[CUSTOM_ELEMENTS_SCHEMA],
+    })
 export class AppModule { }

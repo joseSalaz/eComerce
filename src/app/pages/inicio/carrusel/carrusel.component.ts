@@ -73,28 +73,6 @@ export class CarruselComponent implements AfterViewInit {
       multipleItemCarousel.classList.add('slide');
     }
   }
-
-  
-  
-  nextSlide(): void {
-    const items = this.carouselElement.nativeElement.querySelectorAll('.carousel-item');
-
-    if (items.length > 0) {
-      this.currentIndex = (this.currentIndex + 1) % items.length;
-      items[this.currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-    }
-  }
-  
-
-  prevSlide(): void {
-    const items = this.carouselElement.nativeElement.querySelectorAll('.carousel-item');
-
-    if (items.length > 0) {
-      this.currentIndex = (this.currentIndex - 1 + items.length) % items.length;
-      items[this.currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-    }
-  }
-  
   ngOnDestroy(): void {
     
     clearInterval(this.intervalId);
@@ -103,4 +81,13 @@ export class CarruselComponent implements AfterViewInit {
   comprar(libroId: number) {
     this.router.navigate(['/detalle-producto', libroId]);
   }
+  getSlidesPerView(): number {
+    const width = window.innerWidth;
+    if (width >= 1200) return 5;
+    if (width >= 992) return 4;
+    if (width >= 768) return 3;
+    if (width >= 576) return 2;
+    return 1;
+  }
+  
 }
