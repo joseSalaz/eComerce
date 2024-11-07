@@ -13,6 +13,7 @@ import { ItemCarrito } from '../../Interface/carrito';
 import { Autor } from '../../Interface/autor';
 import { switchMap } from 'rxjs/operators';
 import { Kardex } from '../../Interface/kardex';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -55,8 +56,25 @@ export class DetalleProductoComponent implements OnInit {
     
   }
   mostrarError(mensaje: string): void {
-    alert(mensaje);
+    Swal.fire({
+      title: 'Atención',
+      text: mensaje,
+      icon: 'warning',
+      confirmButtonText: 'Entendido',
+      confirmButtonColor: '#3085d6'
+    });
   }
+  
+  mostrarExito(mensaje: string): void {
+    Swal.fire({
+      title: '¡Genial!',
+      text: mensaje,
+      icon: 'success',
+      confirmButtonText: 'Continuar comprando',
+      confirmButtonColor: '#28a745'
+    });
+  }
+
   obtenerLibro(id: string): void {
     this.libroService.getLibroPorId(id).subscribe(
       (libro: Libro) => {
@@ -111,6 +129,7 @@ export class DetalleProductoComponent implements OnInit {
       precioVenta: this.precioVenta,
       cantidad: this.cantidad
     };
+    this.mostrarExito("Libro Agregado al Carrito con Exito");
     this.carroService.addNewProduct(itemCarrito);
   }
   verificarStock() {

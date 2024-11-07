@@ -4,6 +4,7 @@ import { CarroService } from '../../Service/carro.service';
 import { ItemCarrito } from '../../Interface/carrito';
 import { ActivatedRoute, Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-detalle-venta',
   templateUrl: './detalle-venta.component.html',

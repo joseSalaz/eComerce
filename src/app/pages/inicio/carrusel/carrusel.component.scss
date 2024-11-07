@@ -1,124 +1,124 @@
-.img-wrapper { 
-    max-width: 310px; 
-    max-height: 441px; 
-    overflow: hidden; 
-    margin: 0 auto; 
-}
-
-img {
-    width: 100%;
-    height: 100%; 
-    object-fit: cover; 
-    margin: 20px 0;
-}
-
-@media screen and (min-width:576px) {
-    .swiper-wrapper {
-        display: flex;
-    }
-    .swiper-slide {
-        display: flex; 
-        justify-content: center; 
-        flex: 0 0 calc(100% / 5); // Muestra 5 imágenes en pantallas grandes
-        margin: 0 40px;
-    }
-    .img-wrapper {
-        height: 23vw; 
-    }
-}
-
-@media (max-width: 768px) {
-    .mySwiper {
-        .swiper-slide {
-            flex: 0 0 calc(100% / 3); // Muestra 3 imágenes en pantallas medianas
-        }
-    }
-    .card-title {
-        font-size: 0.9rem; // Ajusta el tamaño del texto
-        white-space: normal; // Permite que el texto ocupe más de una línea si es necesario
-    }
-}
-
-@media (max-width: 576px) {
-    .img-wrapper {
-        height: auto;
-    }
-    .card {
-        width: 100%; // Ancho completo en pantallas pequeñas
-        margin: 10px 0;
-    }
-    .swiper-button-prev, .swiper-button-next {
-        width: 25px;
-        height: 25px;
-    }
-
-    .btn {
-        width: 100%;
-        height: 40px;
-    }
-
-    .mySwiper {
-        .swiper-slide {
-            flex: 0 0 calc(100% / 2); // Muestra 2 imágenes en pantallas pequeñas
-        }
-    }
-    .card-title {
-        font-size: 0.8rem; // Reduce aún más el tamaño del texto
-    }
-}
-
+/* Contenedor Swiper */
 .mySwiper {
     padding: 1em;
-}
-
-.card {
-    width: 310px;
-    margin: 40px 0;
+    width: 85%; /* Usamos 100% para asegurar que ocupe el 100% del contenedor */
+    margin: 0 auto;
+  }
+  
+  /* Estilo de los Slides */
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    margin: 0 10px; /* Espaciado entre los slides */
+  }
+  
+  /* Estilo de la tarjeta */
+  .card {
+    width: 250px;
+    max-width: 420px; /* Definimos un max-width para evitar que se estire demasiado */
+    margin: 10px 0; /* Espaciado entre las tarjetas */
     border: none;
     box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, .18);
-}
-
-.swiper-button-prev, .swiper-button-next {
-    background-color: floralwhite; 
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Imagen de la tarjeta */
+  .img-wrapper {
+    width: 100%;
+    height: 420px; /* Establecemos una altura fija para las imágenes */
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Títulos y precio */
+  .card-body {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  /* Botón de compra */
+  .btn {
+    width: 100%;
+    height: 40px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .card:hover .btn {
+    opacity: 1; /* Muestra el botón al pasar el mouse */
+  }
+  
+  /* Estilos para los botones de navegación */
+  .swiper-button-prev, .swiper-button-next {
+    background-color: floralwhite;
     border-radius: 50%;
     opacity: 0.5;
-}
-
-.swiper-button-prev:hover, .swiper-button-next:hover {
+  }
+  
+  .swiper-button-prev:hover, .swiper-button-next:hover {
     opacity: 1;
-}
-
-.card-body {
-    padding: 1rem; 
-    text-align: center; 
-    position: relative;
-}
-
-.btn {
-    width: 278px;
-    height: 48px; 
-    position: absolute;
-    top: 60%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); 
-    z-index: 1; 
-    opacity: 0; 
-}
-
-.card:hover .btn {
-    display: block;
-}
-
-.card-title {
-    white-space: nowrap; 
-    overflow: hidden; 
-    text-overflow: ellipsis;
-    font-size: 1rem; 
-    position: relative; 
-    z-index: 2; 
-}
-
-.card:hover .price,
-.card:hover .btn {
-    opacity: 1;
-}
+  }
+  
+  /* Responsividad para pantallas grandes */
+  @media screen and (min-width: 576px) {
+    .swiper-slide {
+      flex: 0 0 calc(33.33% - 30px); /* Tres imágenes por fila en pantallas grandes */
+    }
+    .img-wrapper {
+      height: 390px; /* Ajusta la altura de la imagen */
+    }
+  }
+  
+  /* Responsividad para pantallas medianas */
+  @media (max-width: 768px) {
+    .swiper-slide {
+      flex: 0 0 calc(50% - 30px); /* Dos imágenes por fila en pantallas medianas */
+    }
+    .card-title {
+      font-size: 0.9rem; /* Ajuste de tamaño para pantallas más pequeñas */
+    }
+  }
+  
+  /* Responsividad para pantallas pequeñas */
+  @media (max-width: 576px) {
+    .swiper-slide {
+      flex: 0 0 calc(100% - 20px); /* Una imagen por fila en pantallas pequeñas */
+    }
+    .card-title {
+      font-size: 0.8rem; /* Ajuste de tamaño para pantallas más pequeñas */
+    }
+    .img-wrapper {
+      height: auto;
+    }
+  }
+  
