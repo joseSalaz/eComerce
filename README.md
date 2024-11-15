@@ -2,8 +2,6 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
 
-## Atribuciones 
-Algunos iconos utilizados en este proyecto son cortesía de [Font Awesome](https://fontawesome.com).
 
 ## Development server
 
