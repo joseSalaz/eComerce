@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Créditos
 
 Este proyecto utiliza iconos de [Flaticon](https://www.flaticon.com/), creados por:
-##Autores
+Autores
 -
 .
 
