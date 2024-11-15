@@ -1,7 +1,12 @@
 # Ecomercesa
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
+## Créditos
 
+Este proyecto utiliza iconos de [Flaticon](https://www.flaticon.com/), creados por:
+##Autores
+-
+.
 
 ## Development server
 
