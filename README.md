@@ -5,9 +5,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Este proyecto utiliza iconos de [Flaticon](https://www.flaticon.com/), creados por:
 Autores:
-NajmunNahar
-Hilmy Abiyyu A.
-Freepik
+NajmunNahar,
+Hilmy Abiyyu A,
+Freepik.
 
 ## Development server
 
