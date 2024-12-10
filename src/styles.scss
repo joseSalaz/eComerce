@@ -2,10 +2,51 @@
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
 
-h1,h2,h3,h4{
+h1,h2,h3,h4 {
     color:#495369;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+h2 {
+    font-family: 'Sour Gummy', sans-serif;
+    font-weight: 500;
+}
+
+/* Establecemos que todo el contenido ocupe el 100% del alto de la pantalla */
+html, body {
+    height: 100%; /* 100% de la altura de la ventana */
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Apilamos los elementos verticalmente */
+    background-color: #f8f9fa; /* Color de fondo para la página */
+}
+
+/* Aseguramos que el body ocupe al menos el 100% de la altura de la ventana */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Hace que el body siempre ocupe al menos toda la pantalla */
+    flex: 1;
+}
+
+/* El contenedor principal toma todo el espacio disponible entre el header y el footer */
+.container {
+    flex: 1; /* Esto hace que el contenido ocupe todo el espacio disponible */
+    padding-bottom: 50px; /* Evita que el contenido se superponga con el footer */
+}
+
+/* El footer se mantiene al fondo */
+app-footer {
+    margin-top: auto; /* Esto asegura que el footer siempre quede al final */
+}
+
+/* Estilo adicional para el footer */
+footer {
+    background-color: #007bff; /* Color de fondo */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}

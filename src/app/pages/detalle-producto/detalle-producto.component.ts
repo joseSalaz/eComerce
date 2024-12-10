@@ -31,7 +31,9 @@ export class DetalleProductoComponent implements OnInit {
   precioVenta: number=0; // Inicializado precioVenta a 0
   idSubCategoria: number =0;
   stockDisponible: number = 0;
-  kardex: Kardex | null = null;  
+  kardex: Kardex | null = null;
+  bloquearInput: boolean = false;  
+  defaultImageUrl: string = "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
@@ -54,6 +56,10 @@ export class DetalleProductoComponent implements OnInit {
       }
     });
     
+  }
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = this.defaultImageUrl; // Asignamos la URL de imagen por defecto
   }
   mostrarError(mensaje: string): void {
     Swal.fire({
@@ -120,24 +126,28 @@ export class DetalleProductoComponent implements OnInit {
     );
   }
   agregarAlCarrito(): void {
-    if (!this.libro || this.precioVenta <= 0 || this.cantidad <= 0 || this.cantidad > this.stockDisponible || this.stockDisponible <= 0) {
-      this.mostrarError('Datos inválidos. No se puede agregar al carrito o la cantidad excede el stock disponible.');
+    const cantidadEnCarrito = this.carroService.getCantidadPorProducto(this.idLibro); // Método que calcula la cantidad total del producto en el carrito.
+  
+    if (cantidadEnCarrito + this.cantidad > this.stockDisponible) {
+      this.mostrarError('Ya has alcanzado el máximo permitido de este producto en el carrito.');
       return;
     }
+  
+    if (!this.libro || this.precioVenta <= 0 || this.cantidad <= 0 || this.stockDisponible <= 0) {
+      this.mostrarError('Datos inválidos. No se puede agregar al carrito.');
+      return;
+    }
+  
     const itemCarrito: ItemCarrito = {
       libro: this.libro,
       precioVenta: this.precioVenta,
       cantidad: this.cantidad
     };
-    this.mostrarExito("Libro Agregado al Carrito con Exito");
+  
+    this.mostrarExito('Libro Agregado al Carrito con Éxito');
     this.carroService.addNewProduct(itemCarrito);
   }
-  verificarStock() {
-    if (this.cantidad > this.stockDisponible) {
-      this.mostrarError('La cantidad excede el stock disponible.');
-      this.cantidad = this.stockDisponible;
-    }
-  }
+  
 obtenerAutoresDeLibro(idLibro: number): void {
   this.libroAutorService.getAutoresDeLibro(idLibro).subscribe(
     (autores: Autor[]) => {
@@ -170,12 +180,25 @@ private extraerDimensiones(tamanno: string): void {
     );
   }
   incrementarCantidad(): void {
-    this.cantidad++;
+    if (this.cantidad < this.stockDisponible) {
+      this.cantidad++;
+    }
+    this.verificarStock();
   }
-
+  
   decrementarCantidad(): void {
     if (this.cantidad > 1) {
-      this.cantidad--; 
+      this.cantidad--;
+    }
+    this.verificarStock();
+  }
+  verificarStock(): void {
+    if (this.cantidad >= this.stockDisponible) {
+      this.mostrarError('La cantidad no puede superar el stock disponible.');
+      this.cantidad = this.stockDisponible;
+      this.bloquearInput = true; // Bloquea el input si excede el stock.
+    } else if (this.cantidad < this.stockDisponible) {
+      this.bloquearInput = false; // Reactiva el input si está dentro del rango permitido.
     }
   }
 }

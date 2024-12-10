@@ -7,7 +7,7 @@
   import { catchError, switchMap } from 'rxjs/operators';
   import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-
+import { LocalStorageService } from './local-storage.service';
   @Injectable({
     providedIn: 'root'
   })
@@ -18,11 +18,11 @@ import { environment } from '../../environments/environment';
     private executePaymentUrl = 'http://localhost:5229/api/Paypal/execute-payment';
     constructor(
       private http: HttpClient,
-      private exchangeRateService: ExchangeRateService
+      private exchangeRateService: ExchangeRateService,
+      private localStorageService: LocalStorageService
     ) {
-      const storedItems = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+      const storedItems = this.localStorageService.getItem<ItemCarrito[]>(this.storageKey) || [];
       this._itemsCarrito = new BehaviorSubject<ItemCarrito[]>(storedItems);
-      
     }
 
     obtenerCantidadProductos(): number {
@@ -45,7 +45,7 @@ import { environment } from '../../environments/environment';
 
     private updateStorage(items: ItemCarrito[]) {
       this._itemsCarrito.next(items);
-      localStorage.setItem(this.storageKey, JSON.stringify(items));
+      this.localStorageService.setItem(this.storageKey, items);
     }
     enviarCarritoAlBackend(): Observable<any> {
       const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
@@ -65,6 +65,11 @@ import { environment } from '../../environments/environment';
         })
       );
     }
+    getCantidadPorProducto(idLibro: number): number {
+      const item = this._itemsCarrito.value.find(item => item.libro.idLibro === idLibro);
+      return item ? item.cantidad : 0;
+    }
+    
 
 
     

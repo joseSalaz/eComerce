@@ -7,6 +7,7 @@ import { LibroService } from '../../../Service/libro.service';
 import { ItemCarrito } from '../../../Interface/carrito';
 import { AuthService } from '../../../Service/auth.service';
 import { Router } from '@angular/router';
+import { LocalStorageService } from '../../../Service/local-storage.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,16 +22,24 @@ export class CarroComponent {
   
   libros: Libro[] = [];
   itemsCarrito: ItemCarrito[] = [];
+  defaultImageUrl: string = "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
+  
   constructor(
+    private localStorageService: LocalStorageService,
     private carroService: CarroService,
     private libroService:LibroService,
     private authService: AuthService,
     private router: Router
-    ) { }
+    ) { 
+      this.itemsCarrito = this.localStorageService.getItem<ItemCarrito[]>(this.storageKey) || [];
+    }
 
 
   mostrarCarro = true;
-
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = this.defaultImageUrl; // Asignamos la URL de imagen por defecto
+  }
   finalizarCompra() {
     const profile = this.authService.getProfile();
     if (!profile) {

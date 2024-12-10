@@ -75,4 +75,28 @@
   .bg-base{
     background: #f4f6f8;
   }
+/*Iconos */
+.titulo-con-icono {
+    display: flex;          
+    align-items: center;   
+  }
   
+  .titulo-con-icono h2 {
+    margin-right: 15px;      
+    margin-bottom: 0;       
+    padding-bottom: 0;      
+  }
+  
+  .icon {
+    margin-top: 45px;
+    width: 40px;             
+    height: 40px;           
+    object-fit: contain;     
+  }
+  
+  @media (max-width: 600px) {
+    .icon {
+      width: 30px;          
+      height: 30px;
+    }
+  }
