@@ -24,7 +24,7 @@ export class AuthService {
     private oauthService: OAuthService,
     private http: HttpClient,
     private router: Router,
-    ) 
+    )  
     {
     this.initLogin();
     this.oauthService.events.subscribe((event) => {
@@ -42,7 +42,7 @@ export class AuthService {
         issuer: 'https://accounts.google.com',
         strictDiscoveryDocumentValidation: false,
         clientId:
-          '336862279905-jmrsjnmuntnhs4jl5om8ckg69m17rmgh.apps.googleusercontent.com',
+          '682250868280-o0sg453iebedbuuria9clb4t3v2kna8m.apps.googleusercontent.com',
         redirectUri: window.location.origin + '/inicio',
         scope: 'openid profile email',
       };

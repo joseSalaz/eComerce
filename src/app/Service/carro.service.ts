@@ -70,10 +70,6 @@ import { LocalStorageService } from './local-storage.service';
       return item ? item.cantidad : 0;
     }
     
-
-
-    
-
     confirmarPago(paymentId: string, payerId: string): Observable<any> {
       // Recuperar el carrito del almacenamiento local
       const carritoActual = JSON.parse(localStorage.getItem(this.storageKey) || '[]');

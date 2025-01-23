@@ -68,7 +68,9 @@ register();
         provideClientHydration(),
         provideAnimationsAsync(),
         provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withFetch())
     ], 
+    
     schemas:[CUSTOM_ELEMENTS_SCHEMA],
     })
 export class AppModule { }
