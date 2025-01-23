@@ -15,7 +15,7 @@ import { LocalStorageService } from './local-storage.service';
     private storageKey = 'carroItems';
     private endPoint: string = environment.endPoint;
     private _itemsCarrito: BehaviorSubject<ItemCarrito[]>;
-    private executePaymentUrl = 'http://localhost:5229/api/Paypal/execute-payment';
+    private executePaymentUrl = 'https://api20250116150338.azurewebsites.net/api/Paypal/execute-payment';
     constructor(
       private http: HttpClient,
       private exchangeRateService: ExchangeRateService,
@@ -61,7 +61,7 @@ import { LocalStorageService } from './local-storage.service';
             TotalAmount: totalAmount,
             Persona: usuarioData //idCliente 
           };  
-          return this.http.post('http://localhost:5229/api/Cart', detalleCarrito);
+          return this.http.post('https://api20250116150338.azurewebsites.net/api/Cart', detalleCarrito);
         })
       );
     }
