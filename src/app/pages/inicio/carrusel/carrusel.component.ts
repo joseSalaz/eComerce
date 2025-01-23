@@ -35,7 +35,8 @@ export class CarruselComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.mostrarLibro();
+    setTimeout(()=>{this.mostrarLibro();})
+    
   }
 
   mostrarLibro(): void {

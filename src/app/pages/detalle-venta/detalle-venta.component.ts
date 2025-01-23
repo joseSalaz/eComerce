@@ -43,12 +43,6 @@ export class DetalleVentaComponent implements OnInit {
       let preferenceId = params.get('preference_id');
       let collectionId = params.get('collection_id');
 
-      console.log('PayPal Payment ID:', paypalPaymentId);
-      console.log('PayPal Payer ID:', payerId);
-      console.log('Mercado Pago Payment ID:', mercadoPagoPaymentId);
-      console.log('Preference ID:', preferenceId);
-      console.log('Collection ID:', collectionId);
-
       // Confirmar pago según los parámetros disponibles
       if (paypalPaymentId && payerId) {
         this.paymentId = paypalPaymentId;
