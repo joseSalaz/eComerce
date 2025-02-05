@@ -20,7 +20,7 @@ export class DetalleVentaComponent implements OnInit {
   collectionId: string | null = null;
   showModalRespuestas = false;
   isSuccess = false;
-
+  showModalPago: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private carroService: CarroService,
@@ -42,10 +42,6 @@ export class DetalleVentaComponent implements OnInit {
       let mercadoPagoPaymentId = params.get('payment_id');
       let preferenceId = params.get('preference_id');
       let collectionId = params.get('collection_id');
-<<<<<<< HEAD
-=======
-
->>>>>>> 2e7d16728b39ab012db15ec87a88e4d1acfc3379
       // Confirmar pago según los parámetros disponibles
       if (paypalPaymentId && payerId) {
         this.paymentId = paypalPaymentId;
@@ -111,4 +107,11 @@ export class DetalleVentaComponent implements OnInit {
       });
     }
   }
+  abrirModalPago() {
+    this.showModalPago = true;
+}
+
+cerrarModalPago() {
+    this.showModalPago = false;
+}
 }

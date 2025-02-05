@@ -22,6 +22,8 @@ export class HeadComponent implements OnInit {
   totalItems: number = 0;
   isMenuVisible: boolean = false;
   isProcessing: boolean=false;
+
+
   
   constructor(
     private authService: AuthService,
@@ -30,9 +32,10 @@ export class HeadComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
     this.totalItems = this.carroService.obtenerCantidadProductos();
     this.carroService.itemsCarrito.subscribe((items: ItemCarrito[]) => {
-      this.totalItems = items.reduce((acc, item) => acc + item.cantidad, 0);
+      this.totalItems = items.reduce((acc, item) => acc + Number(item.cantidad), 0);
     });
   
     this.authService.sesion$.subscribe(userProfile => {
@@ -49,6 +52,7 @@ export class HeadComponent implements OnInit {
     });
     
   }
+  
 registrarOVerificarUsuario(profileData:any) {
     if (this.isProcessing) return; // Previene ejecuciones duplicadas
 

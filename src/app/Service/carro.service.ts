@@ -15,7 +15,7 @@ import { LocalStorageService } from './local-storage.service';
     private storageKey = 'carroItems';
     private endPoint: string = environment.endPoint;
     private _itemsCarrito: BehaviorSubject<ItemCarrito[]>;
-    private executePaymentUrl = 'https://api20250116150338.azurewebsites.net/api/Paypal/execute-payment';
+    private executePaymentUrl = 'http://localhost:5229/api/Paypal/execute-payment';
     constructor(
       private http: HttpClient,
       private exchangeRateService: ExchangeRateService,
@@ -61,7 +61,7 @@ import { LocalStorageService } from './local-storage.service';
             TotalAmount: totalAmount,
             Persona: usuarioData //idCliente 
           };  
-          return this.http.post('https://api20250116150338.azurewebsites.net/api/Cart', detalleCarrito);
+          return this.http.post('http://localhost:5229/api/Cart', detalleCarrito);
         })
       );
     }
@@ -152,6 +152,17 @@ import { LocalStorageService } from './local-storage.service';
         return throwError(error); // Lanza el error
       })
     );
+  }
+  
+  actualizarCantidad(idLibro: number, nuevaCantidad: number) {
+    const itemsActualizados = this._itemsCarrito.value.map(item => {
+      if (item.libro.idLibro === idLibro) {
+        return { ...item, cantidad: Number(nuevaCantidad) }; // Asegura que cantidad sea número
+      }
+      return item;
+    });
+  
+    this.updateStorage(itemsActualizados); // Guarda en LocalStorage y actualiza el BehaviorSubject
   }
   
   
