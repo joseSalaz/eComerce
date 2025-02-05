@@ -154,6 +154,17 @@ import { LocalStorageService } from './local-storage.service';
     );
   }
   
+  actualizarCantidad(idLibro: number, nuevaCantidad: number) {
+    const itemsActualizados = this._itemsCarrito.value.map(item => {
+      if (item.libro.idLibro === idLibro) {
+        return { ...item, cantidad: Number(nuevaCantidad) }; // Asegura que cantidad sea número
+      }
+      return item;
+    });
+  
+    this.updateStorage(itemsActualizados); // Guarda en LocalStorage y actualiza el BehaviorSubject
+  }
+  
   
     
   }

@@ -1,63 +1,183 @@
+/* 🔹 Fondo Oscuro */
 .fondo-semi-transparente {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
-    z-index: 999; /* Z-index menor para que esté detrás del carro */
-  }
-  
-  .carro-overlay {
-    position: fixed;
-    top: 0;
-    right: 0; /* Posiciona el componente en el lado derecho */
-    width: 40%; /* Ocupa un 40% de la pantalla en ancho */
-    height: 100%; /* Ocupa toda la pantalla en altura */
-    z-index: 1000; /* Z-index alto para que esté por encima del fondo semitransparente */
-    display: flex;
-    justify-content: flex-end; /* Alinea el contenido al final (derecha) */
-  }
-  
-  .carro-container {
-    max-width: 100%; /* Ajusta el ancho máximo para evitar que exceda el tamaño especificado */
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  }
-  
-  .cerrar-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    padding: 5px 10px;
-    background-color: #ccc;
-    border-radius: 5px;
-  }
-  
-  .cerrar-btn:hover {
-    background-color: #aaa;
-  }
-  
-  .tarjeta-item {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 1049;
 }
 
-.contenido-tarjeta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* 🔹 Carrito */
+.carro-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 500px; /* Ajustado para mejor espacio */
+  height: 100%;
+  z-index: 1050;
+  display: flex;
+  justify-content: flex-end;
 }
 
+.carro-container {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* 🔹 Header */
+.carro-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+}
+
+.carro-header h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Ocupa todo el ancho */
+  text-align: center;
+}
+
+/* 🔹 Items del Carrito */
+.carro-items {
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: calc(100% - 100px);
+  padding-right: 5px;
+}
+
+/* 🔹 Tarjeta de Producto */
+.tarjeta-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 10px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* 🔹 Botón de Cerrar */
+.cerrar-btn {
+  position: absolute;
+  left: 15px; /* Asegura que el botón de cerrar quede a la izquierda */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 18px;
+} 
+
+/* 🔹 Imagen */
+.imagen-container img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* 🔹 Info */
+.info-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+  white-space: normal; /* Asegura que el texto haga salto de línea */
+  word-wrap: break-word;
+}
+
+.precio {
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* 🔹 Acciones */
+.acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cantidad-selector {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  width: 50px;
+}
+
+/* 🔹 Botón Eliminar */
 .eliminar-item {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-  
+.eliminar-item:hover {
+  color: darkred;
+}
+
+/* 🔹 Botón Finalizar */
+.finalizar-compra {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 16px;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.finalizar-compra:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 🔹 Ajustes Responsivos */
+@media (max-width: 768px) {
+  .carro-overlay {
+    width: 100%;
+  }
+
+  .carro-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .tarjeta-item {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .acciones {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

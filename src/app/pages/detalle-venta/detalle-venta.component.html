@@ -5,9 +5,11 @@
         <div class="col-lg-8">
             <h6>Productos</h6>
             <ul class="list-unstyled">
-                <li *ngFor="let item of itemsCarrito" class="d-flex mb-4 libro-item">
-                    <img src="{{ item.libro.imagen }}" alt="" class="libro-imagen mr-3">
-                    <div class="media-body">
+                <li *ngFor="let item of itemsCarrito" class="libro-item">
+                    <!-- Imagen del producto -->
+                    <img src="{{ item.libro.imagen }}" alt="{{ item.libro.titulo }}" class="libro-imagen">
+                    <div>
+                        <!-- Información del producto -->
                         <h5 class="mt-0 mb-1">{{ item.libro.titulo }}</h5>
                         <div>Cantidad: {{ item.cantidad }}</div>
                         <div>Precio unitario: S/{{ item.precioVenta | number: '1.2-2' }}</div>
@@ -16,7 +18,7 @@
                 </li>
             </ul>
         </div>
-        
+
         <!-- Columna de resumen de compra -->
         <div class="col-lg-4">
             <div class="sticky-top" style="top: 20px;">
@@ -24,14 +26,25 @@
                 <ul class="list-unstyled">
                     <li>Total: S/{{ calcularTotalCarrito() | number: '1.2-2' }}</li>
                 </ul>
-                <button (click)="irAPago()" [disabled]="itemsCarrito.length === 0" class="btn btn-primary btn-block">
+                <button (click)="abrirModalPago()" [disabled]="itemsCarrito.length === 0" class="btn btn-primary btn-block">
                     Ir a Pago
                 </button>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal con el PagoComponent -->
+<div *ngIf="showModalPago" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" (click)="cerrarModalPago()">&times;</span>
+        <app-pago></app-pago> <!-- Aquí se inserta el PagoComponent -->
+    </div>
+</div>
 
+<!-- Overlay de carga -->
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>
 <!-- Componente Respuestas -->
 <app-respuestas [showModal]="showModalRespuestas" [isSuccess]="isSuccess"></app-respuestas>
 

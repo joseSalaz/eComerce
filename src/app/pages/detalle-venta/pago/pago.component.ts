@@ -19,7 +19,7 @@ export class PagoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
     private pago: PagoService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +34,6 @@ export class PagoComponent implements OnInit {
         this.pago.executePayment(paymentId, payerId).subscribe({
           next: (response) => {
             this.isLoading = false; // Desactiva el indicador de carga después de completar el proceso
-            // Aquí puedes manejar la respuesta de PayPal si es necesario
           },
           error: (error) => {
             console.error('Error al confirmar el pago de PayPal:', error);
