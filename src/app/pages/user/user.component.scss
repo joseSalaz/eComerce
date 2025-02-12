@@ -80,3 +80,17 @@ border-bottom: none;
 border-left: none;
 border-right: none;
 }
+.form-group {
+  position: relative;
+
+  input.ng-invalid.ng-touched {
+    border: 2px solid #dc3545;
+    background-color: #fff5f5;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+}

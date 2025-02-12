@@ -5,6 +5,10 @@ import { DetalleVentaService } from '../../Service/detalle-venta.service';
 import { DireccionService } from '../../Service/direccion.service';
 import { DetalleVenta } from '../../Interface/detalle_venta';
 import { Direccion } from '../../Interface/direccion';
+import { Modal } from 'bootstrap';
+import { ChangeDetectorRef } from '@angular/core';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-user',
@@ -24,7 +28,9 @@ export class UserComponent implements OnInit {
   email: string = "";
 
   // Secciones del perfil
-  currentSection: 'profile' | 'addirec' | 'pedidos' | 'misfav' = 'profile';
+  currentSection: string = 'profile';
+
+
 
   // Modelo de la dirección
   nuevaDireccion: Direccion = {
@@ -37,13 +43,14 @@ export class UserComponent implements OnInit {
     codigoPostal: '',
     esPredeterminada: false
   };
-
+  direccionModal: any;
   constructor(
     private detalleVentaService: DetalleVentaService,
     private direccionService: DireccionService,
     private router: Router,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +85,17 @@ export class UserComponent implements OnInit {
     });
   }, 0);
 }
-
+abrirModal() {
+  if (typeof window !== 'undefined') {
+    const modalElement = document.getElementById('direccionModal');
+    if (modalElement) {
+      import('bootstrap').then(({ Modal }) => {
+        const modal = new Modal(modalElement);
+        modal.show();
+      });
+    }
+  }
+}
   // Obtener los pedidos del usuario
   obtenerDetallesVenta(): void {
     this.detalleVentaService.getDetalleVentaporPersonaId(this.usuarioId).subscribe(
@@ -117,29 +134,102 @@ export class UserComponent implements OnInit {
           codigoPostal: '',
           esPredeterminada: false
         };
+  
+        Swal.fire({
+          title: '✅ Dirección agregada',
+          text: 'La dirección ha sido guardada correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        });
       },
-      error: (err) => console.error('Error al agregar dirección:', err)
-    });
-  }
+      error: (err) => {
+        console.error('Error al agregar dirección:', err);
 
-  // Eliminar una dirección
-  eliminarDireccion(idDireccion: number): void {
-    this.direccionService.deleteDireccion(idDireccion).subscribe({
-      next: () => this.cargarDirecciones(),
-      error: (err) => console.error('Error al eliminar dirección:', err)
+        Swal.fire({
+          title: '⚠️ Error',
+          text: err.error || 'Hubo un problema al agregar la dirección.',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
     });
   }
+  
+
+  eliminarDireccion(idDireccion: number): void {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará la dirección permanentemente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.direccionService.deleteDireccion(idDireccion).subscribe({
+          next: (response) => {
+            this.cargarDirecciones();
+            Swal.fire({
+              title: '✅ Dirección eliminada',
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            });
+          },
+          error: (err) => {
+            console.error('Error al eliminar dirección:', err);
+  
+            let mensajeError = 'Ocurrió un error al eliminar la dirección.';
+            if (typeof err.error === 'string') {
+              mensajeError = err.error; // ✅ Ahora obtendremos el texto del backend correctamente
+            }
+  
+            Swal.fire({
+              title: '⚠️ No se puede eliminar',
+              text: mensajeError,
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          }
+        });
+      }
+    });
+  }
+  
+  
+  
+  
 
   // Establecer una dirección como predeterminada
   establecerPredeterminada(idDireccion: number): void {
     this.direccionService.setDireccionPredeterminada(idDireccion).subscribe({
-      next: () => this.cargarDirecciones(),
-      error: (err) => console.error('Error al establecer dirección predeterminada:', err)
+      next: () => {
+        // 🔥 Volver a cargar la lista desde el backend
+        this.cargarDirecciones();
+  
+        // ✅ Mostrar notificación
+        this.mostrarToast("✅ Dirección predeterminada actualizada correctamente.");
+      },
+      error: (err) => {
+        console.error('Error al establecer dirección predeterminada:', err);
+      }
     });
   }
-
+  
+  
+  mostrarToast(mensaje: string): void {
+    const toast = document.createElement("div");
+    toast.innerText = mensaje;
+    toast.className = "fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-md";
+    document.body.appendChild(toast);
+  
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
   // Cambiar de sección en la interfaz
-  mostrarSeccion(seccion: 'profile' | 'addirec' | 'pedidos' | 'misfav'): void {
+  mostrarSeccion(seccion: string): void {
     this.currentSection = seccion;
   }
 
