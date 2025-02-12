@@ -40,8 +40,12 @@ export class RespuestasComponent {
     } else {
       console.error('Payment ID o Payer ID no están disponibles.');
     }
+    
   }
-
+  redirigirAPedidos() {
+    this.router.navigate(['/user'], { queryParams: { section: 'pedidos' } });
+  }
+  
  
 
   close() {

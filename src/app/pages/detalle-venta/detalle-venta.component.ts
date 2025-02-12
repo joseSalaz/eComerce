@@ -3,7 +3,10 @@ import { Libro } from '../../Interface/libro';
 import { CarroService } from '../../Service/carro.service';
 import { ItemCarrito } from '../../Interface/carrito';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { Direccion } from '../../Interface/direccion';
+import { DireccionService } from '../../Service/direccion.service';
+import { log } from 'console';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-detalle-venta',
@@ -21,43 +24,45 @@ export class DetalleVentaComponent implements OnInit {
   showModalRespuestas = false;
   isSuccess = false;
   showModalPago: boolean = false;
+  direcciones: Direccion[] = []; // Lista de direcciones
+  direccionSeleccionada: Direccion | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private carroService: CarroService,
     private router: Router,
+    private direccionService: DireccionService,
   ) { }
 
   ngOnInit(): void {
+    this.obtenerDireccionesUsuario();
+
     this.carroService.itemsCarrito.subscribe((items: any) => {
       this.itemsCarrito = items;
     });
 
-    // Suscribirse a los parámetros de la consulta
+    // Depuración: Imprimir parámetros de la URL
     this.route.queryParamMap.subscribe(params => {
       // Para PayPal
-      let paypalPaymentId = params.get('paymentId');
-      let payerId = params.get('PayerID');
+      this.paymentId = params.get('paymentId');
+      this.payerId = params.get('PayerID');
 
       // Para Mercado Pago
-      let mercadoPagoPaymentId = params.get('payment_id');
-      let preferenceId = params.get('preference_id');
-      let collectionId = params.get('collection_id');
-      // Confirmar pago según los parámetros disponibles
-      if (paypalPaymentId && payerId) {
-        this.paymentId = paypalPaymentId;
-        this.payerId = payerId;
+      this.paymentId = this.paymentId || params.get('payment_id');
+      this.preferenceId = params.get('preference_id');
+      this.collectionId = params.get('collection_id');
+
+      // Validación de parámetros antes de confirmar pago
+      if (this.paymentId && this.payerId) {
+     
         this.confirmarPagoPayPal();
-      } else if (mercadoPagoPaymentId && preferenceId) {
-        this.paymentId = mercadoPagoPaymentId;
-        this.preferenceId = preferenceId;
-        this.collectionId = collectionId;
+      } else if (this.paymentId && this.preferenceId) {
         this.confirmarPagoMercadoPago();
       } else {
         console.error('No se proporcionaron los IDs necesarios para confirmar el pago.');
       }
     });
   }
-
   delete(indice: number) {
     this.carroService.deleteLibro(indice);
   }
@@ -65,22 +70,69 @@ export class DetalleVentaComponent implements OnInit {
   calcularTotalCarrito(): number {
     return this.itemsCarrito.reduce((total, item) => total + (item.cantidad * item.precioVenta), 0);
   }
+  // Obtener direcciones del usuario
+  obtenerDireccionesUsuario(): void {
+    if (typeof window !== 'undefined') {
+    const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
+    const usuarioId = usuarioData.idPersona; // Asegurar que el usuario tiene un ID válido
 
-  irAPago() {
-    this.router.navigate(['/pago']);
+    if (!usuarioId) {
+      console.error('Error: No se encontró un ID de usuario en localStorage.');
+      return;
+    }
+
+    this.direccionService.getDireccionesByUsuario(usuarioId).subscribe({
+      next: (data) => {
+        this.direcciones = data;
+        if (this.direcciones.length > 0) {
+          this.direccionSeleccionada = this.direcciones[0]; // Seleccionar la primera dirección por defecto
+        }
+      },
+      error: (err) => console.error('Error al obtener direcciones:', err),
+    });
+    }
   }
 
-   // Método para confirmar el pago de PayPal
-   confirmarPagoPayPal() {
+  // Cambiar la dirección seleccionada
+  seleccionarDireccion(direccion: Direccion): void {
+    debugger
+    this.direccionSeleccionada = direccion;
+    this.carroService.setDireccionSeleccionada(direccion); // ✅ Guardar en el servicio
+  }
+  
+
+  // Redirigir a la página de pago con la dirección seleccionada
+  irAPago() {
+    if (!this.direccionSeleccionada || !this.direccionSeleccionada.idDireccion) {
+      Swal.fire({
+        title: '⚠️ Atención',
+        text: 'Por favor, selecciona una dirección antes de continuar.',
+        icon: 'warning',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#d33'
+      });
+      return;
+    }
+  
+    this.router.navigate(['/pago'], {
+      queryParams: { direccionId: this.direccionSeleccionada.idDireccion }
+    });
+  }
+  
+
+  // Confirmar pago PayPal
+  confirmarPagoPayPal() {
     if (this.paymentId && this.payerId) {
+      
       this.isLoading = true;
-      this.carroService.confirmarPago(this.paymentId!, this.payerId!).subscribe({
+      this.carroService.confirmarPago(this.paymentId, this.payerId).subscribe({
         next: () => {
           this.isLoading = false;
           this.showModalRespuestas = true;
           this.isSuccess = true;
         },
-        error: () => {
+        error: (err) => {
+          console.error("Error en confirmación de PayPal:", err);
           this.isLoading = false;
           this.showModalRespuestas = true;
           this.isSuccess = false;
@@ -89,17 +141,18 @@ export class DetalleVentaComponent implements OnInit {
     }
   }
 
-  // Método para confirmar el pago de Mercado Pago
+  // Confirmar pago Mercado Pago
   confirmarPagoMercadoPago() {
     if (this.paymentId && this.preferenceId) {
       this.isLoading = true;
-      this.carroService.confirmarPagoConMercadoPago(this.paymentId!, this.preferenceId!).subscribe({
+      this.carroService.confirmarPagoConMercadoPago(this.paymentId, this.preferenceId).subscribe({
         next: () => {
           this.isLoading = false;
           this.showModalRespuestas = true;
           this.isSuccess = true;
         },
-        error: () => {
+        error: (err) => {
+          console.error("Error en confirmación de MercadoPago:", err);
           this.isLoading = false;
           this.showModalRespuestas = true;
           this.isSuccess = false;
@@ -107,11 +160,26 @@ export class DetalleVentaComponent implements OnInit {
       });
     }
   }
-  abrirModalPago() {
-    this.showModalPago = true;
-}
 
-cerrarModalPago() {
+  abrirModalPago() {
+    if (!this.direccionSeleccionada || !this.direccionSeleccionada.idDireccion) {
+      Swal.fire({
+        title: '📍 Selecciona una dirección',
+        text: 'Debes elegir una dirección de envío antes de proceder.',
+        icon: 'warning',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#d33'
+      });
+      return;
+    }
+  
+    this.carroService.setDireccionSeleccionada(this.direccionSeleccionada);
+    this.showModalPago = true;
+  }
+  
+  
+
+  cerrarModalPago() {
     this.showModalPago = false;
-}
+  }
 }

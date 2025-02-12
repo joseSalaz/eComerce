@@ -13,7 +13,7 @@ export class PagoComponent implements OnInit {
 
   isLoading = false;
   mostrarOpcionesEnvio: boolean = false;
-
+  idDireccionSeleccionada: number | null = null;
   constructor(
     private carroService: CarroService, 
     private activatedRoute: ActivatedRoute,
@@ -24,16 +24,26 @@ export class PagoComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
+      // Obtener la dirección del servicio
+      const direccionSeleccionada = this.carroService.getDireccionSeleccionada();
+      if (direccionSeleccionada && direccionSeleccionada.idDireccion) {
+        this.idDireccionSeleccionada = Number(direccionSeleccionada.idDireccion);
+       
+      } else {
+        this.idDireccionSeleccionada = null;
+     
+      }
+      
       const paymentId = params['paymentId'];
       const payerId = params['PayerID'];
-      const preferenceId = params['preferenceId']; // Nuevo para Mercado Pago
-
-      // Verifica si la URL contiene los parámetros esperados de PayPal
+      const preferenceId = params['preferenceId'];
+  
+      // Lógica de procesamiento de pagos...
       if (paymentId && payerId) {
-        this.isLoading = true; // Activa el indicador de carga al iniciar el proceso de ejecución del pago
+        this.isLoading = true;
         this.pago.executePayment(paymentId, payerId).subscribe({
           next: (response) => {
-            this.isLoading = false; // Desactiva el indicador de carga después de completar el proceso
+            this.isLoading = false;
           },
           error: (error) => {
             console.error('Error al confirmar el pago de PayPal:', error);
@@ -41,12 +51,11 @@ export class PagoComponent implements OnInit {
             this.isLoading = false;
           }
         });
-      } else if (preferenceId) { // Verifica si hay un preferenceId para Mercado Pago
-        this.isLoading = true; // Activa el indicador de carga
+      } else if (preferenceId) {
+        this.isLoading = true;
         this.pago.executePaymentMercadoPago(preferenceId, '').subscribe({
           next: (response) => {
-            this.isLoading = false; // Desactiva el indicador de carga después de completar el proceso
-            // Manejar la respuesta de Mercado Pago aquí si es necesario
+            this.isLoading = false;
           },
           error: (error) => {
             console.error('Error al confirmar el pago de Mercado Pago:', error);
@@ -65,21 +74,30 @@ export class PagoComponent implements OnInit {
   procesarPago(metodo: 'paypal' | 'mercadoPago'): void {
     this.isLoading = true;
 
+    if (!this.idDireccionSeleccionada) {
+      console.error('No se ha seleccionado una dirección.');
+      this.isLoading = false;
+      return;
+    }
+
     if (metodo === 'paypal') {
-      this.carroService.enviarCarritoAlBackend().subscribe({
+      this.carroService.enviarCarritoAlBackend(this.idDireccionSeleccionada).subscribe({
         next: (response) => {
           const approvalUrl = response.approvalUrl;
-          window.location.href = approvalUrl; // Redirige al usuario a PayPal
+      
+        
+          this.idDireccionSeleccionada;
+          window.location.href = approvalUrl;
         },
         error: (error) => {
           console.error('Error al procesar el pago con PayPal:', error);
         }
       });
     } else if (metodo === 'mercadoPago') {
-      this.carroService.enviarCarritoAlBackendParaMercadoPago().subscribe({
+      this.carroService.enviarCarritoAlBackendParaMercadoPago(this.idDireccionSeleccionada).subscribe({
         next: (response) => {
-          const urlDePago = response.urlDePago; // Asegúrate de que la propiedad coincida con lo que envía tu backend
-          window.location.href = urlDePago; // Redirige al usuario a Mercado Pago
+          const urlDePago = response.urlDePago;
+          window.location.href = urlDePago;
         },
         error: (error) => {
           console.error('Error al procesar el pago con Mercado Pago:', error);

@@ -116,3 +116,58 @@
   cursor: pointer;
 }
 
+/* Contenedor principal a pantalla completa */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ocupa todo el alto de la ventana */
+}
+
+/* Contenedor de historial */
+.detalle-venta-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  height: 100%;
+}
+.no-direccion-card {
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.icon-container {
+  font-size: 24px;
+  color: #856404;
+  margin-bottom: 10px;
+}
+
+.message-text {
+  font-size: 16px;
+  color: #856404;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.no-direccion-card .btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.no-direccion-card .btn:hover {
+  background-color: #0056b3;
+}

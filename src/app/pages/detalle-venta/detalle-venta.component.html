@@ -1,5 +1,7 @@
+<div class="main-container">
 <app-head></app-head>
-<div class="container mt-5">
+
+<div class="detalle-venta-container mt-5">
     <div class="row">
         <!-- Columna de productos -->
         <div class="col-lg-8">
@@ -26,13 +28,35 @@
                 <ul class="list-unstyled">
                     <li>Total: S/{{ calcularTotalCarrito() | number: '1.2-2' }}</li>
                 </ul>
+                     <!-- Sección para seleccionar dirección -->
+                
                 <button (click)="abrirModalPago()" [disabled]="itemsCarrito.length === 0" class="btn btn-primary btn-block">
                     Ir a Pago
                 </button>
+                
             </div>
+            <!-- Sección para seleccionar dirección -->
+<div class="form-group">
+    <label for="direccion">Selecciona tu dirección:</label>
+    <select id="direccion" class="form-control" [(ngModel)]="direccionSeleccionada">
+        <option *ngFor="let direccion of direcciones" [ngValue]="direccion">
+            {{ direccion.direccion1 }}, {{ direccion.distrito }}, {{ direccion.provincia }}, {{ direccion.departamento }}
+        </option>
+    </select>
+</div>
+
+<!-- Personalización del mensaje cuando no hay direcciones -->
+<div *ngIf="direcciones.length === 0" class="no-direccion-card">
+    <div class="icon-container">
+        <i class="fas fa-map-marker-alt"></i> <!-- Ícono de ubicación -->
+    </div>
+    <p class="message-text">No tienes direcciones registradas.</p>
+    <a href="/user" class="btn btn-primary">Agregar una dirección</a>
+</div>
         </div>
     </div>
 </div>
+
 <!-- Modal con el PagoComponent -->
 <div *ngIf="showModalPago" class="modal-overlay">
     <div class="modal-content">
@@ -54,3 +78,4 @@
 </div>
 
 <app-footer></app-footer>
+</div>
