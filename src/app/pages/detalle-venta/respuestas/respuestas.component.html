@@ -1,18 +1,20 @@
 <div *ngIf="showModal" class="custom-alert" [ngClass]="{ 'alert-success': isSuccess, 'alert-danger': !isSuccess }">
   <div class="alert-header">
-      <h5>
-        <span *ngIf="isSuccess">✅</span>
-        <span *ngIf="!isSuccess">❌</span>
-        {{ isSuccess ? 'Pago con éxito' : 'Error en el pago' }}
-      </h5>
-      <button type="button" class="btn-close" (click)="close()" aria-label="Close">&times;</button>
+    <h5>
+      <span *ngIf="isSuccess">✅</span>
+      <span *ngIf="!isSuccess">❌</span>
+      {{ isSuccess ? '¡Pago Exitoso!' : 'Error en el Pago' }}
+    </h5>
+    <button type="button" class="btn-close" (click)="close()" aria-label="Close">&times;</button>
   </div>
+
   <div class="alert-body">
-      <h1>{{ isSuccess ? '¡Pago realizado con éxito!' : 'No se pudo completar el pago.' }}</h1>
-      <p>{{ isSuccess ? 'Gracias por tu compra.' : 'Por favor, intenta de nuevo más tarde.' }}</p>
+    <h1>{{ isSuccess ? '¡Gracias por tu compra! 🎉' : 'No se pudo completar el pago' }}</h1>
+    <p>{{ isSuccess ? 'Tu pedido ha sido registrado con éxito.' : 'Por favor, intenta de nuevo más tarde.' }}</p>
   </div>
+
   <div class="alert-footer">
-      <button routerLink="/inicio" class="btn btn-primary">Volver al inicio</button>
-      <button *ngIf="isSuccess" routerLink="/pedidos" class="btn btn-secondary">Ir a tus pedidos</button>
+    <button routerLink="/inicio" class="btn btn-primary">🏠 Volver al inicio</button>
+    <button *ngIf="isSuccess" routerLink="/user" (click)="redirigirAPedidos()" class="btn btn-secondary">📦 Ir a mis pedidos</button>
   </div>
 </div>

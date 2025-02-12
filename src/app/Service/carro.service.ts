@@ -6,16 +6,18 @@
   import { ExchangeRateService } from './exchange-rate.service';
   import { catchError, switchMap } from 'rxjs/operators';
   import { tap } from 'rxjs/operators';
+  import { Direccion } from '../Interface/direccion'; 
 import { environment } from '../../environments/environment';
 import { LocalStorageService } from './local-storage.service';
   @Injectable({
     providedIn: 'root'
   })
   export class CarroService {
+    private direccionSeleccionada: Direccion | null = null;
     private storageKey = 'carroItems';
     private endPoint: string = environment.endPoint;
     private _itemsCarrito: BehaviorSubject<ItemCarrito[]>;
-    private executePaymentUrl = 'http://localhost:5229/api/Paypal/execute-payment';
+    private executePaymentUrl = `${this.endPoint}api/Paypal/execute-payment`;
     constructor(
       private http: HttpClient,
       private exchangeRateService: ExchangeRateService,
@@ -24,7 +26,18 @@ import { LocalStorageService } from './local-storage.service';
       const storedItems = this.localStorageService.getItem<ItemCarrito[]>(this.storageKey) || [];
       this._itemsCarrito = new BehaviorSubject<ItemCarrito[]>(storedItems);
     }
-
+    setDireccionSeleccionada(direccion: Direccion): void {
+      this.direccionSeleccionada = direccion;
+      localStorage.setItem('direccionSeleccionada', JSON.stringify(direccion)); // ✅ Guarda en localStorage
+    }
+    
+  
+    getDireccionSeleccionada(): Direccion | null {
+      if (!this.direccionSeleccionada) {
+        this.direccionSeleccionada = JSON.parse(localStorage.getItem('direccionSeleccionada') || 'null');
+      }
+      return this.direccionSeleccionada;
+    }
     obtenerCantidadProductos(): number {
       return this._itemsCarrito.value.reduce((acc, curr) => acc + curr.cantidad, 0);
     }
@@ -47,7 +60,7 @@ import { LocalStorageService } from './local-storage.service';
       this._itemsCarrito.next(items);
       this.localStorageService.setItem(this.storageKey, items);
     }
-    enviarCarritoAlBackend(): Observable<any> {
+    enviarCarritoAlBackend(idDireccion: number): Observable<any> {
       const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
       return this.exchangeRateService.getExchangeRate().pipe(
         switchMap(tasaDeCambio => {
@@ -56,35 +69,52 @@ import { LocalStorageService } from './local-storage.service';
             precioVenta: parseFloat((item.precioVenta * tasaDeCambio).toFixed(2))
           }));
           const totalAmount = parseFloat(carritoActual.reduce((acc, item) => acc + (item.precioVenta * item.cantidad), 0).toFixed(2));
+    
           const detalleCarrito: Datallecarrito = {
             Items: carritoActual,
             TotalAmount: totalAmount,
-            Persona: usuarioData //idCliente 
-          };  
-          return this.http.post('http://localhost:5229/api/Cart', detalleCarrito);
+            Persona: usuarioData,
+            IdDireccion: idDireccion // Asegúrate de que idDireccion esté presente aquí
+          };
+    
+          return this.http.post(`${this.endPoint}api/Cart`, detalleCarrito);
         })
       );
     }
+    
     getCantidadPorProducto(idLibro: number): number {
       const item = this._itemsCarrito.value.find(item => item.libro.idLibro === idLibro);
       return item ? item.cantidad : 0;
     }
     
     confirmarPago(paymentId: string, payerId: string): Observable<any> {
-      // Recuperar el carrito del almacenamiento local
+      if (typeof window === 'undefined') {
+        console.error("⚠️ localStorage no está disponible en SSR.");
+        return throwError(() => new Error("LocalStorage no está disponible."));
+      }
       const carritoActual = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
       const totalAmount = carritoActual.reduce((acc:any, item:any) => acc + (item.precioVenta * item.cantidad), 0);
       const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
-      // Preparar el cuerpo de la solicitud incluyendo el ID de pago, ID del pagador y el carrito
+      const direccionSeleccionada = this.getDireccionSeleccionada();
+
+  if (!direccionSeleccionada || !direccionSeleccionada.idDireccion) {
+    console.error("⚠️ Error: No se seleccionó una dirección antes de confirmar el pago.");
+    return throwError(() => new Error("Debe seleccionar una dirección antes de confirmar el pago."));
+  }
+
+  
       const body = {
         PaymentId: paymentId,
         PayerID: payerId,
+       
         Carrito: {
           Items: carritoActual,
           TotalAmount: totalAmount,
-          Persona: usuarioData,
+          Persona: usuarioData,   
+          IdDireccion: direccionSeleccionada.idDireccion,
         }
       };    
+
       return this.http.post(this.executePaymentUrl, body).pipe(
         tap(response => {
           // Si el pago se confirma exitosamente, limpia el carrito
@@ -98,7 +128,7 @@ import { LocalStorageService } from './local-storage.service';
     }
   
 
-    enviarCarritoAlBackendParaMercadoPago(): Observable<any> {
+    enviarCarritoAlBackendParaMercadoPago(idDireccion: number): Observable<any> {
       const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
       const carritoActual = this._itemsCarrito.value.map(item => ({
           ...item,
@@ -110,12 +140,13 @@ import { LocalStorageService } from './local-storage.service';
       const detalleCarrito: Datallecarrito = {
           Items: carritoActual,
           TotalAmount: totalAmount,
-          Persona: usuarioData
+          Persona: usuarioData,
+          IdDireccion: idDireccion,
       };
   
       return this.http.post(`${this.endPoint}api/Cart/mercadopago`, detalleCarrito).pipe(
           tap(response => {
-              console.log('Respuesta del backend Mercado Pago:', response); // Para depuración
+             
           }),
           catchError(error => {
               console.error('Error al enviar el carrito a Mercado Pago:', error);
@@ -130,7 +161,12 @@ import { LocalStorageService } from './local-storage.service';
     const carritoActual = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
     const totalAmount = carritoActual.reduce((acc: any, item: any) => acc + (item.precioVenta * item.cantidad), 0);
     const usuarioData = JSON.parse(localStorage.getItem('usuarioData') || '{}');
-  
+    const direccionSeleccionada = this.getDireccionSeleccionada();
+    
+if (!direccionSeleccionada || !direccionSeleccionada.idDireccion) {
+  console.error("⚠️ Error: No se seleccionó una dirección antes de confirmar el pago.");
+  return throwError(() => new Error("Debe seleccionar una dirección antes de confirmar el pago."));
+}
     // Preparar el cuerpo de la solicitud incluyendo el ID de la preferencia y el carrito
     const body = {
       PaymentID: paymentId,
@@ -139,6 +175,7 @@ import { LocalStorageService } from './local-storage.service';
         Items: carritoActual,
         TotalAmount: totalAmount,
         Persona: usuarioData,
+        IdDireccion: direccionSeleccionada.idDireccion,
       }
     };
   
