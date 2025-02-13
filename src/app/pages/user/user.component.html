@@ -57,7 +57,7 @@
 
             <!-- Sección de Direcciones -->
             <div *ngIf="currentSection === 'addirec'">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="d-flex flex-wrap gap-3 justify-content-start">
                 <div *ngFor="let direccion of direcciones" class="card p-4 shadow-md border border-gray-300 rounded-lg">
                   <h5 class="font-semibold">{{ direccion.direccion1 }}</h5>
                   <p class="text-sm text-gray-600">{{ direccion.referencia }}</p>
@@ -84,7 +84,9 @@
               </div>
 
               <!-- Botón para abrir el modal -->
-              <button class="btn btn-primary mb-3 mt-4" (click)="abrirModal()">Agregar Dirección</button>
+              <div class="d-flex justify-content-center">
+                <button class="btn btn-primary mb-3 mt-4" (click)="abrirModal()">Agregar Dirección</button>
+              </div>
 
               <!-- Modal para el formulario de direcciones -->
               <div class="modal fade" id="direccionModal" tabindex="-1" aria-labelledby="direccionModalLabel" aria-hidden="true">
@@ -101,21 +103,41 @@
                           <input type="text" id="direccion1" [(ngModel)]="nuevaDireccion.direccion1" name="direccion1" class="form-control" required #direccion1="ngModel" />
                           <div *ngIf="direccion1.invalid && direccion1.touched" class="error-message">La dirección es obligatoria.</div>
                         </div>
-
+              
                         <div class="form-group">
                           <label for="referencia">Referencia:</label>
                           <input type="text" id="referencia" [(ngModel)]="nuevaDireccion.referencia" name="referencia" class="form-control" />
                         </div>
-
+              
                         <div class="form-group">
                           <label for="distrito">Distrito:</label>
                           <input type="text" id="distrito" [(ngModel)]="nuevaDireccion.distrito" name="distrito" class="form-control" required #distrito="ngModel" />
                           <div *ngIf="distrito.invalid && distrito.touched" class="error-message">El distrito es obligatorio.</div>
                         </div>
-
-                        <button type="submit" class="btn btn-success w-100 btn-sm mt-2" [disabled]="direccionForm.invalid">
+              
+                        <div class="form-group">
+                          <label for="provincia">Provincia:</label>
+                          <input type="text" id="provincia" [(ngModel)]="nuevaDireccion.provincia" name="provincia" class="form-control" required #provincia="ngModel" />
+                          <div *ngIf="provincia.invalid && provincia.touched" class="error-message">La provincia es obligatoria.</div>
+                        </div>
+              
+                        <div class="form-group">
+                          <label for="departamento">Departamento:</label>
+                          <input type="text" id="departamento" [(ngModel)]="nuevaDireccion.departamento" name="departamento" class="form-control" required #departamento="ngModel" />
+                          <div *ngIf="departamento.invalid && departamento.touched" class="error-message">El departamento es obligatorio.</div>
+                        </div>
+              
+                        <div class="form-group">
+                          <label for="codigoPostal">Código Postal:</label>
+                          <input type="text" id="codigoPostal" [(ngModel)]="nuevaDireccion.codigoPostal" name="codigoPostal" class="form-control" />
+                        </div>
+              
+                        <button type="button" class="btn btn-success w-100 btn-sm mt-2" 
+                          (click)="validarFormulario()">
                           Guardar
                         </button>
+
+                        <p *ngIf="mensajeError" class="text-danger mt-2">{{ mensajeError }}</p> 
                       </form>
                     </div>
                   </div>

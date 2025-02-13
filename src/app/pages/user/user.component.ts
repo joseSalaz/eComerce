@@ -5,7 +5,7 @@ import { DetalleVentaService } from '../../Service/detalle-venta.service';
 import { DireccionService } from '../../Service/direccion.service';
 import { DetalleVenta } from '../../Interface/detalle_venta';
 import { Direccion } from '../../Interface/direccion';
-import { Modal } from 'bootstrap';
+import bootstrap, { Modal } from 'bootstrap';
 import { ChangeDetectorRef } from '@angular/core';
 import Swal from 'sweetalert2';
 
@@ -29,7 +29,8 @@ export class UserComponent implements OnInit {
 
   // Secciones del perfil
   currentSection: string = 'profile';
-
+  //error direccion
+  mensajeError: string = '';
 
 
   // Modelo de la dirección
@@ -85,6 +86,19 @@ export class UserComponent implements OnInit {
     });
   }, 0);
 }
+validarFormulario() {
+  this.mensajeError = '';
+
+  if (!this.nuevaDireccion.direccion1.trim() || 
+      !this.nuevaDireccion.distrito.trim() || 
+      !this.nuevaDireccion.provincia.trim() || 
+      !this.nuevaDireccion.departamento.trim()) {
+    this.mensajeError = 'Por favor, completa todos los campos obligatorios.';
+    return;
+  }
+  this.agregarDireccion();
+}
+
 abrirModal() {
   if (typeof window !== 'undefined') {
     const modalElement = document.getElementById('direccionModal');
@@ -134,6 +148,17 @@ abrirModal() {
           codigoPostal: '',
           esPredeterminada: false
         };
+        if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+          const modalElement = document.getElementById('direccionModal');
+          if (modalElement) {
+            import('bootstrap').then(({ Modal }) => {
+              const modal = Modal.getInstance(modalElement);
+              if (modal) {
+                modal.hide();
+              }
+            });
+          }
+        }
   
         Swal.fire({
           title: '✅ Dirección agregada',
@@ -223,10 +248,8 @@ abrirModal() {
     toast.innerText = mensaje;
     toast.className = "fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-md";
     document.body.appendChild(toast);
-  
-    setTimeout(() => {
       toast.remove();
-    }, 3000);
+   
   }
   // Cambiar de sección en la interfaz
   mostrarSeccion(seccion: string): void {
