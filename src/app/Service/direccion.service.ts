@@ -34,11 +34,11 @@ export class DireccionService {
 
   // Establecer una dirección como predeterminada
   setDireccionPredeterminada(idDireccion: number): Observable<any> {
-    return this.http.put(`${this.endPoint}/set-predeterminada/${idDireccion}`, {});
+    return this.http.put(`${this.endPoint}/set-predeterminada/${idDireccion}`, {}, { responseType: 'text' });
   }
 
   // Eliminar una dirección (si no está vinculada a ventas)
   deleteDireccion(id: number): Observable<any> {
-    return this.http.delete(`${this.endPoint}/${id}`);
+    return this.http.delete(`${this.endPoint}/${id}`, { responseType: 'text' });
   }
 }

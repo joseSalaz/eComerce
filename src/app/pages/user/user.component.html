@@ -10,101 +10,142 @@
           <p style="margin: 0;"> Hola, {{ displayname }}!</p>
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-3 text-center">
           <div class="nav flex-column text-center">
             <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('profile')" [class.active]="currentSection === 'profile'">Perfil</button>
             <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('addirec')" [class.active]="currentSection === 'addirec'">Direcciones</button>
-            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" 
-        (click)="mostrarSeccion('pedidos')" 
-        [class.active]="currentSection === 'pedidos'">
-  Pedidos
-</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('pedidos')" [class.active]="currentSection === 'pedidos'">Pedidos</button>
             <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('misfav')" [class.active]="currentSection === 'misfav'">Mis Favoritos</button>
             <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="prevpage()">Salir</button>
           </div>
         </div>
-        <div class="col-md-9">
-          <!-- Sección de Pedidos -->
-          <div *ngIf="currentSection === 'pedidos'">
-            <div *ngIf="detallesVenta.length > 0; else noPedidos">
-              <table class="table">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col">Producto</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let detalle of detallesVentaInversos">
-                    <td>{{ detalle.nombreProducto }}</td>
-                    <td>S/{{ detalle.precioUnit }}</td>
-                    <td>{{ detalle.cantidad }}</td>
-                    <td>{{ detalle.estado }}</td>
-                    <td>S/{{ detalle.importe }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <ng-template #noPedidos>
-              <div class="alert alert-warning" role="alert">
-                No tienes pedidos aún.
+          <!-- Contenido principal -->
+          <div class="col-md-9">
+            
+            <!-- Sección de Pedidos -->
+            <div *ngIf="currentSection === 'pedidos'">
+              <div *ngIf="detallesVenta.length > 0; else noPedidos">
+                <table class="table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">Producto</th>
+                      <th scope="col">Precio</th> 
+                      <th scope="col">Cantidad</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let detalle of detallesVentaInversos">
+                      <td>{{ detalle.nombreProducto }}</td>
+                      <td>S/{{ detalle.precioUnit }}</td>
+                      <td>{{ detalle.cantidad }}</td>
+                      <td>{{ detalle.estado }}</td>
+                      <td>S/{{ detalle.importe }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </ng-template>
-          </div>
-          <!-- Sección de Direcciones -->
-          <div *ngIf="currentSection === 'addirec'">
-            <h2 class="text-center">Gestión de Direcciones</h2>
-            <div *ngFor="let direccion of direcciones" class="card p-3 mb-3">
-              <p><strong>Dirección:</strong> {{ direccion.direccion1 }}</p>
-              <p><strong>Referencia:</strong> {{ direccion.referencia }}</p>
-              <p><strong>Ubicación:</strong> {{ direccion.distrito }}, {{ direccion.provincia }}, {{ direccion.departamento }}</p>
-              <p><strong>Código Postal:</strong> {{ direccion.codigoPostal }}</p>
-              <button *ngIf="!direccion.esPredeterminada" (click)="establecerPredeterminada(direccion.idDireccion!)" class="btn btn-primary btn-sm">Establecer como predeterminada</button>
-              <button (click)="eliminarDireccion(direccion.idDireccion!)" class="btn btn-danger btn-sm">Eliminar</button>
+              <ng-template #noPedidos>
+                <div class="alert alert-warning" role="alert">
+                  No tienes pedidos aún.
+                </div>
+              </ng-template>
             </div>
 
-            <!-- Formulario de Nueva Dirección -->
-            <h3 class="mt-4">Agregar Nueva Dirección</h3>
-            <form #direccionForm="ngForm" (ngSubmit)="agregarDireccion()" class="border p-4 rounded shadow-sm">
-              <div class="form-group">
-                <label for="direccion1">Dirección:</label>
-                <input type="text" id="direccion1" [(ngModel)]="nuevaDireccion.direccion1" name="direccion1" class="form-control" required />
+            <!-- Sección de Direcciones -->
+            <div *ngIf="currentSection === 'addirec'">
+              <div class="d-flex flex-wrap gap-3 justify-content-start">
+                <div *ngFor="let direccion of direcciones" class="card p-4 shadow-md border border-gray-300 rounded-lg">
+                  <h5 class="font-semibold">{{ direccion.direccion1 }}</h5>
+                  <p class="text-sm text-gray-600">{{ direccion.referencia }}</p>
+                  <p class="text-sm text-gray-600">{{ direccion.distrito }}, {{ direccion.provincia }}, {{ direccion.departamento }}</p>
+                  <p class="text-sm text-gray-600"><strong>Código Postal:</strong> {{ direccion.codigoPostal }}</p>
+
+                  <div class="mt-3 flex justify-between">
+                    <button *ngIf="!direccion.esPredeterminada" 
+                      (click)="establecerPredeterminada(direccion.idDireccion!)"
+                      class="btn btn-primary btn-sm">
+                      Establecer como predeterminada
+                    </button>
+
+                    <span *ngIf="direccion.esPredeterminada" class="text-green-500 font-semibold">
+                      ✅ Predeterminada
+                    </span>
+
+                    <button (click)="eliminarDireccion(direccion.idDireccion!)"
+                      class="btn btn-danger btn-sm">
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label for="referencia">Referencia:</label>
-                <input type="text" id="referencia" [(ngModel)]="nuevaDireccion.referencia" name="referencia" class="form-control" />
+              <!-- Botón para abrir el modal -->
+              <div class="d-flex justify-content-center">
+                <button class="btn btn-primary mb-3 mt-4" (click)="abrirModal()">Agregar Dirección</button>
               </div>
 
-              <div class="form-group">
-                <label for="distrito">Distrito:</label>
-                <input type="text" id="distrito" [(ngModel)]="nuevaDireccion.distrito" name="distrito" class="form-control" required />
+              <!-- Modal para el formulario de direcciones -->
+              <div class="modal fade" id="direccionModal" tabindex="-1" aria-labelledby="direccionModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="direccionModalLabel">Agregar Nueva Dirección</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form #direccionForm="ngForm" (ngSubmit)="agregarDireccion()" class="border p-4 rounded shadow-sm">
+                        <div class="form-group">
+                          <label for="direccion1">Dirección:</label>
+                          <input type="text" id="direccion1" [(ngModel)]="nuevaDireccion.direccion1" name="direccion1" class="form-control" required #direccion1="ngModel" />
+                          <div *ngIf="direccion1.invalid && direccion1.touched" class="error-message">La dirección es obligatoria.</div>
+                        </div>
+              
+                        <div class="form-group">
+                          <label for="referencia">Referencia:</label>
+                          <input type="text" id="referencia" [(ngModel)]="nuevaDireccion.referencia" name="referencia" class="form-control" />
+                        </div>
+              
+                        <div class="form-group">
+                          <label for="distrito">Distrito:</label>
+                          <input type="text" id="distrito" [(ngModel)]="nuevaDireccion.distrito" name="distrito" class="form-control" required #distrito="ngModel" />
+                          <div *ngIf="distrito.invalid && distrito.touched" class="error-message">El distrito es obligatorio.</div>
+                        </div>
+              
+                        <div class="form-group">
+                          <label for="provincia">Provincia:</label>
+                          <input type="text" id="provincia" [(ngModel)]="nuevaDireccion.provincia" name="provincia" class="form-control" required #provincia="ngModel" />
+                          <div *ngIf="provincia.invalid && provincia.touched" class="error-message">La provincia es obligatoria.</div>
+                        </div>
+              
+                        <div class="form-group">
+                          <label for="departamento">Departamento:</label>
+                          <input type="text" id="departamento" [(ngModel)]="nuevaDireccion.departamento" name="departamento" class="form-control" required #departamento="ngModel" />
+                          <div *ngIf="departamento.invalid && departamento.touched" class="error-message">El departamento es obligatorio.</div>
+                        </div>
+              
+                        <div class="form-group">
+                          <label for="codigoPostal">Código Postal:</label>
+                          <input type="text" id="codigoPostal" [(ngModel)]="nuevaDireccion.codigoPostal" name="codigoPostal" class="form-control" />
+                        </div>
+              
+                        <button type="button" class="btn btn-success w-100 btn-sm mt-2" 
+                          (click)="validarFormulario()">
+                          Guardar
+                        </button>
+
+                        <p *ngIf="mensajeError" class="text-danger mt-2">{{ mensajeError }}</p> 
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
 
-              <div class="form-group">
-                <label for="provincia">Provincia:</label>
-                <input type="text" id="provincia" [(ngModel)]="nuevaDireccion.provincia" name="provincia" class="form-control" required />
-              </div>
-
-              <div class="form-group">
-                <label for="departamento">Departamento:</label>
-                <input type="text" id="departamento" [(ngModel)]="nuevaDireccion.departamento" name="departamento" class="form-control" required />
-              </div>
-
-              <div class="form-group">
-                <label for="codigoPostal">Código Postal:</label>
-                <input type="text" id="codigoPostal" [(ngModel)]="nuevaDireccion.codigoPostal" name="codigoPostal" class="form-control" />
-              </div>
-
-              <button type="submit" class="btn btn-success btn-block mt-3" [disabled]="direccionForm.invalid">Guardar</button>
-            </form>
-          </div>
-
-          <!-- Sección de Perfil -->
+                     <!-- Sección de Perfil -->
           <div *ngIf="currentSection === 'profile'">
             <div class="user-details-container p-3 border rounded">
               <div class="row">
@@ -131,9 +172,9 @@
               </div>
               <button class="btn btn-success btn-lg btn-block mt-3">Editar</button>
             </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>

@@ -30,8 +30,11 @@
 .user-detail h5 {
   margin-bottom: 3px; 
 }
-.btn-success{
-  width: 700px;
+.btn-success {
+  width: 100%;
+  max-width: 700px; 
+  display: block;
+  margin: 0 auto;
 }
 .bg-base{
   background: #f4f6f8;
@@ -61,6 +64,11 @@ td{
 h1,h2,h3,h4,h5{
   color: #495369;    ;
 }
+.card {
+  padding: 10px; 
+  max-width: 300px; 
+  font-size: 14px;
+}
 .table {
 border-collapse: collapse;
 }
@@ -79,4 +87,27 @@ border-bottom: none;
 .table th, .table td {
 border-left: none;
 border-right: none;
+}
+.form-group {
+  position: relative;
+
+  input.ng-invalid.ng-touched {
+    border: 2px solid #dc3545;
+    background-color: #fff5f5;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  @media (max-width: 768px) {
+    .btn-outline-secondary {
+      width: 100%;
+    }
+  
+    .card {
+      max-width: 100%;
+    }
+  }
 }
