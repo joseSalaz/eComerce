@@ -10,22 +10,25 @@
   
 }
 .btn-outline-secondary:hover {
-  background-color: #45BC91;
+  background-color: #313eb1;
 }
 .btn-outline-secondary.active,
 .btn-outline-secondary:active {
-  background-color: #45BC91;
+  background-color: #1928af;
+}
+.submit{
+  background-color: #1928af;
 }
 
 
 .user-details-container {
-  max-width: 750px; 
-  max-height: 370px;
+  max-width: 750px;
+  min-height: 150px; /* Permite que tenga un tamaño mínimo */
+  height: auto; /* Se ajusta automáticamente según el contenido */
   margin: 0 auto;
-
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  
+  padding: 10px; /* Añade un padding para evitar que el contenido se vea muy ajustado */
 }
 .user-detail h5 {
   margin-bottom: 3px; 
@@ -35,6 +38,7 @@
   max-width: 700px; 
   display: block;
   margin: 0 auto;
+  background-color: #1928af;
 }
 .bg-base{
   background: #f4f6f8;
