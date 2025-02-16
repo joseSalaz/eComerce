@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import Swal from 'sweetalert2';
 import { EstadoPedido } from '../../Interface/estado_pedido';
 import { Venta } from '../../Interface/venta';
-import { VentaService } from '../../Service/venta.service';
+import { VentaService } from '../../Service/venta.service copy';
 
 
 @Component({
@@ -22,7 +22,19 @@ export class UserComponent implements OnInit {
   ventas: Venta[] = [];
   detallesVenta: DetalleVenta[] = [];
   direcciones: Direccion[] = [];
-  usuarioId: number = 0;
+  persona: Persona = {
+    idPersona: 0,
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    correo: '',
+    tipoDocumento: '',
+    numeroDocumento: '',
+    telefono: ''
+  };
+  cargando = false;
+  editando = false;
+  usuarioId = 0;
   estadosPedidos: { [idDetalleVenta: number]: EstadoPedido } = {};
   // Información de usuario
   vernombre: boolean = true;
@@ -35,7 +47,7 @@ export class UserComponent implements OnInit {
   //error direccion
   mensajeError: string = '';
   detalleVentaModal: any;
-
+  detalleVentaSeleccionado: number | null = null
   // Modelo de la dirección
   nuevaDireccion: Direccion = {
     idPersona: 0,
@@ -47,6 +59,8 @@ export class UserComponent implements OnInit {
     codigoPostal: '',
     esPredeterminada: false
   };
+ 
+
   direccionModal: any;
   constructor(
     private detalleVentaService: DetalleVentaService,
@@ -55,11 +69,14 @@ export class UserComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private ventaService: VentaService
-  ) {}
+    private ventaService: VentaService,
+    private personaService: PersonaService,
+     ) 
+    {}
 
   ngOnInit(): void {
-    
+  
+
     setTimeout(() => {
     this.route.queryParams.subscribe(params => {
       if (params['section']) {
@@ -72,9 +89,11 @@ export class UserComponent implements OnInit {
   this.usuarioId = usuarioData.idPersona || 0;
   
   this.usuarioId = this.authService.getUsuarioId();
+  this.persona.idPersona = this.usuarioId;
 
     if (this.usuarioId) {
         this.obtenerVentas();
+        this.cargarDatosPersona();
     }
 
     this.authService.sesion$.subscribe(userProfile => {
@@ -259,18 +278,22 @@ abrirModal() {
   
   abrirModalVenta(idVenta: number): void {
     this.obtenerDetallesVenta(idVenta);
-
-    
-    
     const modalElement = document.getElementById('detalleVentaModal');
     if (modalElement) {
       import('bootstrap').then(({ Modal }) => {
-        this.detalleVentaModal = new Modal(modalElement);
-        this.detalleVentaModal.show();
+        const modal = new Modal(modalElement);
+        modal.show();
       });
     }
   }
-  
+
+  verEstadoPedido(idDetalleVentas: number): void {
+    this.detalleVentaSeleccionado = idDetalleVentas;
+  }
+
+  onCerrarEstadoPedido(): void {
+    this.detalleVentaSeleccionado = null;
+  }
   
   
 
@@ -345,6 +368,53 @@ abrirModal() {
     this.router.navigate(['/user/detalle-pedido'], { queryParams: { id: idDetalleVentas } });
   }
   
+
+  cargarDatosPersona(): void {
+    this.personaService.obtenerPersonaPorId(this.usuarioId).subscribe({
+      next: (persona) => {
+        this.persona = persona;
+      },
+      error: (error) => console.error('Error al obtener datos de la persona:', error)
+    });
+  }
   
+  toggleEditar(): void {
+    this.editando = !this.editando;
+    if (!this.editando) {
+      this.cargarDatosPersona();
+    }
+  }
+  actualizarUsuario(): void {
+    if (!this.persona.idPersona) {
+      Swal.fire({
+        title: '⚠️ Error',
+        text: 'No se puede actualizar porque falta el identificador del usuario',
+        icon: 'error'
+      });
+      return;
+    }
   
+    this.personaService.actualizarPersona(this.persona).subscribe({
+      next: (res) => {
+        Swal.fire({
+          title: 'Éxito',
+          text: 'Datos actualizados correctamente',
+          icon: 'success'
+        }).then(() => {
+          this.editando = false;
+          this.cargarDatosPersona();
+        });
+      },
+      error: (err) => {
+        console.error('Error al actualizar persona:', err);
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo actualizar la información',
+          icon: 'error'
+        });
+      }
+    });
+  }
 }
+  
+

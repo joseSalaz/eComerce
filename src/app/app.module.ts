@@ -31,7 +31,12 @@ import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategor
 import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { register } from 'swiper/element/bundle';
-import { DetallePedidoComponent } from './pages/user/detalle-pedido/detalle-pedido.component';
+
+import { UserProfileComponent } from './pages/user/user-profile/user-profile.component';
+import { UserOrdersComponent } from './pages/user/user-orders/user-orders.component';
+import { UserAddressComponent } from './pages/user/user-address/user-address.component';
+import { DetalleVentaModalComponent } from './pages/user/detalle-venta-modal/detalle-venta-modal.component';
+import { EstadoPedidoModalComponent } from './pages/user/detalle-pedido/detalle-pedido.component';
 // register Swiper custom elements
 register();
 
@@ -57,7 +62,12 @@ register();
         ResBusquedadComponent,
         SubcategoriaComponent,
         FiltradorComponent,
-        DetallePedidoComponent,
+        DetalleVentaModalComponent,
+        EstadoPedidoModalComponent,
+        UserProfileComponent,
+        UserOrdersComponent,
+        UserAddressComponent,
+        DetalleVentaModalComponent,
     ],
     bootstrap: [AppComponent], imports: [
         BrowserAnimationsModule,

@@ -3,6 +3,9 @@ import { CarroService } from '../../../Service/carro.service';
 import { HttpClient } from '@angular/common/http';
 import { PagoService } from '../../../Service/pago.service';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { AuthService } from '../../../Service/auth.service';
+import { PersonaService } from '../../../Service/persona.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pago',
@@ -20,6 +23,8 @@ export class PagoComponent implements OnInit {
     private http: HttpClient,
     private pago: PagoService,
     private router: Router,
+    private authService: AuthService,
+    private personaService:PersonaService,
   ) {}
 
   ngOnInit(): void {
@@ -70,39 +75,72 @@ export class PagoComponent implements OnInit {
   toggleOpcionesEnvio(): void {
     this.mostrarOpcionesEnvio = !this.mostrarOpcionesEnvio;
   }
-
+  validarDatos(datos: any): boolean {
+    return datos?.nombre && datos?.apellidoMaterno && datos?.apellidoPaterno && datos?.correo && datos?.telefono && datos?.numeroDocumento;
+  }
   procesarPago(metodo: 'paypal' | 'mercadoPago'): void {
     this.isLoading = true;
-
+    const idPersona = this.authService.getUsuarioId();
+  
     if (!this.idDireccionSeleccionada) {
-      console.error('No se ha seleccionado una dirección.');
+      Swal.fire({
+        title: '⚠️ Atención',
+        text: 'Debes seleccionar una dirección antes de proceder con el pago.',
+        icon: 'warning',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#d33'
+      });
       this.isLoading = false;
       return;
     }
-
-    if (metodo === 'paypal') {
-      this.carroService.enviarCarritoAlBackend(this.idDireccionSeleccionada).subscribe({
-        next: (response) => {
-          const approvalUrl = response.approvalUrl;
-      
-        
-          this.idDireccionSeleccionada;
-          window.location.href = approvalUrl;
-        },
-        error: (error) => {
-          console.error('Error al procesar el pago con PayPal:', error);
+  
+    this.personaService.obtenerPersonaPorId(idPersona).subscribe(
+      (datos) => {
+        if (!this.validarDatos(datos)) {
+          Swal.fire({
+            title: '⚠️ Atención',
+            text: 'Es necesario que primero completes todos tus datos de usuario antes de proceder con el pago.',
+            icon: 'warning',
+            confirmButtonText: 'Completar mis Datos',
+            confirmButtonColor: '#d33'
+          }).then(() => {
+            this.router.navigate(['/user']);
+          });
+          this.isLoading = false;
+          return;
         }
-      });
-    } else if (metodo === 'mercadoPago') {
-      this.carroService.enviarCarritoAlBackendParaMercadoPago(this.idDireccionSeleccionada).subscribe({
-        next: (response) => {
-          const urlDePago = response.urlDePago;
-          window.location.href = urlDePago;
-        },
-        error: (error) => {
-          console.error('Error al procesar el pago con Mercado Pago:', error);
+  
+        // ✅ Si los datos son válidos, proceder con el pago
+        if (metodo === 'paypal') {
+          this.carroService.enviarCarritoAlBackend(this.idDireccionSeleccionada!).subscribe({
+            next: (response) => {
+              const approvalUrl = response.approvalUrl;
+              window.location.href = approvalUrl;
+            },
+            error: (error) => {
+              console.error('Error al procesar el pago con PayPal:', error);
+              this.isLoading = false;
+            }
+          });
+        } else if (metodo === 'mercadoPago') {
+          this.carroService.enviarCarritoAlBackendParaMercadoPago(this.idDireccionSeleccionada!).subscribe({
+            next: (response) => {
+              const urlDePago = response.urlDePago;
+              window.location.href = urlDePago;
+            },
+            error: (error) => {
+              console.error('Error al procesar el pago con Mercado Pago:', error);
+              this.isLoading = false;
+            }
+          });
         }
-      });
-    }
+      },
+      (error) => {
+        console.error('Error obteniendo datos del usuario:', error);
+        this.isLoading = false;
+      }
+    );
   }
+  
+  
 }
