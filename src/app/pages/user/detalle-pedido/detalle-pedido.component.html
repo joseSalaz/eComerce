@@ -1,9 +1,11 @@
-<div class="container mt-5">
-    <div class="card">
-      <div class="card-header bg-primary text-white text-center">
-        <h5 class="mb-0">📦 Estado del Pedido</h5>
+<div class="modal fade" id="estadoPedidoModal" tabindex="-1" aria-labelledby="estadoPedidoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="margin-left: 500px;">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="estadoPedidoLabel">📦 Estado del Pedido</h5>
+        <button type="button" class="btn-close" (click)="cerrarModal()"></button>
       </div>
-      <div class="card-body">
+      <div class="modal-body">
         <div *ngIf="estadoPedido; else noEstado">
           <table class="table table-bordered text-center">
             <thead class="thead-light">
@@ -21,8 +23,7 @@
               </tr>
             </tbody>
           </table>
-  
-          <!-- Sección de imágenes del estado -->
+
           <div *ngIf="imagenesEstado.length > 0" class="mt-4">
             <h5 class="text-center text-secondary">📸 Imágenes del Estado</h5>
             <div class="d-flex flex-wrap justify-content-center gap-3">
@@ -37,18 +38,16 @@
             </div>
           </div>
         </div>
-  
+
         <ng-template #noEstado>
           <div class="alert alert-warning text-center">
             ❌ No se encontró el estado del pedido.
           </div>
         </ng-template>
       </div>
-      <div class="card-footer text-center">
-        <button class="btn btn-secondary" (click)="volver()" [disabled]="false">🔙 Volver</button>
-
-
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cerrarModal()">🔙 Cerrar</button>
       </div>
     </div>
   </div>
-  
+</div>

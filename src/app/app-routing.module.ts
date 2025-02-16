@@ -14,7 +14,9 @@ import { PagoGuard } from './Guard/pago.guard';
 import { RespuestasComponent } from './pages/detalle-venta/respuestas/respuestas.component';
 import { SubcategoriaComponent } from './pages/categoria/subcategoria/subcategoria.component';
 import { FiltradorComponent } from './pages/inicio/head/filtrador/filtrador.component';
-import { DetallePedidoComponent } from './pages/user/detalle-pedido/detalle-pedido.component';
+import { EstadoPedidoModalComponent } from './pages/user/detalle-pedido/detalle-pedido.component';
+import { DetalleVentaModalComponent } from './pages/user/detalle-venta-modal/detalle-venta-modal.component';
+
 
 
 
@@ -31,7 +33,8 @@ const routes: Routes = [
   {path:'subcategoria/:idSubCategoria/libros',component:SubcategoriaComponent},
   { path: 'pago', component: PagoComponent, canActivate: [PagoGuard] },
   {path:'respuesta',component:RespuestasComponent},
-  { path: 'user/detalle-pedido', component: DetallePedidoComponent },
+  { path: 'user/detalle-pedido', component: EstadoPedidoModalComponent },
+  { path: 'user/detalle-venta-modal', component: DetalleVentaModalComponent },
 
   {
     path: 'auth',
