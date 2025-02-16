@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EstadoPedido, EstadoPedidoImagen } from '../../../Interface/estado_pedido';
-import { VentaService } from '../../../Service/venta.service copy';
+import { VentaService } from '../../../Service/venta.service';
 import { Router } from '@angular/router';
 import { AfterViewInit } from '@angular/core';
 @Component({

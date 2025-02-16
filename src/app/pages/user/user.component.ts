@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import Swal from 'sweetalert2';
 import { EstadoPedido } from '../../Interface/estado_pedido';
 import { Venta } from '../../Interface/venta';
-import { VentaService } from '../../Service/venta.service copy';
+import { VentaService } from '../../Service/venta.service';
 
 
 @Component({

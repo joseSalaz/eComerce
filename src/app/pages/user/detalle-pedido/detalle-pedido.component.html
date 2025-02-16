@@ -28,7 +28,9 @@
             <div class="d-flex flex-wrap justify-content-center gap-3">
               <div *ngFor="let img of imagenesEstado">
                 <div class="card shadow-sm p-2">
-                  <img [src]="img.urlImagen" class="img-fluid rounded" style="max-width: 200px;" alt="Imagen Estado">
+                  <div *ngFor="let url of img.urlImagen?.split(',')">
+                    <img *ngIf="url" [src]="url" class="img-fluid rounded" style="max-width: 200px;" alt="Imagen Estado">
+                  </div>                                
                   <div class="text-center mt-2 text-muted">
                     <small>{{ img.estado || 'Sin estado' }} - {{ img.fecha | date: 'dd/MM/yyyy' }}</small>
                   </div>
