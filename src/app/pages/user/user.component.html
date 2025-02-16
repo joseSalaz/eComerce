@@ -147,7 +147,8 @@
             </div>
 
                      <!-- Sección de Perfil -->
-             
+                     <div *ngIf="currentSection === 'profile'">
+                      <div class="user-details-container  border rounded">
                      <div class="container mt-4">
                       <form #personaForm="ngForm" (ngSubmit)="editando && personaForm.valid && actualizarUsuario()">
                         <div class="row">
@@ -330,6 +331,9 @@
                         </div>
                       </form>
                     </div>
+                      </div>
+                     </div>
+                      
 
     <!-- Botones -->
   
