@@ -26,31 +26,32 @@
             
             <!-- Sección de Pedidos -->
             <div *ngIf="currentSection === 'pedidos'">
-              <div *ngIf="detallesVenta.length > 0; else noPedidos">
-                <table class="table">
+              <div *ngIf="ventas.length > 0; else noVentas">
+                <table class="table table-bordered text-center">
                   <thead class="thead-light">
                     <tr>
-                      <th scope="col">Producto</th>
-                      <th scope="col">Precio</th> 
-                      <th scope="col">Cantidad</th>
-                      <th scope="col">Estado</th>
+                      <th scope="col">Fecha</th>
                       <th scope="col">Total</th>
+                      <th scope="col">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let detalle of detallesVentaInversos">
-                      <td>{{ detalle.nombreProducto }}</td>
-                      <td>S/{{ detalle.precioUnit }}</td>
-                      <td>{{ detalle.cantidad }}</td>
-                      <td>{{ detalle.estado }}</td>
-                      <td>S/{{ detalle.importe }}</td>
+                    <tr *ngFor="let venta of ventas.slice().reverse()">
+                      <td>{{ venta.fechaVenta | date: 'dd/MM/yyyy' }}</td>
+                      <td>S/ {{ venta.totalPrecio }}</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm" (click)="abrirModalVenta(venta.idVentas)">
+                          Ver Detalles
+                        </button>                        
+                        
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <ng-template #noPedidos>
-                <div class="alert alert-warning" role="alert">
-                  No tienes pedidos aún.
+              <ng-template #noVentas>
+                <div class="alert alert-warning text-center">
+                  No tienes ventas registradas.
                 </div>
               </ng-template>
             </div>
@@ -174,6 +175,49 @@
             </div>
 
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="detalleVentaModal" tabindex="-1" aria-labelledby="detalleVentaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalleVentaLabel">Detalles de la Venta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="detallesVenta.length > 0; else noDetalles">
+            <table class="table table-bordered text-center">
+              <thead class="thead-light">
+                <tr>
+                  <th>Producto</th>
+                  <th>Precio</th>
+                  <th>Cantidad</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detalle of detallesVenta">
+                  <td>{{ detalle.nombreProducto }}</td>
+                  <td>S/ {{ detalle.precioUnit }}</td>
+                  <td>{{ detalle.cantidad }}</td>
+                  <td>S/ {{ detalle.importe }}</td>
+                  <td>
+                    <button class="btn btn-outline-info btn-sm" (click)="irAEstadoPedido(detalle.idDetalleVentas)">
+                      Ver Estado
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #noDetalles>
+            <div class="alert alert-warning text-center">
+              No hay detalles para esta venta.
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>

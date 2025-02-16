@@ -1,5 +1,5 @@
 export interface DetalleVenta {
-    idDetalleVenta: number;
+    idDetalleVentas: number;
     nombreProducto: string;
     precioUnit:number;
     cantidad:number;

@@ -113,5 +113,13 @@ export class AuthService {
   verificarUsuario(usuario: UsuarioGoogle): Observable<any> {
     return this.http.post(`${this.apiUrl}/verificar`, usuario);
   }
+  getUsuarioId(): number {
+    const usuarioData = localStorage.getItem('usuarioData');
+    if (usuarioData) {
+        const usuario = JSON.parse(usuarioData);
+        return usuario.idPersona || 0;  // Devuelve 0 si no hay idPersona
+    }
+    return 0; // Devuelve 0 si no hay usuarioData en localStorage
+}
 
 }

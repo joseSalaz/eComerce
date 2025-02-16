@@ -8,6 +8,9 @@ import { Direccion } from '../../Interface/direccion';
 import bootstrap, { Modal } from 'bootstrap';
 import { ChangeDetectorRef } from '@angular/core';
 import Swal from 'sweetalert2';
+import { EstadoPedido } from '../../Interface/estado_pedido';
+import { Venta } from '../../Interface/venta';
+import { VentaService } from '../../Service/venta.service copy';
 
 
 @Component({
@@ -16,11 +19,11 @@ import Swal from 'sweetalert2';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-  detallesVentaInversos: any[] = [];
+  ventas: Venta[] = [];
   detallesVenta: DetalleVenta[] = [];
   direcciones: Direccion[] = [];
   usuarioId: number = 0;
-
+  estadosPedidos: { [idDetalleVenta: number]: EstadoPedido } = {};
   // Información de usuario
   vernombre: boolean = true;
   displayname: string = "";
@@ -31,7 +34,7 @@ export class UserComponent implements OnInit {
   currentSection: string = 'profile';
   //error direccion
   mensajeError: string = '';
-
+  detalleVentaModal: any;
 
   // Modelo de la dirección
   nuevaDireccion: Direccion = {
@@ -51,10 +54,12 @@ export class UserComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private ventaService: VentaService
   ) {}
 
   ngOnInit(): void {
+    
     setTimeout(() => {
     this.route.queryParams.subscribe(params => {
       if (params['section']) {
@@ -66,9 +71,29 @@ export class UserComponent implements OnInit {
     : {};
   this.usuarioId = usuarioData.idPersona || 0;
   
+  this.usuarioId = this.authService.getUsuarioId();
 
+    if (this.usuarioId) {
+        this.obtenerVentas();
+    }
+
+    this.authService.sesion$.subscribe(userProfile => {
+        if (userProfile && userProfile.usu.length > 0) {
+            const profileData = userProfile.usu[0];
+            this.vernombre = !!profileData.name;
+            this.displayname = profileData.name || '';
+            this.email = profileData.email;
+            this.photoURL = profileData.picture;
+        }
+    });
+
+  if (this.usuarioId) {
+    this.obtenerVentas();
+  }
     
-    this.obtenerDetallesVenta();
+  if (this.ventas.length > 0) {
+    this.obtenerDetallesVenta(this.ventas[0].idVentas);
+}
     this.cargarDirecciones();
     this.checkSession();
 
@@ -111,17 +136,27 @@ abrirModal() {
   }
 }
   // Obtener los pedidos del usuario
-  obtenerDetallesVenta(): void {
-    this.detalleVentaService.getDetalleVentaporPersonaId(this.usuarioId).subscribe(
-      (detalles: DetalleVenta[]) => {
-        this.detallesVenta = Array.isArray(detalles) ? detalles : [detalles];
-        this.detallesVentaInversos = this.detallesVenta.reverse();
+  obtenerDetallesVenta(idVenta: number): void {
+    this.ventaService.obtenerDetallesVenta(idVenta).subscribe({
+      next: (detalles) => {
+  
+        this.detallesVenta = detalles;
+        
+        // Ajustamos la variable idDetalleVenta
+        this.detallesVenta.forEach(detalle => {
+          if (detalle.idDetalleVentas) { // 🔹 CAMBIAMOS idDetalleVenta → idDetalleVentas
+            this.obtenerEstadoPedido(detalle.idDetalleVentas);
+          } else {
+            console.error('⚠️ Error: detalle.idDetalleVentas es undefined', detalle);
+          }
+        });
       },
-      (error) => {
-        console.error('Error al obtener los detalles de venta:', error);
-      }
-    );
+      error: (error) => console.error('🚨 Error al obtener detalles de venta:', error)
+    });
   }
+  
+  
+
 
   // Obtener las direcciones del usuario
   cargarDirecciones(): void {
@@ -222,6 +257,19 @@ abrirModal() {
     });
   }
   
+  abrirModalVenta(idVenta: number): void {
+    this.obtenerDetallesVenta(idVenta);
+
+    
+    
+    const modalElement = document.getElementById('detalleVentaModal');
+    if (modalElement) {
+      import('bootstrap').then(({ Modal }) => {
+        this.detalleVentaModal = new Modal(modalElement);
+        this.detalleVentaModal.show();
+      });
+    }
+  }
   
   
   
@@ -268,4 +316,35 @@ abrirModal() {
   prevpage(): void {
     this.router.navigate(['/inicio']);
   }
+  obtenerVentas(): void {
+    this.ventaService.obtenerVentasPorPersona(this.usuarioId).subscribe({
+      next: (ventas) => {
+        this.ventas = ventas;
+      },
+      error: (error) => console.error('Error al obtener ventas:', error)
+    });
+  }
+
+
+  obtenerEstadoPedido(idDetalleVenta: number): void {
+    this.ventaService.obtenerEstadoPedido(idDetalleVenta).subscribe({
+      next: (estadoPedido) => {
+        this.estadosPedidos[idDetalleVenta] = estadoPedido;
+      },
+      error: () => {
+        console.warn(`No se encontró estado de pedido para el detalle ${idDetalleVenta}`);
+      }
+    });
+  }
+  irAEstadoPedido(idDetalleVentas: number | undefined): void {
+    if (!idDetalleVentas) {
+      console.error('🚨 Error: idDetalleVentas es undefined, no se puede navegar.');
+      return;
+    }
+
+    this.router.navigate(['/user/detalle-pedido'], { queryParams: { id: idDetalleVentas } });
+  }
+  
+  
+  
 }
