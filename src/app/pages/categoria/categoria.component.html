@@ -1,0 +1,49 @@
+<app-head></app-head>
+
+<div class="store-container">
+  
+  <aside class="filters-sidebar">
+    <div class="filters-sticky-wrapper">
+      <h3 class="filters-title">FILTROS</h3>
+      
+      <div class="filter-group">
+        <h4>EDITORIAL</h4>
+        
+        <div class="filter-list">
+          <div *ngFor="let ed of (mostrarContenido ? categorias : categorias.slice(0, 5))" class="filter-item">
+            <input type="checkbox" [id]="ed">
+            <label [for]="ed">{{ ed }}</label>
+          </div>
+        </div>
+
+        <button *ngIf="categorias.length > 5" type="button" class="btn-show-more" (click)="mostrarContenido = !mostrarContenido">
+           {{ mostrarContenido ? 'MOSTRAR MENOS ▲' : 'MOSTRAR ' + (categorias.length - 5) + ' MÁS ▼' }}
+        </button>
+      </div>
+
+      </div>
+  </aside>
+
+  <main class="products-content">
+    <div class="card-container">
+      <div *ngFor="let libro of datas" class="card">
+        <div class="img-wrapper">
+          <img [src]="libro.imagen" alt="Libro">
+        </div> 
+        <div class="card-body">
+          <h5 class="card-title">{{ libro.titulo }}</h5>
+          <h1 class="price" *ngIf="libro.precioVenta; else loading">
+            S/{{ libro.precioVenta | number:'1.2-2' }}
+          </h1>
+          <ng-template #loading>
+            <span>Cargando precio...</span>
+          </ng-template>
+          <button type="button" class="btn btn-primary fs-5" (click)="redireccionarAlDetalleProducto(libro.idLibro)">Comprar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<app-footer></app-footer>

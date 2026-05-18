@@ -1,0 +1,38 @@
+<div *ngIf="mostrarCarro" class="fondo-semi-transparente" (click)="cerrarCarro()"></div>
+<div *ngIf="mostrarCarro" class="carro-overlay">
+  <div class="carro-container">
+    <!-- Botón de Cerrar -->
+    <div class="carro-header">
+      <button class="cerrar-btn" (click)="cerrarCarro()">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2><i class="fas fa-shopping-cart"></i> Carrito de Compras</h2>
+    </div>
+
+    <!-- Contenedor de Items -->
+    <div class="carro-items">
+      <div *ngFor="let item of itemsCarrito; let indice = index" class="tarjeta-item">
+        <div class="imagen-container">
+          <img [src]="item.libro.imagen" (error)="onImageError($event)" alt="Imagen del producto">
+        </div>
+        <div class="info-container">
+          <h3 class="titulo">{{ item.libro.titulo }}</h3>
+          <p class="precio">S/ {{ item.precioVenta }}</p>
+          <div class="acciones">
+            <select class="cantidad-selector" [(ngModel)]="item.cantidad">
+              <option *ngFor="let cantidad of [1,2,3,4,5]" [value]="cantidad">{{ cantidad }}</option>
+            </select>
+            <button class="eliminar-item" (click)="delete(indice)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón Finalizar Compra -->
+    <button type="button" class="btn finalizar-compra" [disabled]="itemsCarrito.length === 0" (click)="finalizarCompra()">
+      Finalizar Compra
+    </button>
+  </div>
+</div>
