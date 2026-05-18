@@ -14,343 +14,295 @@
       <div class="row">
         <div class="col-md-3 text-center">
           <div class="nav flex-column text-center">
-            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('profile')" [class.active]="currentSection === 'profile'">Perfil</button>
-            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('addirec')" [class.active]="currentSection === 'addirec'">Direcciones</button>
-            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('pedidos')" [class.active]="currentSection === 'pedidos'">Pedidos</button>
-            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('misfav')" [class.active]="currentSection === 'misfav'">Mis Favoritos</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('profile')"
+              [class.active]="currentSection === 'profile'">Perfil</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('addirec')"
+              [class.active]="currentSection === 'addirec'">Direcciones</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('pedidos')"
+              [class.active]="currentSection === 'pedidos'">Pedidos</button>
+            <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="mostrarSeccion('misfav')"
+              [class.active]="currentSection === 'misfav'">Mis Favoritos</button>
             <button class="btn btn-outline-secondary btn-lg mb-2 w-100" (click)="prevpage()">Salir</button>
           </div>
         </div>
-          <!-- Contenido principal -->
-          <div class="col-md-9">
-            
-            <!-- Sección de Pedidos -->
-            <div *ngIf="currentSection === 'pedidos'">
-              <div *ngIf="ventas.length > 0; else noVentas">
-                <table class="table table-bordered text-center">
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col">Fecha</th>
-                      <th scope="col">Total</th>
-                      <th scope="col">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let venta of ventas.slice().reverse()">
-                      <td>{{ venta.fechaVenta | date: 'dd/MM/yyyy' }}</td>
-                      <td>S/ {{ venta.totalPrecio }}</td>
-                      <td>
-                        <button class="btn btn-primary btn-sm" (click)="abrirModalVenta(venta.idVentas)">
-                          Ver Detalles
-                        </button>                        
-                        
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <ng-template #noVentas>
-                <div class="alert alert-warning text-center">
-                  No tienes ventas registradas.
-                </div>
-              </ng-template>
+        <!-- Contenido principal -->
+        <div class="col-md-9">
+
+          <!-- Sección de Pedidos -->
+          <div *ngIf="currentSection === 'pedidos'">
+            <div *ngIf="ventas.length > 0; else noVentas">
+              <table class="table table-bordered text-center">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let venta of ventas.slice().reverse()">
+                    <td>{{ venta.fechaVenta | date: 'dd/MM/yyyy' }}</td>
+                    <td>S/ {{ venta.totalPrecio }}</td>
+                    <td>
+                      <button class="btn btn-primary btn-sm" (click)="abrirModalVenta(venta.idVentas)">
+                        Ver Detalles
+                      </button>
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-            <!-- Sección de Direcciones -->
-            <div *ngIf="currentSection === 'addirec'">
-              <div class="d-flex flex-wrap gap-3 justify-content-start">
-                <div *ngFor="let direccion of direcciones" class="card p-4 shadow-md border border-gray-300 rounded-lg">
-                  <h5 class="font-semibold">{{ direccion.direccion1 }}</h5>
-                  <p class="text-sm text-gray-600">{{ direccion.referencia }}</p>
-                  <p class="text-sm text-gray-600">{{ direccion.distrito }}, {{ direccion.provincia }}, {{ direccion.departamento }}</p>
-                  <p class="text-sm text-gray-600"><strong>Código Postal:</strong> {{ direccion.codigoPostal }}</p>
-
-                  <div class="mt-3 flex justify-between">
-                    <button *ngIf="!direccion.esPredeterminada" 
-                      (click)="establecerPredeterminada(direccion.idDireccion!)"
-                      class="btn btn-primary btn-sm">
-                      Establecer como predeterminada
-                    </button>
-
-                    <span *ngIf="direccion.esPredeterminada" class="text-green-500 font-semibold">
-                      ✅ Predeterminada
-                    </span>
-
-                    <button (click)="eliminarDireccion(direccion.idDireccion!)"
-                      class="btn btn-danger btn-sm">
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
+            <ng-template #noVentas>
+              <div class="alert alert-warning text-center">
+                No tienes ventas registradas.
               </div>
+            </ng-template>
+          </div>
 
-              <!-- Botón para abrir el modal -->
-              <div class="d-flex justify-content-center">
-                <button class="btn btn-primary mb-3 mt-4" (click)="abrirModal()">Agregar Dirección</button>
-              </div>
+          <!-- Sección de Direcciones -->
+          <div *ngIf="currentSection === 'addirec'">
+            <div class="d-flex flex-wrap gap-3 justify-content-start">
+              <div *ngFor="let direccion of direcciones" class="card p-4 shadow-md border border-gray-300 rounded-lg">
+                <h5 class="font-semibold">{{ direccion.direccion1 }}</h5>
+                <p class="text-sm text-gray-600">{{ direccion.referencia }}</p>
+                <p class="text-sm text-gray-600">{{ direccion.distrito }}, {{ direccion.provincia }}, {{
+                  direccion.departamento }}</p>
+                <p class="text-sm text-gray-600"><strong>Código Postal:</strong> {{ direccion.codigoPostal }}</p>
 
-              <!-- Modal para el formulario de direcciones -->
-              <div class="modal fade" id="direccionModal" tabindex="-1" aria-labelledby="direccionModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="direccionModalLabel">Agregar Nueva Dirección</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form #direccionForm="ngForm" (ngSubmit)="agregarDireccion()" class="border p-4 rounded shadow-sm">
-                        <div class="form-group">
-                          <label for="direccion1">Dirección:</label>
-                          <input type="text" id="direccion1" [(ngModel)]="nuevaDireccion.direccion1" name="direccion1" class="form-control" required #direccion1="ngModel" />
-                          <div *ngIf="direccion1.invalid && direccion1.touched" class="error-message">La dirección es obligatoria.</div>
-                        </div>
-              
-                        <div class="form-group">
-                          <label for="referencia">Referencia:</label>
-                          <input type="text" id="referencia" [(ngModel)]="nuevaDireccion.referencia" name="referencia" class="form-control" />
-                        </div>
-              
-                        <div class="form-group">
-                          <label for="distrito">Distrito:</label>
-                          <input type="text" id="distrito" [(ngModel)]="nuevaDireccion.distrito" name="distrito" class="form-control" required #distrito="ngModel" />
-                          <div *ngIf="distrito.invalid && distrito.touched" class="error-message">El distrito es obligatorio.</div>
-                        </div>
-              
-                        <div class="form-group">
-                          <label for="provincia">Provincia:</label>
-                          <input type="text" id="provincia" [(ngModel)]="nuevaDireccion.provincia" name="provincia" class="form-control" required #provincia="ngModel" />
-                          <div *ngIf="provincia.invalid && provincia.touched" class="error-message">La provincia es obligatoria.</div>
-                        </div>
-              
-                        <div class="form-group">
-                          <label for="departamento">Departamento:</label>
-                          <input type="text" id="departamento" [(ngModel)]="nuevaDireccion.departamento" name="departamento" class="form-control" required #departamento="ngModel" />
-                          <div *ngIf="departamento.invalid && departamento.touched" class="error-message">El departamento es obligatorio.</div>
-                        </div>
-              
-                        <div class="form-group">
-                          <label for="codigoPostal">Código Postal:</label>
-                          <input type="text" id="codigoPostal" [(ngModel)]="nuevaDireccion.codigoPostal" name="codigoPostal" class="form-control" />
-                        </div>
-              
-                        <button type="button" class="btn btn-success w-100 btn-sm mt-2" 
-                          (click)="validarFormulario()">
-                          Guardar
-                        </button>
+                <div class="mt-3 flex justify-between">
+                  <button *ngIf="!direccion.esPredeterminada" (click)="establecerPredeterminada(direccion.idDireccion!)"
+                    class="btn btn-primary btn-sm">
+                    Establecer como predeterminada
+                  </button>
 
-                        <p *ngIf="mensajeError" class="text-danger mt-2">{{ mensajeError }}</p> 
-                      </form>
-                    </div>
-                  </div>
+                  <span *ngIf="direccion.esPredeterminada" class="text-green-500 font-semibold">
+                    ✅ Predeterminada
+                  </span>
+
+                  <button (click)="eliminarDireccion(direccion.idDireccion!)" class="btn btn-danger btn-sm">
+                    Eliminar
+                  </button>
                 </div>
               </div>
             </div>
 
-                     <!-- Sección de Perfil -->
-                     <div *ngIf="currentSection === 'profile'">
-                      <div class="user-details-container  border rounded">
-                     <div class="container mt-4">
-                      <form #personaForm="ngForm" (ngSubmit)="editando && personaForm.valid && actualizarUsuario()">
-                        <div class="row">
-                          <div class="col-md-6 mb-3">
-                            <label for="nombre" class="form-label">Nombres:</label>
-                            <input 
-                              type="text" 
-                              class="form-control"
-                              [class.form-control-plaintext]="!editando"
-                              [class.is-invalid]="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)"
-                              id="nombre"
-                              name="nombre"
-                              #nombreInput="ngModel"
-                              [(ngModel)]="persona.nombre"
-                              [readonly]="!editando"
-                              required
-                              minlength="2"
-                              pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+"
-                            >
-                            <div class="invalid-feedback" *ngIf="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)">
-                              <div *ngIf="nombreInput.errors?.['required']">El nombre es requerido</div>
-                              <div *ngIf="nombreInput.errors?.['minlength']">El nombre debe tener al menos 2 caracteres</div>
-                              <div *ngIf="nombreInput.errors?.['pattern']">El nombre solo debe contener letras</div>
-                            </div>
-                          </div>
-                    
-                          <div class="col-md-6 mb-3">
-                            <label for="apellidoPaterno" class="form-label">Apellido Paterno:</label>
-                            <input 
-                              type="text" 
-                              class="form-control"
-                              [class.form-control-plaintext]="!editando"
-                              [class.is-invalid]="apellidoPaternoInput.invalid && (apellidoPaternoInput.dirty || apellidoPaternoInput.touched)"
-                              id="apellidoPaterno"
-                              name="apellidoPaterno"
-                              #apellidoPaternoInput="ngModel"
-                              [(ngModel)]="persona.apellidoPaterno"
-                              [readonly]="!editando"
-                              required
-                              minlength="2"
-                              pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+"
-                            >
-                            <div class="invalid-feedback" *ngIf="apellidoPaternoInput.invalid && (apellidoPaternoInput.dirty || apellidoPaternoInput.touched)">
-                              <div *ngIf="apellidoPaternoInput.errors?.['required']">El apellido paterno es requerido</div>
-                              <div *ngIf="apellidoPaternoInput.errors?.['minlength']">El apellido debe tener al menos 2 caracteres</div>
-                              <div *ngIf="apellidoPaternoInput.errors?.['pattern']">El apellido solo debe contener letras</div>
-                            </div>
-                          </div>
-                    
-                          <div class="col-md-6 mb-3">
-                            <label for="apellidoMaterno" class="form-label">Apellido Materno:</label>
-                            <input 
-                              type="text" 
-                              class="form-control"
-                              [class.form-control-plaintext]="!editando"
-                              [class.is-invalid]="apellidoMaternoInput.invalid && (apellidoMaternoInput.dirty || apellidoMaternoInput.touched)"
-                              id="apellidoMaterno"
-                              name="apellidoMaterno"
-                              #apellidoMaternoInput="ngModel"
-                              [(ngModel)]="persona.apellidoMaterno"
-                              [readonly]="!editando"
-                              required
-                              minlength="2"
-                              pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+"
-                            >
-                            <div class="invalid-feedback" *ngIf="apellidoMaternoInput.invalid && (apellidoMaternoInput.dirty || apellidoMaternoInput.touched)">
-                              <div *ngIf="apellidoMaternoInput.errors?.['required']">El apellido materno es requerido</div>
-                              <div *ngIf="apellidoMaternoInput.errors?.['minlength']">El apellido debe tener al menos 2 caracteres</div>
-                              <div *ngIf="apellidoMaternoInput.errors?.['pattern']">El apellido solo debe contener letras</div>
-                            </div>
-                          </div>
-                    
-                          <div class="col-md-6 mb-3">
-                            <label for="correo" class="form-label">Email:</label>
-                            <input 
-                              type="email" 
-                              class="form-control"
-                              [class.form-control-plaintext]="!editando"
-                              [class.is-invalid]="correoInput.invalid && (correoInput.dirty || correoInput.touched)"
-                              id="correo"
-                              name="correo"
-                              #correoInput="ngModel"
-                              [(ngModel)]="persona.correo"
-                              [readonly]="!editando"
-                              required
-                              email
-                              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                            >
-                            <div class="invalid-feedback" *ngIf="correoInput.invalid && (correoInput.dirty || correoInput.touched)">
-                              <div *ngIf="correoInput.errors?.['required']">El correo es requerido</div>
-                              <div *ngIf="correoInput.errors?.['email'] || correoInput.errors?.['pattern']">Ingrese un correo válido</div>
-                            </div>
-                          </div>
-                    
-                          <div class="col-md-6 mb-3">
-                            <label for="tipoDocumento" class="form-label">Tipo de Documento:</label>
-                            <select 
-                              class="form-control"
-                              [class.form-control-plaintext]="!editando"
-                              [class.is-invalid]="tipoDocumentoInput.invalid && (tipoDocumentoInput.dirty || tipoDocumentoInput.touched)"
-                              id="tipoDocumento"
-                              name="tipoDocumento"
-                              #tipoDocumentoInput="ngModel"
-                              [(ngModel)]="persona.tipoDocumento"
-                              [disabled]="!editando"
-                              required
-                            >
-                              <option value="">Seleccione un tipo de documento</option>
-                              <option value="DNI">DNI</option>
-                              <option value="Pasaporte">Pasaporte</option>
-                              <option value="Carnet de Extranjería">Carnet de Extranjería</option>
-                            </select>
-                            <div class="invalid-feedback" *ngIf="tipoDocumentoInput.invalid && (tipoDocumentoInput.dirty || tipoDocumentoInput.touched)">
-                              <div *ngIf="tipoDocumentoInput.errors?.['required']">Seleccione un tipo de documento</div>
-                            </div>
-                          </div>
-                    
-                          <div class="col-md-6 mb-3">
-                            <label for="numeroDocumento" class="form-label">Número de Documento:</label>
-                            <input 
-                              type="text" 
-                              class="form-control"
-                              [class.form-control-plaintext]="!editando"
-                              [class.is-invalid]="numeroDocumentoInput.invalid && (numeroDocumentoInput.dirty || numeroDocumentoInput.touched)"
-                              id="numeroDocumento"
-                              name="numeroDocumento"
-                              #numeroDocumentoInput="ngModel"
-                              [(ngModel)]="persona.numeroDocumento"
-                              [readonly]="!editando"
-                              required
-                              minlength="8"
-                              maxlength="12"
-                              pattern="[0-9]+"
-                            >
-                            <div class="invalid-feedback" *ngIf="numeroDocumentoInput.invalid && (numeroDocumentoInput.dirty || numeroDocumentoInput.touched)">
-                              <div *ngIf="numeroDocumentoInput.errors?.['required']">El número de documento es requerido</div>
-                              <div *ngIf="numeroDocumentoInput.errors?.['minlength']">El número debe tener al menos 8 dígitos</div>
-                              <div *ngIf="numeroDocumentoInput.errors?.['pattern']">Ingrese solo números</div>
-                            </div>
-                          </div>
-                    
-                          <div class="col-md-6 mb-3">
-                            <label for="telefono" class="form-label">Teléfono:</label>
-                            <input 
-                              type="text" 
-                              class="form-control"
-                              [class.form-control-plaintext]="!editando"
-                              [class.is-invalid]="telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)"
-                              id="telefono"
-                              name="telefono"
-                              #telefonoInput="ngModel"
-                              [(ngModel)]="persona.telefono"
-                              [readonly]="!editando"
-                              required
-                              minlength="9"
-                              maxlength="9"
-                              pattern="[0-9]+"
-                            >
-                            <div class="invalid-feedback" *ngIf="telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)">
-                              <div *ngIf="telefonoInput.errors?.['required']">El teléfono es requerido</div>
-                              <div *ngIf="telefonoInput.errors?.['minlength'] || telefonoInput.errors?.['maxlength']">El teléfono debe tener 9 dígitos</div>
-                              <div *ngIf="telefonoInput.errors?.['pattern']">Ingrese solo números</div>
-                            </div>
-                          </div>
-                        </div>
-                    
-                        <div class="mt-3">
-                          <button type="button" class="btn btn-success btn-lg me-2" (click)="toggleEditar()">
-                            {{ editando ? 'Cancelar' : 'Editar' }}
-                          </button>
-                    
-                          <button 
-                            type="submit" 
-                            class="btn btn-success btn-lg me-2 mt-3" 
-                            *ngIf="editando"
-                            [disabled]="!personaForm.valid"
-                          >
-                            Guardar Cambios
-                          </button>
-                        </div>
-                      </form>
+            <!-- Botón para abrir el modal -->
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-primary mb-3 mt-4" (click)="abrirModal()">Agregar Dirección</button>
+            </div>
+
+            <!-- Modal personalizado (reemplaza el modal de Bootstrap) -->
+            <div *ngIf="mostrarModal" class="modal-overlay" (click)="cerrarModalAlFondo($event)">
+              <div class="modal-box">
+                <div class="modal-box-header">
+                  <h5>Agregar Nueva Dirección</h5>
+                  <button class="btn-cerrar" (click)="cerrarModal()">&times;</button>
+                </div>
+                <div class="modal-box-body">
+                  <form #direccionForm="ngForm" (ngSubmit)="agregarDireccion()">
+
+                    <div class="form-group">
+                      <label for="direccion1">Dirección:</label>
+                      <input type="text" id="direccion1" [(ngModel)]="nuevaDireccion.direccion1" name="direccion1"
+                        class="form-control" required #direccion1="ngModel" />
+                      <div *ngIf="direccion1.invalid && direccion1.touched" class="error-message">La dirección es
+                        obligatoria.</div>
                     </div>
+
+                    <div class="form-group">
+                      <label for="referencia">Referencia:</label>
+                      <input type="text" id="referencia" [(ngModel)]="nuevaDireccion.referencia" name="referencia"
+                        class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="distrito">Distrito:</label>
+                      <input type="text" id="distrito" [(ngModel)]="nuevaDireccion.distrito" name="distrito"
+                        class="form-control" required #distrito="ngModel" />
+                      <div *ngIf="distrito.invalid && distrito.touched" class="error-message">El distrito es
+                        obligatorio.</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="provincia">Provincia:</label>
+                      <input type="text" id="provincia" [(ngModel)]="nuevaDireccion.provincia" name="provincia"
+                        class="form-control" required #provincia="ngModel" />
+                      <div *ngIf="provincia.invalid && provincia.touched" class="error-message">La provincia es
+                        obligatoria.</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="departamento">Departamento:</label>
+                      <input type="text" id="departamento" [(ngModel)]="nuevaDireccion.departamento" name="departamento"
+                        class="form-control" required #departamento="ngModel" />
+                      <div *ngIf="departamento.invalid && departamento.touched" class="error-message">El departamento es
+                        obligatorio.</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="codigoPostal">Código Postal:</label>
+                      <input type="text" id="codigoPostal" [(ngModel)]="nuevaDireccion.codigoPostal" name="codigoPostal"
+                        class="form-control" />
+                    </div>
+
+                    <button type="button" class="btn btn-success w-100 btn-sm mt-2" (click)="validarFormulario()">
+                      Guardar
+                    </button>
+
+                    <p *ngIf="mensajeError" class="text-danger mt-2">{{ mensajeError }}</p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección de Perfil -->
+          <div *ngIf="currentSection === 'profile'">
+            <div class="user-details-container  border rounded">
+              <div class="container mt-4">
+                <form #personaForm="ngForm" (ngSubmit)="editando && personaForm.valid && actualizarUsuario()">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="nombre" class="form-label">Nombres:</label>
+                      <input type="text" class="form-control" [class.form-control-plaintext]="!editando"
+                        [class.is-invalid]="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)"
+                        id="nombre" name="nombre" #nombreInput="ngModel" [(ngModel)]="persona.nombre"
+                        [readonly]="!editando" required minlength="2" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+">
+                      <div class="invalid-feedback"
+                        *ngIf="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)">
+                        <div *ngIf="nombreInput.errors?.['required']">El nombre es requerido</div>
+                        <div *ngIf="nombreInput.errors?.['minlength']">El nombre debe tener al menos 2 caracteres</div>
+                        <div *ngIf="nombreInput.errors?.['pattern']">El nombre solo debe contener letras</div>
                       </div>
-                     </div>
-                      
+                    </div>
 
-    <!-- Botones -->
-  
-  </div>
-</div>
-                  
+                    <div class="col-md-6 mb-3">
+                      <label for="apellidoPaterno" class="form-label">Apellido Paterno:</label>
+                      <input type="text" class="form-control" [class.form-control-plaintext]="!editando"
+                        [class.is-invalid]="apellidoPaternoInput.invalid && (apellidoPaternoInput.dirty || apellidoPaternoInput.touched)"
+                        id="apellidoPaterno" name="apellidoPaterno" #apellidoPaternoInput="ngModel"
+                        [(ngModel)]="persona.apellidoPaterno" [readonly]="!editando" required minlength="2"
+                        pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+">
+                      <div class="invalid-feedback"
+                        *ngIf="apellidoPaternoInput.invalid && (apellidoPaternoInput.dirty || apellidoPaternoInput.touched)">
+                        <div *ngIf="apellidoPaternoInput.errors?.['required']">El apellido paterno es requerido</div>
+                        <div *ngIf="apellidoPaternoInput.errors?.['minlength']">El apellido debe tener al menos 2
+                          caracteres</div>
+                        <div *ngIf="apellidoPaternoInput.errors?.['pattern']">El apellido solo debe contener letras
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label for="apellidoMaterno" class="form-label">Apellido Materno:</label>
+                      <input type="text" class="form-control" [class.form-control-plaintext]="!editando"
+                        [class.is-invalid]="apellidoMaternoInput.invalid && (apellidoMaternoInput.dirty || apellidoMaternoInput.touched)"
+                        id="apellidoMaterno" name="apellidoMaterno" #apellidoMaternoInput="ngModel"
+                        [(ngModel)]="persona.apellidoMaterno" [readonly]="!editando" required minlength="2"
+                        pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+">
+                      <div class="invalid-feedback"
+                        *ngIf="apellidoMaternoInput.invalid && (apellidoMaternoInput.dirty || apellidoMaternoInput.touched)">
+                        <div *ngIf="apellidoMaternoInput.errors?.['required']">El apellido materno es requerido</div>
+                        <div *ngIf="apellidoMaternoInput.errors?.['minlength']">El apellido debe tener al menos 2
+                          caracteres</div>
+                        <div *ngIf="apellidoMaternoInput.errors?.['pattern']">El apellido solo debe contener letras
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label for="correo" class="form-label">Email:</label>
+                      <input type="email" class="form-control" [class.form-control-plaintext]="!editando"
+                        [class.is-invalid]="correoInput.invalid && (correoInput.dirty || correoInput.touched)"
+                        id="correo" name="correo" #correoInput="ngModel" [(ngModel)]="persona.correo"
+                        [readonly]="!editando" required email pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                      <div class="invalid-feedback"
+                        *ngIf="correoInput.invalid && (correoInput.dirty || correoInput.touched)">
+                        <div *ngIf="correoInput.errors?.['required']">El correo es requerido</div>
+                        <div *ngIf="correoInput.errors?.['email'] || correoInput.errors?.['pattern']">Ingrese un correo
+                          válido</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label for="tipoDocumento" class="form-label">Tipo de Documento:</label>
+                      <select class="form-control" [class.form-control-plaintext]="!editando"
+                        [class.is-invalid]="tipoDocumentoInput.invalid && (tipoDocumentoInput.dirty || tipoDocumentoInput.touched)"
+                        id="tipoDocumento" name="tipoDocumento" #tipoDocumentoInput="ngModel"
+                        [(ngModel)]="persona.tipoDocumento" [disabled]="!editando" required>
+                        <option value="">Seleccione un tipo de documento</option>
+                        <option value="DNI">DNI</option>
+                        <option value="Pasaporte">Pasaporte</option>
+                        <option value="Carnet de Extranjería">Carnet de Extranjería</option>
+                      </select>
+                      <div class="invalid-feedback"
+                        *ngIf="tipoDocumentoInput.invalid && (tipoDocumentoInput.dirty || tipoDocumentoInput.touched)">
+                        <div *ngIf="tipoDocumentoInput.errors?.['required']">Seleccione un tipo de documento</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label for="numeroDocumento" class="form-label">Número de Documento:</label>
+                      <input type="text" class="form-control" [class.form-control-plaintext]="!editando"
+                        [class.is-invalid]="numeroDocumentoInput.invalid && (numeroDocumentoInput.dirty || numeroDocumentoInput.touched)"
+                        id="numeroDocumento" name="numeroDocumento" #numeroDocumentoInput="ngModel"
+                        [(ngModel)]="persona.numeroDocumento" [readonly]="!editando" required minlength="8"
+                        maxlength="12" pattern="[0-9]+">
+                      <div class="invalid-feedback"
+                        *ngIf="numeroDocumentoInput.invalid && (numeroDocumentoInput.dirty || numeroDocumentoInput.touched)">
+                        <div *ngIf="numeroDocumentoInput.errors?.['required']">El número de documento es requerido</div>
+                        <div *ngIf="numeroDocumentoInput.errors?.['minlength']">El número debe tener al menos 8 dígitos
+                        </div>
+                        <div *ngIf="numeroDocumentoInput.errors?.['pattern']">Ingrese solo números</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label for="telefono" class="form-label">Teléfono:</label>
+                      <input type="text" class="form-control" [class.form-control-plaintext]="!editando"
+                        [class.is-invalid]="telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)"
+                        id="telefono" name="telefono" #telefonoInput="ngModel" [(ngModel)]="persona.telefono"
+                        [readonly]="!editando" required minlength="9" maxlength="9" pattern="[0-9]+">
+                      <div class="invalid-feedback"
+                        *ngIf="telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)">
+                        <div *ngIf="telefonoInput.errors?.['required']">El teléfono es requerido</div>
+                        <div *ngIf="telefonoInput.errors?.['minlength'] || telefonoInput.errors?.['maxlength']">El
+                          teléfono debe tener 9 dígitos</div>
+                        <div *ngIf="telefonoInput.errors?.['pattern']">Ingrese solo números</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-3">
+                    <button type="button" class="btn btn-success btn-lg me-2" (click)="toggleEditar()">
+                      {{ editando ? 'Cancelar' : 'Editar' }}
+                    </button>
+
+                    <button type="submit" class="btn btn-success btn-lg me-2 mt-3" *ngIf="editando"
+                      [disabled]="!personaForm.valid">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Botones -->
+
         </div>
       </div>
+
     </div>
-  
-  <app-detalle-venta-modal
-  [detallesVenta]="detallesVenta"
-  (verEstado)="verEstadoPedido($event)">
+  </div>
+</div>
+
+<app-detalle-venta-modal [detallesVenta]="detallesVenta" (verEstado)="verEstadoPedido($event)">
 </app-detalle-venta-modal>
 
-<app-detalle-pedido
-  *ngIf="detalleVentaSeleccionado"
-  [idDetalleVenta]="detalleVentaSeleccionado"
+<app-detalle-pedido *ngIf="detalleVentaSeleccionado" [idDetalleVenta]="detalleVentaSeleccionado"
   (cerrar)="onCerrarEstadoPedido()">
 </app-detalle-pedido>
+<app-footer></app-footer>

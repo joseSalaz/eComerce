@@ -16,37 +16,39 @@ export class RespuestasComponent {
   itemsCarrito: ItemCarrito[] = [];
   paymentId: string | null = null;
   payerId: string | null = null;
- 
+
   constructor(
     private route: ActivatedRoute,
     private carroService: CarroService,
-    private router: Router, 
-    ) { }
+    private router: Router,
+  ) { }
 
 
-  confirmarPago() {
+  confirmarPago(): void {
     if (this.paymentId && this.payerId) {
       this.carroService.confirmarPago(this.paymentId, this.payerId).subscribe({
-        next: (response:any) => {
-          // Aquí podrías redirigir al usuario a una página de éxito o mostrar un mensaje
-          console.log('Pago confirmado con éxito:', response);
-          // this.router.navigate(['/exito']); // Redirige a una ruta de éxito en tu app
+        next: (response: any) => {
+          console.log('Pago confirmado con exito:', response);
+          this.isSuccess = true;
+          this.showModal = true;
         },
-        error: (error:any) => {
-          // Aquí manejas los errores, como mostrar un mensaje al usuario
+        error: (error: any) => {
           console.error('Error al confirmar el pago:', error);
+          this.isSuccess = false;
+          this.showModal = true;
         }
       });
     } else {
-      console.error('Payment ID o Payer ID no están disponibles.');
+      console.error('Payment ID o Payer ID no estan disponibles.');
+      this.isSuccess = false;
+      this.showModal = true;
     }
-    
   }
-  redirigirAPedidos() {
+
+  redirigirAPedidos(): void {
     this.router.navigate(['/user'], { queryParams: { section: 'pedidos' } });
   }
-  
- 
+
 
   close() {
     this.showModal = false;

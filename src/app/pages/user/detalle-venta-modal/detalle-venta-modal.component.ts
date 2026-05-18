@@ -11,12 +11,29 @@ export class DetalleVentaModalComponent {
   @Input() detallesVenta: DetalleVenta[] = [];
   @Output() verEstado = new EventEmitter<number>();
 
+  mostrarModal = false;
+
+  abrirModal(): void {
+    this.mostrarModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+    document.body.style.overflow = '';
+  }
+
+  cerrarModalAlFondo(event: MouseEvent): void {
+    if ((event.target as HTMLElement).classList.contains('modal-overlay')) {
+      this.cerrarModal();
+    }
+  }
+
   irAEstadoPedido(idDetalleVentas: number | undefined): void {
-    
     if (idDetalleVentas) {
       this.verEstado.emit(idDetalleVentas);
     }
-  
-    
   }
+
+
 }

@@ -14,6 +14,7 @@ import { Autor } from '../../Interface/autor';
 import { switchMap } from 'rxjs/operators';
 import { Kardex } from '../../Interface/kardex';
 import Swal from 'sweetalert2';
+import Notiflix from 'notiflix';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -22,26 +23,36 @@ import Swal from 'sweetalert2';
 })
 export class DetalleProductoComponent implements OnInit {
   libro: Libro | null = null;
-  subcategoria: SubCategoria | null = null;  
-  autores: any[] = []; 
+  subcategoria: SubCategoria | null = null;
+  autores: any[] = [];
   idLibro: number = 0; // Cambié el tipo de 'idLibro' de string a number
   cantidad: number = 1;
   altura: number = 0;
   ancho: number = 0;
-  precioVenta: number=0; // Inicializado precioVenta a 0
-  idSubCategoria: number =0;
+  precioVenta: number = 0; // Inicializado precioVenta a 0
+  idSubCategoria: number = 0;
   stockDisponible: number = 0;
   kardex: Kardex | null = null;
-  bloquearInput: boolean = false;  
+  bloquearInput: boolean = false;
   defaultImageUrl: string = "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
     private categoriaService: CategoriaService,
     private libroAutorService: LibroAutorService,
-    private carroService:CarroService,
+    private carroService: CarroService,
     private subCategoriaService: SubCategoriaService,
-  ) { 
+  ) {
+    Notiflix.Notify.init({
+      position: 'center-top',
+      timeout: 3000,
+      borderRadius: '10px',
+
+      success: {
+        background: '#0d6efd',
+        textColor: '#ffffff'
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -55,7 +66,7 @@ export class DetalleProductoComponent implements OnInit {
         console.error('El ID del libro no está definido.');
       }
     });
-    
+
   }
   onImageError(event: Event): void {
     const imgElement = event.target as HTMLImageElement;
@@ -70,7 +81,7 @@ export class DetalleProductoComponent implements OnInit {
       confirmButtonColor: '#3085d6'
     });
   }
-  
+
   mostrarExito(mensaje: string): void {
     Swal.fire({
       title: '¡Genial!',
@@ -79,6 +90,10 @@ export class DetalleProductoComponent implements OnInit {
       confirmButtonText: 'Continuar comprando',
       confirmButtonColor: '#28a745'
     });
+  }
+
+  mostarAlert(mensaje: string): void {
+    Notiflix.Notify.success(mensaje);
   }
 
   obtenerLibro(id: string): void {
@@ -96,7 +111,7 @@ export class DetalleProductoComponent implements OnInit {
       (error: any) => {
         console.error('Error al obtener los detalles del libro:', error);
       }
-    ); 
+    );
   }
   obtenerSubCategoria(idSubCategoria: number): void {
     if (idSubCategoria) {
@@ -111,12 +126,12 @@ export class DetalleProductoComponent implements OnInit {
     }
   }
 
- 
+
   obtenerKardex(libroId: number): void {
     this.libroService.getKardexPorIdLibro(libroId).subscribe(
       (kardex: Kardex) => {
-       
-        
+
+
         // Asumiendo que el servicio devuelve un objeto que se ajusta a la interfaz Kardex
         this.stockDisponible = kardex.stock;
       },
@@ -127,48 +142,48 @@ export class DetalleProductoComponent implements OnInit {
   }
   agregarAlCarrito(): void {
     const cantidadEnCarrito = this.carroService.getCantidadPorProducto(this.idLibro); // Método que calcula la cantidad total del producto en el carrito.
-  
+
     if (cantidadEnCarrito + this.cantidad > this.stockDisponible) {
       this.mostrarError('Ya has alcanzado el máximo permitido de este producto en el carrito.');
       return;
     }
-  
+
     if (!this.libro || this.precioVenta <= 0 || this.cantidad <= 0 || this.stockDisponible <= 0) {
       this.mostrarError('Datos inválidos. No se puede agregar al carrito.');
       return;
     }
-  
+
     const itemCarrito: ItemCarrito = {
       libro: this.libro,
       precioVenta: this.precioVenta,
       cantidad: this.cantidad
     };
-  
-    this.mostrarExito('Libro Agregado al Carrito con Éxito');
+
+    this.mostarAlert('Libro Agregado al Carrito con Éxito');
     this.carroService.addNewProduct(itemCarrito);
   }
-  
-obtenerAutoresDeLibro(idLibro: number): void {
-  this.libroAutorService.getAutoresDeLibro(idLibro).subscribe(
-    (autores: Autor[]) => {
-      this.autores = autores;
-    },
-    (error: any) => {
-      console.error('Error al obtener los autores del libro:', error);
-    }
-  );
-}
-private extraerDimensiones(tamanno: string): void {
-  const tamannoConPuntos = tamanno.replace(/,/g, '.');
-  const dimensiones = tamannoConPuntos.match(/(\d+(\.\d+)?)/g);
-  if (dimensiones) {
-    this.ancho = parseFloat(dimensiones[0]);
-    this.altura = dimensiones.length > 1 ? parseFloat(dimensiones[1]) : this.altura;
+
+  obtenerAutoresDeLibro(idLibro: number): void {
+    this.libroAutorService.getAutoresDeLibro(idLibro).subscribe(
+      (autores: Autor[]) => {
+        this.autores = autores;
+      },
+      (error: any) => {
+        console.error('Error al obtener los autores del libro:', error);
+      }
+    );
   }
-}
+  private extraerDimensiones(tamanno: string): void {
+    const tamannoConPuntos = tamanno.replace(/,/g, '.');
+    const dimensiones = tamannoConPuntos.match(/(\d+(\.\d+)?)/g);
+    if (dimensiones) {
+      this.ancho = parseFloat(dimensiones[0]);
+      this.altura = dimensiones.length > 1 ? parseFloat(dimensiones[1]) : this.altura;
+    }
+  }
   obtenerPrecioVenta(): void {
     if (!this.idLibro) return;
-    
+
     this.libroService.getPreciosPorIdLibro(this.idLibro).subscribe(
       (precios: Precio[]) => {
         const precioConVenta = precios.find(precio => precio.precioVenta != null);
@@ -185,7 +200,7 @@ private extraerDimensiones(tamanno: string): void {
     }
     this.verificarStock();
   }
-  
+
   decrementarCantidad(): void {
     if (this.cantidad > 1) {
       this.cantidad--;

@@ -7,7 +7,7 @@ import { CarroService } from '../../../Service/carro.service';
 import { ItemCarrito } from '../../../Interface/carrito';
 import { UsuarioGoogle } from '../../../Interface/usuario';
 import { UsuarioRegistradoResponse } from '../../../Interface/usuarioRegistradoResponse';
-import { Persona} from '../../../Interface/persona';
+import { Persona } from '../../../Interface/persona';
 
 
 @Component({
@@ -21,28 +21,28 @@ export class HeadComponent implements OnInit {
   mostrarCarrito = false;
   totalItems: number = 0;
   isMenuVisible: boolean = false;
-  isProcessing: boolean=false;
+  isProcessing: boolean = false;
+  isMobileMenuOpen = false;
 
 
-  
   constructor(
     private authService: AuthService,
     private router: Router,
-    private carroService:CarroService,
-  ) {}
+    private carroService: CarroService,
+  ) { }
 
   ngOnInit(): void {
-    
+
     this.totalItems = this.carroService.obtenerCantidadProductos();
     this.carroService.itemsCarrito.subscribe((items: ItemCarrito[]) => {
       this.totalItems = items.reduce((acc, item) => acc + Number(item.cantidad), 0);
     });
-  
+
     this.authService.sesion$.subscribe(userProfile => {
       if (userProfile && userProfile.usu && userProfile.usu.length > 0) {
         // Asumiendo que 'usu' es un arreglo y que los datos de perfil están en el primer elemento
         const profileData = userProfile.usu[0];
-        this.vernombre = !!profileData.name; 
+        this.vernombre = !!profileData.name;
         this.displayname = profileData.name || '';
         this.registrarOVerificarUsuario(profileData);
       } else {
@@ -50,62 +50,69 @@ export class HeadComponent implements OnInit {
         this.displayname = '';
       }
     });
-    
+
   }
-  
-registrarOVerificarUsuario(profileData:any) {
+
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+
+  registrarOVerificarUsuario(profileData: any) {
     if (this.isProcessing) return; // Previene ejecuciones duplicadas
 
     this.isProcessing = true; // Estado de carga activo
     const usuarioParaRegistrar = {
-        correo: profileData.email,
-        sub: profileData.sub,
+      correo: profileData.email,
+      sub: profileData.sub,
     };
 
     this.authService.verificarUsuario(usuarioParaRegistrar).subscribe({
-        next: (usuarioRegistrado:Persona) => {
-            localStorage.setItem('usuarioData', JSON.stringify(usuarioRegistrado));
-            // console.log('ID del usuario:', usuarioRegistrado.idPersona);
-            this.isProcessing = false; // Restablece el estado de carga
-        },
-        error: (error) => {
-            console.error('Hubo un error al registrar o verificar al usuario', error);
-            this.isProcessing = false; // Restablece el estado de carga
-        }
+      next: (usuarioRegistrado: Persona) => {
+        localStorage.setItem('usuarioData', JSON.stringify(usuarioRegistrado));
+        // console.log('ID del usuario:', usuarioRegistrado.idPersona);
+        this.isProcessing = false; // Restablece el estado de carga
+      },
+      error: (error) => {
+        console.error('Hubo un error al registrar o verificar al usuario', error);
+        this.isProcessing = false; // Restablece el estado de carga
+      }
     });
-}
-  
-  
-checkSession(): void {
-  const userProfile: any = this.authService.getProfile(); 
-}
-
-@HostListener('document:click', ['$event'])
-onDocumentClick(event: Event): void {
-  this.isMenuVisible = false;
-}
-
-toggleMenu(event: MouseEvent): void {
-  // Evita que el evento de clic se propague a elementos superiores
-  event.stopPropagation();
-  
-  // Alterna la visibilidad del menú desplegable
-  this.isMenuVisible = !this.isMenuVisible;
-}
-
-
-onSelectOption(option: string): void {
-  this.isMenuVisible = false; // Cierra el menú al seleccionar una opción
-  if (option === 'miperfil') {
-    this.router.navigate(['/user']);
-  } else if (option === 'cerrarSesion') {
-    this.authService.logout();
-    this.router.navigate(['/inicio']);
   }
-}
 
 
-  toggleCarrito() {
+  checkSession(): void {
+    const userProfile: any = this.authService.getProfile();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    this.isMenuVisible = false;
+  }
+
+  toggleMenu(event: MouseEvent): void {
+    // Evita que el evento de clic se propague a elementos superiores
+    event.stopPropagation();
+
+    // Alterna la visibilidad del menú desplegable
+    this.isMenuVisible = !this.isMenuVisible;
+  }
+
+
+  onSelectOption(option: string): void {
+    this.isMenuVisible = false; // Cierra el menú al seleccionar una opción
+    if (option === 'miperfil') {
+      this.router.navigate(['/user']);
+    } else if (option === 'cerrarSesion') {
+      this.authService.logout();
+      this.router.navigate(['/inicio']);
+    }
+  }
+
+
+  toggleCarrito(event: Event) {
+    event.stopPropagation();
     this.mostrarCarrito = !this.mostrarCarrito;
   }
 

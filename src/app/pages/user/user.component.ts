@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Service/auth.service';
 import { DetalleVentaService } from '../../Service/detalle-venta.service';
@@ -10,7 +10,10 @@ import { ChangeDetectorRef } from '@angular/core';
 import Swal from 'sweetalert2';
 import { EstadoPedido } from '../../Interface/estado_pedido';
 import { Venta } from '../../Interface/venta';
-import { VentaService } from '../../Service/venta.service copy';
+import { VentaService } from '../../Service/venta.service';
+import { PersonaService } from '../../Service/persona.service';
+import { Persona } from '../../Interface/persona';
+import { DetalleVentaModalComponent } from './detalle-venta-modal/detalle-venta-modal.component';
 
 
 @Component({
@@ -19,6 +22,7 @@ import { VentaService } from '../../Service/venta.service copy';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
+  @ViewChild(DetalleVentaModalComponent) detalleVentaModalRef!: DetalleVentaModalComponent;
   ventas: Venta[] = [];
   detallesVenta: DetalleVenta[] = [];
   direcciones: Direccion[] = [];
@@ -42,6 +46,7 @@ export class UserComponent implements OnInit {
   photoURL: string = "";
   email: string = "";
 
+  mostrarModal = false;
   // Secciones del perfil
   currentSection: string = 'profile';
   //error direccion
@@ -59,7 +64,7 @@ export class UserComponent implements OnInit {
     codigoPostal: '',
     esPredeterminada: false
   };
- 
+
 
   direccionModal: any;
   constructor(
@@ -71,96 +76,100 @@ export class UserComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private ventaService: VentaService,
     private personaService: PersonaService,
-     ) 
-    {}
+  ) { }
 
   ngOnInit(): void {
-  
+
 
     setTimeout(() => {
-    this.route.queryParams.subscribe(params => {
-      if (params['section']) {
-        this.currentSection = params['section'];
-      }
-    });
-    const usuarioData = typeof window !== 'undefined' && localStorage.getItem('usuarioData')
-    ? JSON.parse(localStorage.getItem('usuarioData') || '{}')
-    : {};
-  this.usuarioId = usuarioData.idPersona || 0;
-  
-  this.usuarioId = this.authService.getUsuarioId();
-  this.persona.idPersona = this.usuarioId;
+      this.route.queryParams.subscribe(params => {
+        if (params['section']) {
+          this.currentSection = params['section'];
+        }
+      });
+      const usuarioData = typeof window !== 'undefined' && localStorage.getItem('usuarioData')
+        ? JSON.parse(localStorage.getItem('usuarioData') || '{}')
+        : {};
+      this.usuarioId = usuarioData.idPersona || 0;
 
-    if (this.usuarioId) {
+      this.usuarioId = this.authService.getUsuarioId();
+      this.persona.idPersona = this.usuarioId;
+
+      if (this.usuarioId) {
         this.obtenerVentas();
         this.cargarDatosPersona();
-    }
-
-    this.authService.sesion$.subscribe(userProfile => {
-        if (userProfile && userProfile.usu.length > 0) {
-            const profileData = userProfile.usu[0];
-            this.vernombre = !!profileData.name;
-            this.displayname = profileData.name || '';
-            this.email = profileData.email;
-            this.photoURL = profileData.picture;
-        }
-    });
-
-  if (this.usuarioId) {
-    this.obtenerVentas();
-  }
-    
-  if (this.ventas.length > 0) {
-    this.obtenerDetallesVenta(this.ventas[0].idVentas);
-}
-    this.cargarDirecciones();
-    this.checkSession();
-
-    this.authService.sesion$.subscribe(userProfile => {
-      if (userProfile && userProfile.usu && userProfile.usu.length > 0) {
-        const profileData = userProfile.usu[0];
-        this.vernombre = !!profileData.name;
-        this.displayname = profileData.name || '';
-        this.email = profileData.email;
-        this.photoURL = profileData.picture;
-      } else {
-        this.vernombre = false;
-        this.displayname = '';
       }
-    });
-  }, 0);
-}
-validarFormulario() {
-  this.mensajeError = '';
 
-  if (!this.nuevaDireccion.direccion1.trim() || 
-      !this.nuevaDireccion.distrito.trim() || 
-      !this.nuevaDireccion.provincia.trim() || 
-      !this.nuevaDireccion.departamento.trim()) {
-    this.mensajeError = 'Por favor, completa todos los campos obligatorios.';
-    return;
-  }
-  this.agregarDireccion();
-}
-
-abrirModal() {
-  if (typeof window !== 'undefined') {
-    const modalElement = document.getElementById('direccionModal');
-    if (modalElement) {
-      import('bootstrap').then(({ Modal }) => {
-        const modal = new Modal(modalElement);
-        modal.show();
+      this.authService.sesion$.subscribe(userProfile => {
+        if (userProfile && userProfile.usu.length > 0) {
+          const profileData = userProfile.usu[0];
+          this.vernombre = !!profileData.name;
+          this.displayname = profileData.name || '';
+          this.email = profileData.email;
+          this.photoURL = profileData.picture;
+        }
       });
+
+      if (this.usuarioId) {
+        this.obtenerVentas();
+      }
+
+      if (this.ventas.length > 0) {
+        this.obtenerDetallesVenta(this.ventas[0].idVentas);
+      }
+      this.cargarDirecciones();
+      this.checkSession();
+
+      this.authService.sesion$.subscribe(userProfile => {
+        if (userProfile && userProfile.usu && userProfile.usu.length > 0) {
+          const profileData = userProfile.usu[0];
+          this.vernombre = !!profileData.name;
+          this.displayname = profileData.name || '';
+          this.email = profileData.email;
+          this.photoURL = profileData.picture;
+        } else {
+          this.vernombre = false;
+          this.displayname = '';
+        }
+      });
+    }, 0);
+  }
+  validarFormulario() {
+    this.mensajeError = '';
+
+    if (!this.nuevaDireccion.direccion1.trim() ||
+      !this.nuevaDireccion.distrito.trim() ||
+      !this.nuevaDireccion.provincia.trim() ||
+      !this.nuevaDireccion.departamento.trim()) {
+      this.mensajeError = 'Por favor, completa todos los campos obligatorios.';
+      return;
+    }
+    this.agregarDireccion();
+  }
+
+  abrirModal() {
+    this.mostrarModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+
+  cerrarModal() {
+    this.mostrarModal = false;
+    document.body.style.overflow = '';
+  }
+
+  cerrarModalAlFondo(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('modal-overlay')) {
+      this.cerrarModal();
     }
   }
-}
   // Obtener los pedidos del usuario
   obtenerDetallesVenta(idVenta: number): void {
     this.ventaService.obtenerDetallesVenta(idVenta).subscribe({
       next: (detalles) => {
-  
+
         this.detallesVenta = detalles;
-        
+
         // Ajustamos la variable idDetalleVenta
         this.detallesVenta.forEach(detalle => {
           if (detalle.idDetalleVentas) { // 🔹 CAMBIAMOS idDetalleVenta → idDetalleVentas
@@ -173,8 +182,8 @@ abrirModal() {
       error: (error) => console.error('🚨 Error al obtener detalles de venta:', error)
     });
   }
-  
-  
+
+
 
 
   // Obtener las direcciones del usuario
@@ -188,11 +197,13 @@ abrirModal() {
   // Agregar una nueva dirección
   agregarDireccion(): void {
     this.nuevaDireccion.idPersona = this.usuarioId;
-    
+
     this.direccionService.createDireccion(this.nuevaDireccion).subscribe({
       next: () => {
         this.cargarDirecciones();
-        this.nuevaDireccion = { 
+        this.mostrarModal = false;  // ← cierra el modal personalizado
+        document.body.style.overflow = '';
+        this.nuevaDireccion = {
           idPersona: this.usuarioId,
           direccion1: '',
           referencia: '',
@@ -202,18 +213,7 @@ abrirModal() {
           codigoPostal: '',
           esPredeterminada: false
         };
-        if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-          const modalElement = document.getElementById('direccionModal');
-          if (modalElement) {
-            import('bootstrap').then(({ Modal }) => {
-              const modal = Modal.getInstance(modalElement);
-              if (modal) {
-                modal.hide();
-              }
-            });
-          }
-        }
-  
+
         Swal.fire({
           title: '✅ Dirección agregada',
           text: 'La dirección ha sido guardada correctamente.',
@@ -223,7 +223,6 @@ abrirModal() {
       },
       error: (err) => {
         console.error('Error al agregar dirección:', err);
-
         Swal.fire({
           title: '⚠️ Error',
           text: err.error || 'Hubo un problema al agregar la dirección.',
@@ -233,7 +232,7 @@ abrirModal() {
       }
     });
   }
-  
+
 
   eliminarDireccion(idDireccion: number): void {
     Swal.fire({
@@ -258,12 +257,12 @@ abrirModal() {
           },
           error: (err) => {
             console.error('Error al eliminar dirección:', err);
-  
+
             let mensajeError = 'Ocurrió un error al eliminar la dirección.';
             if (typeof err.error === 'string') {
               mensajeError = err.error; // ✅ Ahora obtendremos el texto del backend correctamente
             }
-  
+
             Swal.fire({
               title: '⚠️ No se puede eliminar',
               text: mensajeError,
@@ -275,16 +274,13 @@ abrirModal() {
       }
     });
   }
-  
+
   abrirModalVenta(idVenta: number): void {
     this.obtenerDetallesVenta(idVenta);
-    const modalElement = document.getElementById('detalleVentaModal');
-    if (modalElement) {
-      import('bootstrap').then(({ Modal }) => {
-        const modal = new Modal(modalElement);
-        modal.show();
-      });
-    }
+    // Pequeño delay para que los datos carguen antes de abrir
+    setTimeout(() => {
+      this.detalleVentaModalRef.abrirModal();
+    }, 300);
   }
 
   verEstadoPedido(idDetalleVentas: number): void {
@@ -294,8 +290,8 @@ abrirModal() {
   onCerrarEstadoPedido(): void {
     this.detalleVentaSeleccionado = null;
   }
-  
-  
+
+
 
   // Establecer una dirección como predeterminada
   establecerPredeterminada(idDireccion: number): void {
@@ -303,7 +299,7 @@ abrirModal() {
       next: () => {
         // 🔥 Volver a cargar la lista desde el backend
         this.cargarDirecciones();
-  
+
         // ✅ Mostrar notificación
         this.mostrarToast("✅ Dirección predeterminada actualizada correctamente.");
       },
@@ -312,15 +308,15 @@ abrirModal() {
       }
     });
   }
-  
-  
+
+
   mostrarToast(mensaje: string): void {
     const toast = document.createElement("div");
     toast.innerText = mensaje;
     toast.className = "fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-md";
     document.body.appendChild(toast);
-      toast.remove();
-   
+    toast.remove();
+
   }
   // Cambiar de sección en la interfaz
   mostrarSeccion(seccion: string): void {
@@ -367,7 +363,7 @@ abrirModal() {
 
     this.router.navigate(['/user/detalle-pedido'], { queryParams: { id: idDetalleVentas } });
   }
-  
+
 
   cargarDatosPersona(): void {
     this.personaService.obtenerPersonaPorId(this.usuarioId).subscribe({
@@ -377,7 +373,7 @@ abrirModal() {
       error: (error) => console.error('Error al obtener datos de la persona:', error)
     });
   }
-  
+
   toggleEditar(): void {
     this.editando = !this.editando;
     if (!this.editando) {
@@ -393,7 +389,7 @@ abrirModal() {
       });
       return;
     }
-  
+
     this.personaService.actualizarPersona(this.persona).subscribe({
       next: (res) => {
         Swal.fire({
@@ -415,6 +411,9 @@ abrirModal() {
       }
     });
   }
+
+
+
 }
-  
+
 

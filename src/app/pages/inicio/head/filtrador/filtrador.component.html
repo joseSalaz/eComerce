@@ -8,13 +8,16 @@
                         (click)="redireccionarALibros(categoria.idCategoria)">
                     {{ categoria.categoria1 }}
                 </button>
-                <div class="dropdown-menu" *ngIf="categoria.idCategoria===hoveredCategoriaId">
+
+                <!-- Sin *ngIf, siempre en DOM, controlado por CSS hover -->
+                <div class="dropdown-menu">
                     <a *ngFor="let sub of categoria.subcategorias"
                        class="dropdown-item"
                        (click)="redireccionarALibrosSubcategoria(sub.id)">
                         {{ sub.descripcion }}
                     </a>
                 </div>
+
             </div>
         </div>
     </div>

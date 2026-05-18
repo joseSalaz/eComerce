@@ -6,7 +6,7 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { AuthService } from '../../../Service/auth.service';
 import { PersonaService } from '../../../Service/persona.service';
 import Swal from 'sweetalert2';
-
+import Notiflix from 'notiflix';
 @Component({
   selector: 'app-pago',
   templateUrl: './pago.component.html',
@@ -18,14 +18,19 @@ export class PagoComponent implements OnInit {
   mostrarOpcionesEnvio: boolean = false;
   idDireccionSeleccionada: number | null = null;
   constructor(
-    private carroService: CarroService, 
+    private carroService: CarroService,
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
     private pago: PagoService,
     private router: Router,
     private authService: AuthService,
-    private personaService:PersonaService,
-  ) {}
+    private personaService: PersonaService,
+  ) {
+    Notiflix.Loading.init({
+      svgColor: '#0d6efd',
+      clickToClose: false,
+    });
+  }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -33,16 +38,16 @@ export class PagoComponent implements OnInit {
       const direccionSeleccionada = this.carroService.getDireccionSeleccionada();
       if (direccionSeleccionada && direccionSeleccionada.idDireccion) {
         this.idDireccionSeleccionada = Number(direccionSeleccionada.idDireccion);
-       
+
       } else {
         this.idDireccionSeleccionada = null;
-     
+
       }
-      
+
       const paymentId = params['paymentId'];
       const payerId = params['PayerID'];
       const preferenceId = params['preferenceId'];
-  
+
       // Lógica de procesamiento de pagos...
       if (paymentId && payerId) {
         this.isLoading = true;
@@ -79,9 +84,9 @@ export class PagoComponent implements OnInit {
     return datos?.nombre && datos?.apellidoMaterno && datos?.apellidoPaterno && datos?.correo && datos?.telefono && datos?.numeroDocumento;
   }
   procesarPago(metodo: 'paypal' | 'mercadoPago'): void {
-    this.isLoading = true;
+    Notiflix.Loading.hourglass('Confirmando pago...');
     const idPersona = this.authService.getUsuarioId();
-  
+
     if (!this.idDireccionSeleccionada) {
       Swal.fire({
         title: '⚠️ Atención',
@@ -90,10 +95,10 @@ export class PagoComponent implements OnInit {
         confirmButtonText: 'Ok',
         confirmButtonColor: '#d33'
       });
-      this.isLoading = false;
+      Notiflix.Loading.remove();
       return;
     }
-  
+
     this.personaService.obtenerPersonaPorId(idPersona).subscribe(
       (datos) => {
         if (!this.validarDatos(datos)) {
@@ -106,10 +111,10 @@ export class PagoComponent implements OnInit {
           }).then(() => {
             this.router.navigate(['/user']);
           });
-          this.isLoading = false;
+          Notiflix.Loading.remove();
           return;
         }
-  
+
         // ✅ Si los datos son válidos, proceder con el pago
         if (metodo === 'paypal') {
           this.carroService.enviarCarritoAlBackend(this.idDireccionSeleccionada!).subscribe({
@@ -119,7 +124,7 @@ export class PagoComponent implements OnInit {
             },
             error: (error) => {
               console.error('Error al procesar el pago con PayPal:', error);
-              this.isLoading = false;
+              Notiflix.Loading.remove();
             }
           });
         } else if (metodo === 'mercadoPago') {
@@ -130,17 +135,17 @@ export class PagoComponent implements OnInit {
             },
             error: (error) => {
               console.error('Error al procesar el pago con Mercado Pago:', error);
-              this.isLoading = false;
+              Notiflix.Loading.remove();
             }
           });
         }
       },
       (error) => {
         console.error('Error obteniendo datos del usuario:', error);
-        this.isLoading = false;
+        Notiflix.Loading.remove();
       }
     );
   }
-  
-  
+
+
 }

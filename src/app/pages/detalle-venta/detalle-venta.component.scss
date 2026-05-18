@@ -1,173 +1,65 @@
-.custom-alert {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  max-width: 300px;
-  width: auto;
-  padding: 15px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 1050;
-
-  &.alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-  }
-
-  &.alert-danger {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
-  }
-
-  .btn-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: inherit;
-    font-size: 16px;
-    cursor: pointer;
-    opacity: 0.8;
-    &:hover {
-      opacity: 1;
-    }
-  }
+.checkout-container {
+  background: #f8f9fa;
+  min-height: calc(100vh - 120px);
 }
 
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
+/* Estilos de productos y resumen (mantengo lo básico) */
+.product-card {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+  gap: 16px;
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
-.loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
+.product-image {
+  width: 110px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.order-summary {
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
 }
 
-/* Estilos para las imágenes del carrito */
-.libro-imagen {
-  width: 200px; /* Ancho fijo */
-  height: 200px; /* Alto fijo */
-  object-fit: contain; /* Muestra toda la imagen, sin recortarla */
-  margin-right: 15px; /* Espaciado a la derecha */
-  background-color: #f8f9fa; /* Fondo gris claro para imágenes con proporciones diferentes (opcional) */
-  display: block;
+.total-row {
+  font-size: 1.4rem;
+  color: #007bff;
 }
 
-
-.libro-item {
-  display: flex; /* Alineación horizontal de la imagen y contenido */
-  align-items: center; /* Centra verticalmente los elementos */
-}
-
+/* MODAL - Estilo mínimo para que se vea */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1200;
 }
 
 .modal-content {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 450px;
-  text-align: center;
+  width: 480px;
+  max-width: 95%;
   position: relative;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .close-button {
   position: absolute;
   top: 10px;
   right: 15px;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
-}
-
-/* Contenedor principal a pantalla completa */
-.main-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* Ocupa todo el alto de la ventana */
-}
-
-/* Contenedor de historial */
-.detalle-venta-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Roboto', sans-serif;
-  padding: 20px;
-  height: 100%;
-}
-.no-direccion-card {
-  background: #fff3cd;
-  border: 1px solid #ffeeba;
-  padding: 15px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.icon-container {
-  font-size: 24px;
-  color: #856404;
-  margin-bottom: 10px;
-}
-
-.message-text {
-  font-size: 16px;
-  color: #856404;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.no-direccion-card .btn {
-  background-color: #007bff;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 5px;
-  text-decoration: none;
-}
-
-.no-direccion-card .btn:hover {
-  background-color: #0056b3;
 }
