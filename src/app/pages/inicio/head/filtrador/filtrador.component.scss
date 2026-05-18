@@ -5,7 +5,7 @@
 
 .navbar {
   background: linear-gradient(145deg, #ffffff, #f0f4ff);
-  z-index: 1100;
+  z-index: 1300;
   overflow: visible;
   border: none;
   position: relative;
@@ -40,7 +40,7 @@
   padding: 8px 0;
   flex-wrap: wrap;
   position: relative;
-  z-index: 1000;
+  z-index: 1300;
   width: 100%;
   overflow: visible;
 }
@@ -110,7 +110,7 @@
   padding: 8px;
   min-width: 220px;
   border: 1px solid rgba(37, 99, 235, 0.08);
-  z-index: 2000;
+  z-index: 1300;
   display: block;
   opacity: 0;
   visibility: hidden;

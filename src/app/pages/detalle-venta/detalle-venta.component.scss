@@ -63,3 +63,12 @@
   font-size: 28px;
   cursor: pointer;
 }
+
+.order-summary {
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+}
