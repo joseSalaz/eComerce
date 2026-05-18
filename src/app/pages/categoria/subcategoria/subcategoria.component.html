@@ -4,6 +4,7 @@
     <div class="img-wrapper">
       <img [src]="libro.imagen" alt="...">
     </div> 
+    <app-fillter-list>  </app-fillter-list>
     <div class="card-body">
       <h5 class="card-title">{{ libro.titulo }}</h5>
       <h1 class="price" *ngIf="libro.precioVenta; else loading">
@@ -15,6 +16,7 @@
       <button type="button" class="btn btn-success fs-5" (click)="redireccionarAlDetalleProducto(libro.idLibro)">Comprar</button>
     </div>
   </div>
+
 </div>
 <app-footer></app-footer>
 

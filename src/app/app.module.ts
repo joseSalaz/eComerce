@@ -37,6 +37,7 @@ import { UserOrdersComponent } from './pages/user/user-orders/user-orders.compon
 import { UserAddressComponent } from './pages/user/user-address/user-address.component';
 import { DetalleVentaModalComponent } from './pages/user/detalle-venta-modal/detalle-venta-modal.component';
 import { EstadoPedidoModalComponent } from './pages/user/detalle-pedido/detalle-pedido.component';
+import { FiltroComponent } from './pages/categoria/filtro/filtro.component';
 // register Swiper custom elements
 register();
 
@@ -68,6 +69,7 @@ register();
         UserOrdersComponent,
         UserAddressComponent,
         DetalleVentaModalComponent,
+        FiltroComponent,
     ],
     bootstrap: [AppComponent], imports: [
         BrowserAnimationsModule,
