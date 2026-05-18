@@ -12,12 +12,10 @@ import { LibroService } from '../../Service/libro.service';
 })
 export class CategoriaComponent implements OnInit {
   datas: Libro[] = [];
-<<<<<<< HEAD
+
   mostrarContenido = false;
   categorias=['prueba01','prueba01'];
-=======
 
->>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
   constructor(
      private categoriaService: CategoriaService,
      private router: Router,

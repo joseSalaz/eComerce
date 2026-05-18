@@ -1,4 +1,3 @@
-
 .store-container {
     display: flex;
     flex-direction: row;
@@ -111,6 +110,7 @@
     margin: 0 auto; 
 }
 
+
 img {
     width: 100%;
     height: 100%; 
@@ -167,6 +167,7 @@ img {
     z-index: 2; 
 }
 
+
 @media screen and (min-width:576px) {
     .carousel-inner {
         display: flex;
@@ -188,4 +189,3 @@ img {
 .carousel-inner {
     padding: 1em;
 }
-
