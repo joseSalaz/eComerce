@@ -1,5 +1,5 @@
 import { Component, Injectable, Input } from '@angular/core';
-import { Libro } from '../../../Interface/libro'; 
+import { Libro } from '../../../Interface/libro';
 
 import { CarroService } from '../../../Service/carro.service';
 import { BehaviorSubject } from 'rxjs';
@@ -19,20 +19,20 @@ import { LocalStorageService } from '../../../Service/local-storage.service';
 export class CarroComponent {
 
   private storageKey = 'carroLibros';
-  
+
   libros: Libro[] = [];
   itemsCarrito: ItemCarrito[] = [];
   defaultImageUrl: string = "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
-  
+
   constructor(
     private localStorageService: LocalStorageService,
     private carroService: CarroService,
-    private libroService:LibroService,
+    private libroService: LibroService,
     private authService: AuthService,
     private router: Router
-    ) { 
-      this.itemsCarrito = this.localStorageService.getItem<ItemCarrito[]>(this.storageKey) || [];
-    }
+  ) {
+    this.itemsCarrito = this.localStorageService.getItem<ItemCarrito[]>(this.storageKey) || [];
+  }
 
 
   mostrarCarro = true;
@@ -48,13 +48,13 @@ export class CarroComponent {
       // Iniciar el flujo de login
       this.router.navigate(['auth/log-in'])
     } else {
-   
+
       // Proceder con la compra
       this.router.navigate(['/detalle-venta']);
     }
   }
-  
-  
+
+
 
   // Método para abrir el componente Carro
   abrirCarro() {
@@ -66,30 +66,23 @@ export class CarroComponent {
     this.mostrarCarro = false;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.carroService.itemsCarrito.subscribe(items => {
       this.itemsCarrito = items;
     });
   }
 
-  delete(indice:number){
+  delete(indice: number) {
     this.carroService.deleteLibro(indice);
   }
-  agregarAlCarrito(libroId: number, cantidad: number): void {
-    this.libroService.getLibroPorId(libroId.toString()).subscribe(libro => {
-      this.libroService.getPreciosPorIdLibro(libroId).subscribe(precios => {
-        if (precios.length > 0) {
-          const precioVenta = precios[0].precioVenta;
-          if (typeof precioVenta === 'number') {
-            const itemCarrito: ItemCarrito = { libro, precioVenta, cantidad };
-            this.carroService.addNewProduct(itemCarrito);
-          } else {
-            console.error('precioVenta no es un número');
-          }
-        } else {
-          console.error('No se encontraron precios para el libro con ID:', libroId);
-        }
-      });
-    });
+
+  calcularTotal(): number {
+    if (!this.itemsCarrito || this.itemsCarrito.length === 0) {
+      return 0;
+    }
+
+    return this.itemsCarrito.reduce((total, item) => {
+      return total + (item.precioVenta * (item.cantidad || 1));
+    }, 0);
   }
 }

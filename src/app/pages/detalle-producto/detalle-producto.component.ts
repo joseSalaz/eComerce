@@ -141,7 +141,7 @@ export class DetalleProductoComponent implements OnInit {
     );
   }
   agregarAlCarrito(): void {
-    const cantidadEnCarrito = this.carroService.getCantidadPorProducto(this.idLibro); // Método que calcula la cantidad total del producto en el carrito.
+    const cantidadEnCarrito = this.carroService.getCantidadPorProducto(this.idLibro);
 
     if (cantidadEnCarrito + this.cantidad > this.stockDisponible) {
       this.mostrarError('Ya has alcanzado el máximo permitido de este producto en el carrito.');
@@ -160,7 +160,7 @@ export class DetalleProductoComponent implements OnInit {
     };
 
     this.mostarAlert('Libro Agregado al Carrito con Éxito');
-    this.carroService.addNewProduct(itemCarrito);
+    this.carroService.agregarOActualizarProducto(itemCarrito); // ← único cambio
   }
 
   obtenerAutoresDeLibro(idLibro: number): void {
