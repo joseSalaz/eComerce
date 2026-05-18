@@ -37,11 +37,7 @@ $border-radius: 10px;
   @include flex-center;
   margin: 0 10px;
   max-width: 250px; /* Asegura ancho fijo */
-<<<<<<< HEAD
   height: 420px; /* Coincide con la tarjeta y el skeleton */
-=======
-  height: 300px; /* Coincide con la tarjeta y el skeleton */
->>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
 }
 
 /* Estilo de la tarjeta */
@@ -62,11 +58,7 @@ $border-radius: 10px;
 
   .img-wrapper {
     width: 100%;
-<<<<<<< HEAD
     height: 420px;
-=======
-    height: 300px;
->>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
     overflow: hidden;
     margin: 0 auto;
     border-radius: $border-radius;

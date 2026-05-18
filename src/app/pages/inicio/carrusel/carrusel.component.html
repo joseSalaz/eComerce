@@ -9,12 +9,7 @@
   </div>
 </div>
 
-<<<<<<< HEAD
 <swiper-container *ngIf="loadingStateService.loading$() === 'successful'" class="mySwiper" [slidesPerView]="getSlidesPerView()" navigation autoplay [spaceBetween]="80">
-=======
-<swiper-container *ngIf="loadingStateService.loading$() === 'successful'" class="mySwiper"
-  [slidesPerView]="getSlidesPerView()" navigation autoplay [spaceBetween]="80">
->>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
   <ng-container *ngFor="let element of datas; let i = index">
     <swiper-slide>
       <div class="card">
@@ -40,8 +35,4 @@
 
 <div *ngIf="loadingStateService.loading$() === 'error'" class="error-state">
   <p class="text-center text-danger">Hubo un error al cargar los datos. Por favor, inténtalo de nuevo más tarde.</p>
-<<<<<<< HEAD
 </div>
-=======
-</div>
->>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
