@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .user-image-container {
   margin-left: 0;
   /* Alinear la imagen a la izquierda */
@@ -153,10 +154,243 @@ h5 {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
+=======
+/* ============================================= */
+/*          SCSS COMPLETO - PERFIL USUARIO       */
+/* ============================================= */
+
+.bg-base {
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+
+/* ==================== BIENVENIDA CENTRADA ==================== */
+.welcome-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, #e3e4eb, #2c21c5);
+  color: white;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 10px 30px rgba(25, 40, 175, 0.3);
+  max-width: 620px;
+  width: 100%;
+  text-align: center;
+}
+
+.welcome-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.user-image {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  border: 5px solid rgba(255, 255, 255, 0.35);
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-text {
+  flex: 1;
+  min-width: 280px;
+}
+
+.welcome-title {
+  font-size: 1.95rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+}
+
+.welcome-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.95;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .welcome-card {
+    padding: 1.6rem 1.8rem;
+    margin: 0 10px;
+  }
+
+  .welcome-content {
+    gap: 1.2rem;
+  }
+
+  .user-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .welcome-title {
+    font-size: 1.65rem;
+  }
+}
+
+/* ==================== SIDEBAR ==================== */
+.sidebar-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.nav-btn {
+  width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  font-weight: 500;
+  color: #495369;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: #f8f9fa;
+    transform: translateX(6px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  &.active {
+    background: #1928af;
+    color: white;
+    box-shadow: 0 4px 12px rgba(25, 40, 175, 0.3);
+  }
+}
+
+/* ==================== BOTONES PROFESIONALES ==================== */
+.btn {
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background-color: #1928af;
+  border: none;
+  box-shadow: 0 4px 12px rgba(25, 40, 175, 0.25);
+
+  &:hover {
+    background-color: #0f1a7a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(25, 40, 175, 0.35);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-outline-primary,
+.btn-outline-secondary {
+  border-width: 1.5px;
+  font-weight: 500;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btn-lg {
+  padding: 12px 28px;
+  font-size: 1.05rem;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.9rem;
+}
+
+/* ==================== PERFIL CARD ==================== */
+.profile-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+.form-control-plaintext {
+  background: #f8f9fa;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+}
+
+/* ==================== TABLA Y ESTADO ==================== */
+.custom-table {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+.status-badge {
+  padding: 6px 18px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+/* ==================== NO DATA ==================== */
+.no-data-card {
+  text-align: center;
+  padding: 3.5rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+/* ==================== TARJETAS DE DIRECCIONES ==================== */
+.card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* ==================== MODAL PROFESIONAL ==================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+>>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
+<<<<<<< HEAD
   backdrop-filter: blur(2px);
 }
 
@@ -169,12 +403,25 @@ h5 {
   overflow-y: auto;
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+=======
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+>>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
 }
 
 .modal-box-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+<<<<<<< HEAD
   padding: 16px 20px;
   border-bottom: 1px solid #e5e7eb;
 
@@ -182,12 +429,24 @@ h5 {
     margin: 0;
     font-size: 16px;
     color: #1e3a5f;
+=======
+  padding: 1.4rem 1.75rem;
+  border-bottom: 1px solid #e9ecef;
+  background: #f8f9fa;
+
+  h5 {
+    margin: 0;
+    color: #1928af;
+    font-weight: 600;
+    font-size: 1.25rem;
+>>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
   }
 }
 
 .btn-cerrar {
   background: none;
   border: none;
+<<<<<<< HEAD
   font-size: 24px;
   cursor: pointer;
   color: #64748b;
@@ -197,9 +456,95 @@ h5 {
 
   &:hover {
     color: #1e3a5f;
+=======
+  font-size: 28px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #fee;
+    color: #dc3545;
+>>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
   }
 }
 
 .modal-box-body {
+<<<<<<< HEAD
   padding: 20px;
+=======
+  padding: 1.75rem;
+}
+
+.form-label {
+  color: #495369;
+  margin-bottom: 0.35rem;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Botones dentro del modal */
+.modal-box .btn {
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 10px 0;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .modal-box {
+    margin: 10px;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+}
+
+/* ==================== MODAL ==================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== GENERALES ==================== */
+.section-title {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .welcome-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-card,
+  .welcome-card {
+    padding: 1.5rem;
+  }
+>>>>>>> e590fd444f7f63fc439ea0f2295659aca3e54dd1
 }
