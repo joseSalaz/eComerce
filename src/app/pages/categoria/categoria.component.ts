@@ -14,7 +14,7 @@ export class CategoriaComponent implements OnInit {
   datas: Libro[] = [];
 
   mostrarContenido = false;
-  categorias=['prueba01','prueba01'];
+  filtros=['prueba01','prueba01'];
 
   constructor(
      private categoriaService: CategoriaService,

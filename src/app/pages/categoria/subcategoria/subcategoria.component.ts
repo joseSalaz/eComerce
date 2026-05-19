@@ -11,7 +11,8 @@ import { LibroService } from '../../../Service/libro.service';
 })
 export class SubcategoriaComponent implements OnInit {
     datas: Libro[] = [];
-  
+    mostrarContenido = false;
+    filtros=['prueba01','prueba01'];
     constructor(
        private subcategoriaService: SubCategoriaService,
        private router: Router,

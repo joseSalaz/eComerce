@@ -2,28 +2,7 @@
 
 <div class="store-container">
   
-  <aside class="filters-sidebar">
-    <div class="filters-sticky-wrapper">
-      <h3 class="filters-title">FILTROS</h3>
-      
-      <div class="filter-group">
-        <h4>EDITORIAL</h4>
-        
-        
-        <div class="filter-list">
-          <div *ngFor="let ed of (mostrarContenido ? categorias : categorias.slice(0, 5))" class="filter-item">
-            <input type="checkbox" [id]="ed">
-            <label [for]="ed">{{ ed }}</label>
-          </div>
-        </div>
-      
-        <button *ngIf="categorias.length > 5" type="button" class="btn-show-more" (click)="mostrarContenido = !mostrarContenido">
-           {{ mostrarContenido ? 'MOSTRAR MENOS ▲' : 'MOSTRAR ' + (categorias.length - 5) + ' MÁS ▼' }}
-        </button>
-      </div>
-
-      </div>
-  </aside>
+  <app-filtro [filtros]="filtros"> </app-filtro>
 
   <main class="products-content">
     <div class="card-container">

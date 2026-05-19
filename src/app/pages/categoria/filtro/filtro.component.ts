@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-filtro',
@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrl: './filtro.component.scss'
 })
 export class FiltroComponent {
+  // Recibe la lista desde el padre 
+  @Input() filtros: string[] = []; 
+  //control para casos de movil
+  mostrarContenido: boolean = false; 
+  menuMovilAbierto: boolean = false;  
 
+  toggleMenuMovil() {
+    this.menuMovilAbierto = !this.menuMovilAbierto;
+  }
 }

@@ -3,53 +3,10 @@
     flex-direction: row;
     gap: 20px;
     padding: 20px;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     align-items: flex-start; 
 }
-
-/* Columna de filtros */
-.filters-sidebar {
-    flex: 0 0 280px; 
-    background-color: #fff; 
-    padding: 15px;
-    border-right: 1px solid #e0e0e0; 
-    position: -webkit-sticky;
-    position: sticky;
-    top: 100px; 
-    align-self: flex-start;
-    max-height: calc(100vh - 120px); 
-    overflow-y: auto;
-}
-
-
-.filters-sticky-wrapper {
-    width: 100%;
-    padding-right: 5px;
-}
-
-
-.filter-group {
-    margin-bottom: 25px;
-}
-
-.filter-group h4 {
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.filter-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-    font-size: 0.85rem;
-    color: #555;
-    cursor: pointer;
-}
-
 
 .btn-show-more {
     background: #f1f3f5;
@@ -104,10 +61,14 @@
 }
 
 .img-wrapper {
-    max-width: 200px; 
-    max-height: 340px; 
+    min-width: 180px; 
+    height: 200px; 
     overflow: hidden; 
     margin: 0 auto; 
+    background-color: #f8f9fa; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -119,7 +80,8 @@ img {
 
 .card {
     width: calc(20% - 20px); 
-    min-width: 240px; 
+    min-width: 200px; 
+    max-height: 420px;
     border: none;
     box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, .18);
     background: #fff;
