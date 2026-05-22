@@ -78,6 +78,7 @@ register();
         NgbModule,
         ReactiveFormsModule,
         FormsModule,
+        
         OAuthModule.forRoot()], providers: [
         provideClientHydration(),
         provideAnimationsAsync(),

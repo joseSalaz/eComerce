@@ -95,124 +95,106 @@
 
             <!-- Sección de Direcciones -->
             <div *ngIf="currentSection === 'addirec'">
-              <div class="d-flex flex-wrap gap-3 justify-content-start">
-                <div *ngFor="let direccion of direcciones" class="card p-4 shadow-md border border-gray-300 rounded-lg">
-                  <h5 class="font-semibold">{{ direccion.direccion1 }}</h5>
-                  <p class="text-sm text-gray-600">{{ direccion.referencia }}</p>
-                  <p class="text-sm text-gray-600">{{ direccion.distrito }}, {{ direccion.provincia }}, {{
-                    direccion.departamento }}</p>
-                  <p class="text-sm text-gray-600"><strong>Código Postal:</strong> {{ direccion.codigoPostal }}</p>
+  <div class="d-flex flex-wrap gap-3 justify-content-start">
+    <div *ngFor="let direccion of direcciones" class="card p-4 shadow-sm border border-gray-300 rounded-lg text-start">
+      <h5 class="font-semibold">{{ direccion.direccion1 }}</h5>
+      <p class="text-sm text-gray-600 mb-1">{{ direccion.referencia }}</p>
+      <p class="text-sm text-gray-600 mb-1">{{ direccion.distrito }}, {{ direccion.provincia }}, {{ direccion.departamento }}</p>
+      <p class="text-sm text-gray-600"><strong>Código Postal:</strong> {{ direccion.codigoPostal }}</p>
 
-                  <div class="mt-3 flex justify-between">
-                    <button *ngIf="!direccion.esPredeterminada"
-                      (click)="establecerPredeterminada(direccion.idDireccion!)" class="btn btn-primary btn-sm">
-                      Establecer como predeterminada
-                    </button>
+      <div class="mt-3 d-flex justify-content-between align-items-center gap-2">
+        <button *ngIf="!direccion.esPredeterminada" (click)="establecerPredeterminada(direccion.idDireccion!)" class="btn btn-outline-primary btn-sm">
+          Predeterminada
+        </button>
+        <span *ngIf="direccion.esPredeterminada" class="text-success fw-bold text-sm">
+          ✅ Predeterminada
+        </span>
+        <button (click)="eliminarDireccion(direccion.idDireccion!)" class="btn btn-danger btn-sm">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
 
-                    <span *ngIf="direccion.esPredeterminada" class="text-green-500 font-semibold">
-                      ✅ Predeterminada
-                    </span>
+  <div class="d-flex justify-content-center">
+    <button class="btn btn-primary mb-3 mt-4" (click)="abrirModal()">Agregar Dirección</button>
+  </div>
 
-                    <button (click)="eliminarDireccion(direccion.idDireccion!)" class="btn btn-danger btn-sm">
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-              </div>
+  <div *ngIf="mostrarModal" class="modal-overlay" (click)="cerrarModalAlFondo($event)">
+    <div class="modal-box">
+      <div class="modal-box-header">
+        <h5><i class="fas fa-map-marker-alt me-2"></i> Nueva Dirección</h5>
+        <button class="btn-cerrar" (click)="cerrarModal()" aria-label="Cerrar">&times;</button>
+      </div>
 
-              <!-- Botón para abrir el modal -->
-              <div class="d-flex justify-content-center">
-                <button class="btn btn-primary mb-3 mt-4" (click)="abrirModal()">Agregar Dirección</button>
-              </div>
-
-              <!-- ==================== MODAL AGREGAR DIRECCIÓN ==================== -->
-              <div *ngIf="mostrarModal" class="modal-overlay" (click)="cerrarModalAlFondo($event)">
-                <div class="modal-box">
-
-                  <div class="modal-box-header">
-                    <h5><i class="fas fa-map-marker-alt me-2"></i> Nueva Dirección</h5>
-                    <button class="btn-cerrar" (click)="cerrarModal()" aria-label="Cerrar">&times;</button>
-                  </div>
-
-                  <div class="modal-box-body">
-                    <form #direccionForm="ngForm" (ngSubmit)="agregarDireccion()">
-
-                      <div class="row g-3">
-                        <!-- Dirección -->
-                        <div class="col-12">
-                          <label class="form-label fw-semibold">Dirección completa</label>
-                          <input type="text" id="direccion1" class="form-control"
-                            [(ngModel)]="nuevaDireccion.direccion1" name="direccion1" required #direccion1="ngModel"
-                            placeholder="Av. Principal 123, Urb. Ejemplo">
-                          <div *ngIf="direccion1.invalid && direccion1.touched" class="error-message">
-                            La dirección es obligatoria.
-                          </div>
-                        </div>
-
-                        <!-- Referencia -->
-                        <div class="col-12">
-                          <label class="form-label fw-semibold">Referencia (opcional)</label>
-                          <input type="text" id="referencia" class="form-control"
-                            [(ngModel)]="nuevaDireccion.referencia" name="referencia"
-                            placeholder="Cerca del parque, frente al colegio...">
-                        </div>
-
-                        <!-- Distrito -->
-                        <div class="col-md-6">
-                          <label class="form-label fw-semibold">Distrito</label>
-                          <input type="text" id="distrito" class="form-control" [(ngModel)]="nuevaDireccion.distrito"
-                            name="distrito" required #distrito="ngModel">
-                          <div *ngIf="distrito.invalid && distrito.touched" class="error-message">
-                            El distrito es obligatorio.
-                          </div>
-                        </div>
-
-                        <!-- Provincia -->
-                        <div class="col-md-6">
-                          <label class="form-label fw-semibold">Provincia</label>
-                          <input type="text" id="provincia" class="form-control" [(ngModel)]="nuevaDireccion.provincia"
-                            name="provincia" required #provincia="ngModel">
-                          <div *ngIf="provincia.invalid && provincia.touched" class="error-message">
-                            La provincia es obligatoria.
-                          </div>
-                        </div>
-
-                        <!-- Departamento -->
-                        <div class="col-md-6">
-                          <label class="form-label fw-semibold">Departamento</label>
-                          <input type="text" id="departamento" class="form-control"
-                            [(ngModel)]="nuevaDireccion.departamento" name="departamento" required
-                            #departamento="ngModel">
-                          <div *ngIf="departamento.invalid && departamento.touched" class="error-message">
-                            El departamento es obligatorio.
-                          </div>
-                        </div>
-
-                        <!-- Código Postal -->
-                        <div class="col-md-6">
-                          <label class="form-label fw-semibold">Código Postal</label>
-                          <input type="text" id="codigoPostal" class="form-control"
-                            [(ngModel)]="nuevaDireccion.codigoPostal" name="codigoPostal" placeholder="Ej: 12001">
-                        </div>
-                      </div>
-
-                      <!-- Botones -->
-                      <div class="d-flex gap-3 mt-4">
-                        <button type="button" class="btn btn-outline-secondary flex-grow-1 py-2"
-                          (click)="cerrarModal()">
-                          Cancelar
-                        </button>
-                        <button type="button" class="btn btn-primary flex-grow-1 py-2" (click)="validarFormulario()">
-                          <i class="fas fa-save me-2"></i> Guardar Dirección
-                        </button>
-                      </div>
-
-                      <p *ngIf="mensajeError" class="text-danger text-center mt-3 mb-0">{{ mensajeError }}</p>
-                    </form>
-                  </div>
-                </div>
+      <div class="modal-box-body text-start">
+        <form #direccionForm="ngForm">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label fw-semibold">Dirección completa</label>
+              <input type="text" id="direccion1" class="form-control" [(ngModel)]="nuevaDireccion.direccion1" name="direccion1" required #direccion1="ngModel" placeholder="Av. Principal 123, Urb. Ejemplo">
+              <div *ngIf="direccion1.invalid && direccion1.touched" class="text-danger text-sm mt-1">
+                La dirección es obligatoria.
               </div>
             </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">Referencia (opcional)</label>
+              <input type="text" id="referencia" class="form-control" [(ngModel)]="nuevaDireccion.referencia" name="referencia" placeholder="Cerca del parque, frente al colegio...">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Distrito</label>
+              <input type="text" id="distrito" class="form-control" [(ngModel)]="nuevaDireccion.distrito" name="distrito" required #distrito="ngModel">
+              <div *ngIf="distrito.invalid && distrito.touched" class="text-danger text-sm mt-1">
+                El distrito es obligatorio.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Provincia</label>
+              <input type="text" id="provincia" class="form-control" [(ngModel)]="nuevaDireccion.provincia" name="provincia" required #provincia="ngModel">
+              <div *ngIf="provincia.invalid && provincia.touched" class="text-danger text-sm mt-1">
+                La provincia es obligatoria.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Departamento</label>
+              <input type="text" id="departamento" class="form-control" [(ngModel)]="nuevaDireccion.departamento" name="departamento" required #departamento="ngModel">
+              <div *ngIf="departamento.invalid && departamento.touched" class="text-danger text-sm mt-1">
+                El departamento es obligatorio.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Código Postal</label>
+              <input type="text" id="codigoPostal" class="form-control" [(ngModel)]="nuevaDireccion.codigoPostal" name="codigoPostal" placeholder="Ej: 12001">
+            </div>
+
+            <div class="col-12 mt-3">
+              <label class="form-label fw-semibold">Selecciona ubicación en el mapa</label>
+              <div id="map" style="width: 100%; height: 250px; background-color: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc;">
+                <span class="text-muted"><i class="fas fa-map-marked-alt me-2"></i> El mapa de Google se renderizará aquí</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-3 mt-4">
+            <button type="button" class="btn btn-outline-secondary flex-grow-1 py-2" (click)="cerrarModal()">
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary flex-grow-1 py-2" (click)="validarFormulario()">
+              <i class="fas fa-save me-2"></i> Guardar Dirección
+            </button>
+          </div>
+
+          <p *ngIf="mensajeError" class="text-danger text-center mt-3 mb-0">{{ mensajeError }}</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
             <!-- ==================== SECCIÓN DE PERFIL ==================== -->
             <div *ngIf="currentSection === 'profile'">
