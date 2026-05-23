@@ -126,111 +126,194 @@ export class UserComponent implements OnInit {
   }
 
   abrirModal(): void {
-    this.mostrarModal = true;
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => {
-      this.inicializarMapa();
-    }, 100);
-  }
+  this.mostrarModal = true;
+  document.body.style.overflow = 'hidden';
 
-  cerrarModal(): void {
-    this.mostrarModal = false;
-    document.body.style.overflow = '';
-    this.mensajeError = '';
-  }
-inicializarMapa(): void {
-    const mapaContenedor = document.getElementById('map');
-    
-    if (!mapaContenedor) {
-      console.error('No se encontró el contenedor con id "map"');
-      return;
-    }
+  setTimeout(() => {
+    this.inicializarMapa();
 
-    // Coordenadas iniciales por defecto (Jauja, Junín o tu ciudad predeterminada)
-    const coordenadasIniciales = { lat: -11.7772, lng: -75.5003 };
-
-    const opcionesMapa = {
-      center: coordenadasIniciales,
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-
-    const mapa = new google.maps.Map(mapaContenedor, opcionesMapa);
-
-    const marcador = new google.maps.Marker({
-      position: coordenadasIniciales,
-      map: mapa,
-      draggable: true,
-      title: "Arrastra el pin o haz clic en el mapa"
-    });
-
-    // Instanciamos el servicio Geocoder de Google
-    const geocoder = new google.maps.Geocoder();
-
-    // 1️⃣ EVENTO: Cuando el usuario hace CLIC en cualquier parte del mapa
-    google.maps.event.addListener(mapa, 'click', (evento: any) => {
-      const coordenadas = evento.latLng;
-      marcador.setPosition(coordenadas); // Movemos el pin al lugar del clic
-      this.obtenerDireccionDesdeCoordenadas(coordenadas, geocoder);
-    });
-
-    // 2️⃣ EVENTO: Cuando el usuario termina de ARRASTRAR el marcador
-    google.maps.event.addListener(marcador, 'dragend', () => {
-      const coordenadas = marcador.getPosition();
-      this.obtenerDireccionDesdeCoordenadas(coordenadas, geocoder);
-    });
-  }
-
-  // Método auxiliar que procesa los datos geográficos de Google y actualiza los inputs de Angular
-  obtenerDireccionDesdeCoordenadas(latLng: any, geocoder: any): void {
-    geocoder.geocode({ location: latLng }, (resultados: any, estado: string) => {
-      if (estado === 'OK' && resultados[0]) {
-        const componentesDireccion = resultados[0].address_components;
-        
-        // Inicializamos variables temporales para capturar los datos estructurados
-        let calleNumero = '';
-        let distrito = '';
-        let provincia = '';
-        let departamento = '';
-        let codigoPostal = '';
-
-        // Recorremos la estructura de dirección que devuelve la API de Google
-        for (const componente of componentesDireccion) {
-          const tipos = componente.types;
-
-          if (tipos.includes('route')) {
-            calleNumero = componente.long_name;
-          } else if (tipos.includes('street_number')) {
-            calleNumero += ' ' + componente.long_name;
-          } else if (tipos.includes('locality') || tipos.includes('sublocality_level_1')) {
-            distrito = componente.long_name;
-          } else if (tipos.includes('administrative_area_level_2')) {
-            provincia = componente.long_name;
-          } else if (tipos.includes('administrative_area_level_1')) {
-            departamento = componente.long_name;
-          } else if (tipos.includes('postal_code')) {
-            codigoPostal = componente.long_name;
-          }
-        }
-
-        // Si la dirección formateada por Google no encontró el nombre de la calle, usamos la dirección larga provista por defecto
-        const direccionFormateada = calleNumero.trim() ? calleNumero.trim() : resultados[0].formatted_address.split(',')[0];
-
-        // 💡 Asignamos los valores directamente al objeto vinculado con [(ngModel)]
-        this.nuevaDireccion.direccion1 = direccionFormateada;
-        this.nuevaDireccion.distrito = distrito;
-        this.nuevaDireccion.provincia = provincia;
-        this.nuevaDireccion.departamento = departamento;
-        this.nuevaDireccion.codigoPostal = codigoPostal;
-
-        // Forzamos a Angular a procesar los cambios de inmediato en la vista del formulario
-        this.cdr.detectChanges();
-
-      } else {
-        console.warn('No se pudo determinar la dirección para estas coordenadas:', estado);
+    if (typeof google !== 'undefined' && google.maps) {
+      const mapaContenedor = document.getElementById('map');
+      if (mapaContenedor) {
+        google.maps.event.trigger(mapaContenedor, 'resize');
       }
+    }
+   
+  }, 250);
+}
+
+ cerrarModal(): void {
+  this.mostrarModal = false;
+  document.body.style.overflow = '';
+  this.mensajeError = '';
+
+  // ✅ Limpiar pac-container al cerrar
+  const pacContainer = document.querySelector('.pac-container');
+  if (pacContainer) {
+    pacContainer.remove();
+  }
+}
+inicializarMapa(): void {
+  const mapaContenedor = document.getElementById('map');
+  const inputBusqueda = document.getElementById('map-search') as HTMLInputElement;
+
+  if (!mapaContenedor) return;
+
+  let coordenadasIniciales = { lat: -11.7772, lng: -75.5003 };
+
+  const mapa = new google.maps.Map(mapaContenedor, {
+    center: coordenadasIniciales,
+    zoom: 15,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+
+  const marcador = new google.maps.Marker({
+    position: coordenadasIniciales,
+    map: mapa,
+    draggable: true
+  });
+
+  const geocoder = new google.maps.Geocoder();
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        mapa.setCenter(loc);
+        marcador.setPosition(loc);
+        this.obtenerDireccionDesdeCoordenadas(loc, geocoder);
+      },
+      () => this.obtenerDireccionDesdeCoordenadas(coordenadasIniciales, geocoder),
+      { enableHighAccuracy: true, timeout: 5000 }
+    );
+  }
+
+  if (inputBusqueda) {
+    const autocomplete = new google.maps.places.Autocomplete(inputBusqueda, {
+      fields: ['geometry', 'address_components', 'place_id', 'formatted_address'],
+      types: ['geocode', 'establishment'],
+      componentRestrictions: { country: 'pe' }
+    });
+
+    // ✅ FIX: Vincular bounds DESPUÉS de que el mapa termine de cargar
+    google.maps.event.addListenerOnce(mapa, 'idle', () => {
+      autocomplete.bindTo('bounds', mapa); // usar bindTo en vez de setBounds estático
+    });
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+
+      // ✅ FIX: Verificar place_id O geometry, no solo place_id
+      if (!place || (!place.geometry && !place.place_id)) {
+        this.mensajeError = "Debes seleccionar una opción del listado.";
+        return;
+      }
+
+      this.mensajeError = ''; // limpiar error si ya seleccionó bien
+
+      // Si viene del caché sin geometry, usar geocoder como respaldo
+      if (!place.geometry?.location) {
+        geocoder.geocode({ placeId: place.place_id }, (results: any, status: string) => {
+          if (status === 'OK' && results[0]) {
+            const geo = results[0];
+            if (geo.geometry.viewport) {
+              mapa.fitBounds(geo.geometry.viewport);
+            } else {
+              mapa.setCenter(geo.geometry.location);
+              mapa.setZoom(16);
+            }
+            marcador.setPosition(geo.geometry.location);
+            this.procesarComponentesDireccion(geo.address_components);
+          }
+        });
+        return;
+      }
+
+      // Caso directo con geometry
+      if (place.geometry.viewport) {
+        mapa.fitBounds(place.geometry.viewport);
+      } else {
+        mapa.setCenter(place.geometry.location);
+        mapa.setZoom(16);
+      }
+      marcador.setPosition(place.geometry.location);
+      this.procesarComponentesDireccion(place.address_components);
     });
   }
+
+  google.maps.event.addListener(mapa, 'click', (evento: any) => {
+    marcador.setPosition(evento.latLng);
+    this.obtenerDireccionDesdeCoordenadas(evento.latLng, geocoder);
+  });
+
+  google.maps.event.addListener(marcador, 'dragend', () => {
+    this.obtenerDireccionDesdeCoordenadas(marcador.getPosition(), geocoder);
+  });
+}
+
+procesarComponentesDireccion(componentesDireccion: any[]): void {
+  if (!componentesDireccion) return;
+
+  let calleNumero = '';
+  let distrito = '';
+  let provincia = '';
+  let departamento = '';
+  let codigoPostal = '';
+
+  for (const componente of componentesDireccion) {
+    const tipos = componente.types;
+
+    if (tipos.includes('route')) {
+      calleNumero = componente.long_name;
+    } else if (tipos.includes('street_number')) {
+      calleNumero += ' ' + componente.long_name;
+    } else if (tipos.includes('locality') || tipos.includes('sublocality_level_1')) {
+      distrito = componente.long_name;
+    } else if (tipos.includes('administrative_area_level_2')) {
+      provincia = componente.long_name;
+    } else if (tipos.includes('administrative_area_level_1')) {
+      let deptoTexto = componente.long_name;
+      
+      // Limpieza automática de textos administrativos devueltos por la API de Google
+      if (deptoTexto.toLowerCase().includes('gobierno regional de')) {
+        deptoTexto = deptoTexto.replace(/gobierno regional de/i, '').trim();
+      } else if (deptoTexto.toLowerCase().includes('gobierno regional del')) {
+        deptoTexto = deptoTexto.replace(/gobierno regional del/i, '').trim();
+      }
+      departamento = deptoTexto;
+      
+    } else if (tipos.includes('postal_code')) {
+      codigoPostal = componente.long_name;
+    }
+  }
+
+  // Al buscar solo distritos o ciudades, 'calleNumero' vendrá vacío.
+  // En ese caso, asignamos un mensaje claro para que el formulario pase las validaciones.
+  this.nuevaDireccion.direccion1 = calleNumero.trim() ? calleNumero.trim() : `Zona céntrica de ${distrito || provincia || 'la región'}`;
+  this.nuevaDireccion.distrito = distrito;
+  this.nuevaDireccion.provincia = provincia;
+  this.nuevaDireccion.departamento = departamento;
+  this.nuevaDireccion.codigoPostal = codigoPostal;
+
+  this.cdr.detectChanges();
+}
+
+obtenerDireccionDesdeCoordenadas(latLng: any, geocoder: any): void {
+  geocoder.geocode({ location: latLng }, (resultados: any, estado: string) => {
+    if (estado === 'OK' && resultados[0]) {
+      this.procesarComponentesDireccion(resultados[0].address_components);
+      
+      // Control de respaldo dinámico
+      if (!this.nuevaDireccion.direccion1 || this.nuevaDireccion.direccion1.startsWith('Zona céntrica de')) {
+        // Extrae el primer segmento descriptivo del geocoder de Google
+        this.nuevaDireccion.direccion1 = resultados[0].formatted_address.split(',')[0];
+        this.cdr.detectChanges();
+      }
+    } else {
+      console.warn('No se pudo determinar la dirección para estas coordenadas:', estado);
+    }
+  });
+}
   cerrarModalAlFondo(event: MouseEvent): void {
     if ((event.target as HTMLElement).classList.contains('modal-overlay')) {
       this.cerrarModal();

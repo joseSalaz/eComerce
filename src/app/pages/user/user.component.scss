@@ -240,9 +240,12 @@
   background: white;
   border-radius: 16px;
   width: 90%;
-  max-width: 520px;
+  max-width: 580px;        // un poco más ancho para que el mapa respire
+  max-height: 92vh;        // limitar altura total
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;      // hidden en X, auto en Y
+  position: relative;      // importante para el z-index interno
 }
 
 .modal-box-header {
@@ -318,9 +321,11 @@
   background-color: rgba(0, 0, 0, 0.65);
   z-index: 9999;
   display: flex;
-  align-items: center;
+  align-items: flex-start;  // ← cambiar de center a flex-start
   justify-content: center;
+  padding-top: 40px;        // ← dar espacio arriba para que el dropdown no se corte
   backdrop-filter: blur(4px);
+  overflow-y: auto;
 }
 
 .modal-box {
@@ -349,4 +354,16 @@
   .welcome-card {
     padding: 1.5rem;
   }
+}
+
+/* Forzar a que las sugerencias de Google se muestren por encima de cualquier ventana modal */
+.pac-container {
+    z-index: 99999 !important;
+    font-family: inherit;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+:host ::ng-deep .pac-container {
+  z-index: 99999 !important;
+  pointer-events: auto !important;
 }
