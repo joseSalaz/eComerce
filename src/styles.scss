@@ -81,3 +81,9 @@ footer {
 .pac-icon {
   margin-top: 4px !important;
 }
+.swal2-container.swal2-top-end,
+.swal2-container.swal2-top-right {
+  z-index: 99999 !important;
+  top: 70px !important;   
+  right: 16px !important;
+}

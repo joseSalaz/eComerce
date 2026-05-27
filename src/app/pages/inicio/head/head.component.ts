@@ -101,12 +101,18 @@ export class HeadComponent implements OnInit {
 
 
   onSelectOption(option: string): void {
-    this.isMenuVisible = false; // Cierra el menú al seleccionar una opción
+    this.isMenuVisible = false;
     if (option === 'miperfil') {
       this.router.navigate(['/user']);
     } else if (option === 'cerrarSesion') {
+    
+      localStorage.removeItem('usuarioData');
+  
       this.authService.logout();
-      this.router.navigate(['/inicio']);
+    
+      this.router.navigate(['/inicio']).then(() => {
+        window.location.reload();
+      });
     }
   }
 
@@ -117,8 +123,11 @@ export class HeadComponent implements OnInit {
   }
 
   onClick() {
+    
     this.authService.logout();
-    this.router.navigate(['/inicio']);
+    this.router.navigate(['/inicio']).then(() => {
+      window.location.reload();
+    });
   }
 
 }

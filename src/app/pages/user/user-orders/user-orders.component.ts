@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Venta } from '../../../Interface/venta';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { VentaService } from '../../../Service/venta.service';
-import { AuthService } from '../../../Service/auth.service';
+import { Venta } from '../../../Interface/venta';
 
 @Component({
   selector: 'app-user-orders',
@@ -9,17 +8,30 @@ import { AuthService } from '../../../Service/auth.service';
   styleUrls: ['./user-orders.component.scss']
 })
 export class UserOrdersComponent implements OnInit {
+  @Input() usuarioId!: number;
+  @Output() onVerDetalles = new EventEmitter<number>();
+
   ventas: Venta[] = [];
 
-  constructor(private ventaService: VentaService, private authService: AuthService) {}
+  constructor(private ventaService: VentaService) { }
 
   ngOnInit(): void {
-    const usuarioId = this.authService.getUsuarioId();
-    if (usuarioId) {
-      this.ventaService.obtenerVentasPorPersona(usuarioId).subscribe(ventas => {
-        this.ventas = ventas;
-      });
+    if (this.usuarioId) {
+      this.obtenerVentas();
     }
   }
-}
 
+  obtenerVentas(): void {
+    this.ventaService.obtenerVentasPorPersona(this.usuarioId).subscribe({
+      next: (ventas) => {
+        this.ventas = ventas;
+      },
+      error: (error) => console.error('Error al obtener ventas:', error)
+    });
+  }
+
+  abrirModalVenta(idVenta: number): void {
+    // Emite el ID al componente padre para que orqueste la apertura del modal global
+    this.onVerDetalles.emit(idVenta);
+  }
+}
