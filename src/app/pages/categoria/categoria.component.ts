@@ -14,7 +14,7 @@ export class CategoriaComponent implements OnInit {
   datas: Libro[] = [];
 
   mostrarContenido = false;
-  filtros=['prueba01','prueba01'];
+  filtros=['prueba01','prueba02'];
 
   constructor(
      private categoriaService: CategoriaService,
@@ -49,3 +49,12 @@ export class CategoriaComponent implements OnInit {
     this.router.navigate(['/detalle-producto', libroId]);
   }
 }
+
+
+
+
+
+
+
+
+
