@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { AutorCategoria } from '../../../Interface/autor';
+import { Proveedor } from '../../../Interface/proveedor';
 
 @Component({
   selector: 'app-filtro',
@@ -7,7 +9,8 @@ import { Component, Input } from '@angular/core';
 })
 export class FiltroComponent {
   // Recibe la lista desde el padre 
-  @Input() filtros: string[] = []; 
+  @Input() filtros: AutorCategoria[] = [];
+  @Input() proveedores: Proveedor[] = [];
   //control para casos de movil
   mostrarContenido: boolean = false; 
   menuMovilAbierto: boolean = false;  

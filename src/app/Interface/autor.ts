@@ -4,5 +4,11 @@ export interface Autor {
   apellido: string;
   codigo: number;
   descripcion: string;
-  }
-  
+}
+
+export interface AutorCategoria {
+  idAutor: number;
+  nombre?: string;
+  apellido?: string;
+}
+

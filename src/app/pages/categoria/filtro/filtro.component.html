@@ -5,7 +5,7 @@
 </div>
 
 <aside class="filters-sidebar" [class.open]="menuMovilAbierto">
-  
+
   <div class="mobile-close-header">
     <h5>FILTROS</h5>
     <button class="btn-close" (click)="toggleMenuMovil()">✕</button>
@@ -13,22 +13,46 @@
 
   <div class="filters-sticky-wrapper">
     <h3 class="filters-title d-none-mobile">FILTROS</h3>
-    
+
     <div class="filter-group">
-      <h4>EDITORIAL</h4>
-      
+      <h4>EDITORIAL O AUTOR</h4>
+
       <div class="filter-list">
         <div *ngFor="let ed of (mostrarContenido ? filtros : filtros.slice(0, 5))" class="filter-item">
-          <input type="checkbox" [id]="ed">
-          <label [for]="ed">{{ ed }}</label>
+
+          <input type="checkbox" [id]="'autor-' + ed.idAutor">
+
+          <label [for]="'autor-' + ed.idAutor">
+            {{ ed.nombre }}
+          </label>
+
         </div>
       </div>
-    
-      <button *ngIf="filtros.length > 5" type="button" class="btn-show-more" (click)="mostrarContenido = !mostrarContenido">
-         {{ mostrarContenido ? 'MOSTRAR MENOS ▲' : 'MOSTRAR ' + (filtros.length - 5) + ' MÁS ▼' }}
+
+      <button *ngIf="filtros.length > 5" type="button" class="btn-show-more"
+        (click)="mostrarContenido = !mostrarContenido">
+        {{ mostrarContenido ? 'MOSTRAR MENOS ▲' : 'MOSTRAR ' + (filtros.length - 5) + ' MÁS ▼' }}
       </button>
     </div>
+    <div class="filter-group">
 
+      <h4>PROVEEDORES</h4>
+
+      <div class="filter-list">
+
+        <div *ngFor="let prov of proveedores" class="filter-item">
+
+          <input type="checkbox" [id]="'proveedor-' + prov.idProveedor">
+
+          <label [for]="'proveedor-' + prov.idProveedor">
+            {{ prov.razonSocial }}
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
     <div class="mobile-actions">
       <button class="btn-clear" (click)="toggleMenuMovil()">LIMPIAR</button>
       <button class="btn-apply" (click)="toggleMenuMovil()">APLICAR</button>
