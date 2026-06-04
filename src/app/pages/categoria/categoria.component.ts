@@ -65,9 +65,6 @@ export class CategoriaComponent implements OnInit {
       .subscribe(autores => {
 
         this.filtros = autores;
-
-        console.log(this.filtros);
-
       });
 
   }
@@ -77,7 +74,6 @@ export class CategoriaComponent implements OnInit {
       .getListProveedorCategoria(this.idCategoria)
       .subscribe(proveedores => {
         this.proveedores = proveedores;
-        console.log(proveedores);
 
       });
 
@@ -94,6 +90,25 @@ export class CategoriaComponent implements OnInit {
 
   redireccionarAlDetalleProducto(libroId: number): void {
     this.router.navigate(['/detalle-producto', libroId]);
+  }
+
+  filtrarLibros(filtro: any): void {
+
+    const request = {
+      idCategoria: this.idCategoria,
+      autores: filtro.autores,
+      proveedores: filtro.proveedores,
+      precioMinimo: filtro.precioMinimo,
+      precioMaximo: filtro.precioMaximo
+    };
+
+    this.libroService.filtrarLibros(request)
+      .subscribe(data => {
+
+        this.datas = data;
+
+      });
+
   }
 }
 

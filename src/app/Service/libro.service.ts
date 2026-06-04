@@ -15,7 +15,7 @@ export class LibroService {
   private librosSubject: BehaviorSubject<Libro[]> = new BehaviorSubject<Libro[]>([]);
   public libros$: Observable<Libro[]> = this.librosSubject.asObservable();
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.fetchLibros();
   }
 
@@ -86,5 +86,11 @@ export class LibroService {
 
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
+  }
+  filtrarLibros(request: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      `${this.apiUrl}/Filtrar/autor/proveedor/precio`,
+      request
+    );
   }
 }

@@ -30,7 +30,7 @@ const routes: Routes = [
   { path: 'detalle-venta/:paymentId/:PayerID', component: DetalleVentaComponent },
   {path:'pago',component:PagoComponent},
   {path: 'categoria/:idCategoria/libros',component: CategoriaComponent},
-  {path:'subcategoria/:idSubCategoria/libros',component:SubcategoriaComponent},
+  {path: 'categoria/:idCategoria/subcategoria/:idSubCategoria/libros',component:SubcategoriaComponent},
   { path: 'pago', component: PagoComponent, canActivate: [PagoGuard] },
   {path:'respuesta',component:RespuestasComponent},
   { path: 'user/detalle-pedido', component: EstadoPedidoModalComponent },

@@ -1,27 +1,49 @@
 <app-head></app-head>
 
-<div class="store-container">
+<div class="store-container container-fluid my-4 px-md-4">
 
-  <app-filtro [filtros]="filtros" [proveedores]="proveedores"> </app-filtro>
+  <app-filtro
+    [filtros]="filtros"
+    [proveedores]="proveedores"
+    (filtroChange)="filtrarLibros($event)">
+  </app-filtro>
 
   <main class="products-content">
     <div class="card-container">
+
       <div *ngFor="let libro of datas" class="card">
+
+        <!-- Imagen -->
         <div class="img-wrapper">
-          <img [src]="libro.imagen" alt="Libro">
+          <img [src]="libro.imagen" alt="Libro: {{ libro.titulo }}">
         </div>
+
+        <!-- Cuerpo -->
         <div class="card-body">
-          <h5 class="card-title">{{ libro.titulo }}</h5>
-          <h1 class="price" *ngIf="libro.precioVenta; else loading">
-            S/{{ libro.precioVenta | number:'1.2-2' }}
-          </h1>
+
+          <h5 class="card-title" [title]="libro.titulo">
+            {{ libro.titulo }}
+          </h5>
+
+          <ng-container *ngIf="libro.precioVenta; else loading">
+            <p class="price">S/ {{ libro.precioVenta | number:'1.2-2' }}</p>
+          </ng-container>
           <ng-template #loading>
-            <span>Cargando precio...</span>
+            <div class="placeholder-glow mb-2">
+              <span class="placeholder col-8 bg-secondary opacity-25 rounded py-2 d-inline-block"></span>
+            </div>
           </ng-template>
-          <button type="button" class="btn btn-primary fs-5"
-            (click)="redireccionarAlDetalleProducto(libro.idLibro)">Comprar</button>
+
+          <button
+            type="button"
+            class="btn-comprar"
+            (click)="redireccionarAlDetalleProducto(libro.idLibro)">
+            Comprar
+          </button>
+
         </div>
       </div>
+
     </div>
   </main>
 

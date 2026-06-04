@@ -7,6 +7,7 @@ import { LibroService } from '../../../Service/libro.service';
 import { AutorService } from '../../../Service/autor.service';
 import { ProvedorService } from '../../../Service/provedor.service';
 import { AutorCategoria } from '../../../Interface/autor';
+import { Proveedor } from '../../../Interface/proveedor';
 @Component({
   selector: 'app-subcategoria',
   templateUrl: './subcategoria.component.html',
@@ -18,6 +19,7 @@ export class SubcategoriaComponent implements OnInit {
   filtros: AutorCategoria[] = [];
   idCategoria!: number;
   idSubCategoria!: number;
+  proveedores: Proveedor[] = [];
   constructor(
     private subcategoriaService: SubCategoriaService,
     private router: Router,
@@ -28,17 +30,40 @@ export class SubcategoriaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        const idSubCategoria = Number(params.get('idSubCategoria'));
-        return this.subcategoriaService.getLibrosPorSubCategoriaId(idSubCategoria);
-      })
-    ).subscribe(libros => {
-      this.datas = libros;
-      this.obtenerPrecios();
+
+    this.route.paramMap.subscribe(params => {
+
+      this.idCategoria = Number(params.get('idCategoria'));
+
+      this.idSubCategoria = Number(params.get('idSubCategoria'));
+
+      console.log('Categoria:', this.idCategoria);
+
+      console.log('Subcategoria:', this.idSubCategoria);
+
+      this.obtenerLibros();
+
+      this.obtenerAutores();
+
+      this.obtenerProveedores();
+
     });
-    this.obtenerAutores();
-    this.obtenerProveedores();
+
+  }
+
+
+  obtenerLibros(): void {
+
+    this.subcategoriaService
+      .getLibrosPorSubCategoriaId(this.idSubCategoria)
+      .subscribe(libros => {
+
+        this.datas = libros;
+
+        this.obtenerPrecios();
+
+      });
+
   }
   obtenerAutores(): void {
 
@@ -50,9 +75,6 @@ export class SubcategoriaComponent implements OnInit {
       .subscribe(autores => {
 
         this.filtros = autores;
-
-        console.log(this.filtros);
-
       });
 
   }
@@ -64,9 +86,7 @@ export class SubcategoriaComponent implements OnInit {
         this.idSubCategoria
       )
       .subscribe(proveedores => {
-
-        console.log(proveedores);
-
+        this.proveedores = proveedores;
       });
 
   }
@@ -81,5 +101,25 @@ export class SubcategoriaComponent implements OnInit {
   }
   redireccionarAlDetalleProducto(libroId: number) {
     this.router.navigate(['/detalle-producto', libroId]);
+  }
+
+  filtrarLibros(filtro: any): void {
+
+    const request = {
+      idCategoria: this.idCategoria,
+      idSubcategoria: this.idSubCategoria,
+      autores: filtro.autores,
+      proveedores: filtro.proveedores,
+      precioMinimo: filtro.precioMinimo,
+      precioMaximo: filtro.precioMaximo
+    };
+
+    this.libroService.filtrarLibros(request)
+      .subscribe(data => {
+
+        this.datas = data;
+
+      });
+
   }
 }

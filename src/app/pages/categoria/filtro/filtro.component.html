@@ -1,61 +1,137 @@
-<div class="mobile-filter-bar">
-  <button type="button" class="btn-trigger-filter" (click)="toggleMenuMovil()">
-    <span class="filter-icon">⏳</span> FILTRAR
+<div
+  class="mobile-filter-bar d-md-none p-3 bg-white border-bottom sticky-top z-3 d-flex justify-content-between align-items-center shadow-sm">
+  <span class="fw-bold text-dark text-uppercase tracking-wider small">Catálogo de Libros</span>
+  <button type="button" class="btn btn-sm btn-outline-dark d-flex align-items-center gap-2 px-3 py-2 rounded-3"
+    (click)="toggleMenuMovil()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-filter-left"
+      viewBox="0 0 16 16">
+      <path
+        d="M2 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
+    </svg>
+    Filtrar
   </button>
 </div>
 
-<aside class="filters-sidebar" [class.open]="menuMovilAbierto">
+<aside class="filters-sidebar card border-0 bg-white p-4" [class.open]="menuMovilAbierto">
 
-  <div class="mobile-close-header">
-    <h5>FILTROS</h5>
-    <button class="btn-close" (click)="toggleMenuMovil()">✕</button>
+  <div class="mobile-close-header d-flex justify-content-between align-items-center d-md-none border-bottom pb-3 mb-4">
+    <div>
+      <h5 class="mb-0 fw-bold text-dark">Filtros Avanzados</h5>
+      <small class="text-muted">Refina tu búsqueda de libros</small>
+    </div>
+    <button type="button" class="btn-close shadow-none" (click)="toggleMenuMovil()" aria-label="Close"></button>
   </div>
 
   <div class="filters-sticky-wrapper">
-    <h3 class="filters-title d-none-mobile">FILTROS</h3>
+    <div class="d-none d-md-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+      <h3 class="filters-title h6 fw-bold m-0 text-dark tracking-wider text-uppercase">Filtrar por</h3>
+      <button type="button" class="btn btn-link btn-sm text-decoration-none p-0 text-muted small hover-danger"
+        (click)="limpiarFiltros()">Limpiar todo</button>
+    </div>
 
-    <div class="filter-group">
-      <h4>EDITORIAL O AUTOR</h4>
+    <div class="filter-group mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold text-secondary small tracking-wider m-0">EDITORIAL O AUTOR</h6>
+      </div>
 
-      <div class="filter-list">
-        <div *ngFor="let ed of (mostrarContenido ? filtros : filtros.slice(0, 5))" class="filter-item">
-
-          <input type="checkbox" [id]="'autor-' + ed.idAutor">
-
-          <label [for]="'autor-' + ed.idAutor">
-            {{ ed.nombre }}
-          </label>
-
+      <div class="filter-list custom-filter-scroll pe-1">
+        <div *ngFor="let ed of filtros.slice(0, mostrarContenido)"
+          class="filter-item-row d-flex align-items-center justify-content-between py-1 rounded">
+          <div class="form-check m-0 d-flex align-items-center">
+            <input class="form-check-input custom-checkbox pointer-cursor" type="checkbox" [id]="'autor-' + ed.idAutor"
+              (change)="seleccionarAutor(ed.idAutor, $event)">
+            <label class="form-check-label text-dark fs-6 ps-2 pointer-cursor text-truncate"
+              [for]="'autor-' + ed.idAutor" style="max-width: 180px;">
+              {{ ed.nombre }} {{ed.apellido}}
+            </label>
+          </div>
         </div>
       </div>
 
-      <button *ngIf="filtros.length > 5" type="button" class="btn-show-more"
-        (click)="mostrarContenido = !mostrarContenido">
-        {{ mostrarContenido ? 'MOSTRAR MENOS ▲' : 'MOSTRAR ' + (filtros.length - 5) + ' MÁS ▼' }}
-      </button>
+      <div class="mt-2 pt-1 border-top border-light">
+        <button *ngIf="mostrarContenido < filtros.length" type="button"
+          class="btn btn-sm text-primary p-0 d-flex align-items-center gap-1 small fw-medium transition-link"
+          (click)="cargarMasAutores()">
+          <span>Ver más autores</span> <small class="fs-7">▼</small>
+        </button>
+        <button *ngIf="mostrarContenido > 5" type="button"
+          class="btn btn-sm text-muted p-0 d-flex align-items-center gap-1 small fw-medium transition-link"
+          (click)="mostrarMenosAutores()">
+          <span>Ver menos</span> <small class="fs-7">▲</small>
+        </button>
+      </div>
     </div>
-    <div class="filter-group">
 
-      <h4>PROVEEDORES</h4>
+    <hr class="text-black-50 opacity-10 my-4">
 
-      <div class="filter-list">
+    <div class="filter-group mb-4">
+      <h6 class="fw-bold text-secondary small tracking-wider mb-3">PROVEEDORES</h6>
 
-        <div *ngFor="let prov of proveedores" class="filter-item">
-
-          <input type="checkbox" [id]="'proveedor-' + prov.idProveedor">
-
-          <label [for]="'proveedor-' + prov.idProveedor">
-            {{ prov.razonSocial }}
-          </label>
-
+      <div class="filter-list custom-filter-scroll pe-1">
+        <div *ngFor="let prov of proveedores.slice(0, mostrarProveedores)"
+          class="filter-item-row d-flex align-items-center justify-content-between py-1 rounded">
+          <div class="form-check m-0 d-flex align-items-center">
+            <input class="form-check-input custom-checkbox pointer-cursor" type="checkbox"
+              [id]="'proveedor-' + prov.idProveedor" (change)="seleccionarProveedor(prov.idProveedor, $event)">
+            <label class="form-check-label text-dark fs-6 ps-2 pointer-cursor text-truncate"
+              [for]="'proveedor-' + prov.idProveedor" style="max-width: 180px;">
+              {{ prov.razonSocial }}
+            </label>
+          </div>
         </div>
-
       </div>
 
+      <div class="mt-2 pt-1 border-top border-light">
+        <button *ngIf="mostrarProveedores < proveedores.length" type="button"
+          class="btn btn-sm text-primary p-0 d-flex align-items-center gap-1 small fw-medium transition-link"
+          (click)="cargarMasProveedores()">
+          <span>Ver más proveedores</span> <small class="fs-7">▼</small>
+        </button>
+        <button *ngIf="mostrarProveedores > 5" type="button"
+          class="btn btn-sm text-muted p-0 d-flex align-items-center gap-1 small fw-medium transition-link"
+          (click)="mostrarMenosProveedores()">
+          <span>Ver menos</span> <small class="fs-7">▲</small>
+        </button>
+      </div>
     </div>
-    <div class="mobile-actions">
-      <button class="btn-clear" (click)="toggleMenuMovil()">LIMPIAR</button>
-      <button class="btn-apply" (click)="toggleMenuMovil()">APLICAR</button>
+
+    <hr class="text-black-50 opacity-10 my-4">
+
+    <div class="filter-group mb-4">
+      <h6 class="fw-bold text-secondary small tracking-wider mb-3">RANGO DE PRECIO</h6>
+
+      <div class="row g-2 mb-3">
+        <div class="col-6">
+          <div class="input-group input-group-sm rounded-2 overflow-hidden border border-light shadow-2xs">
+            <span class="input-group-text bg-light text-muted border-0 fs-7">Min</span>
+            <input type="number"
+              class="form-control border-0 bg-light text-center fw-semibold text-dark p-1 fs-7 shadow-none"
+              [(ngModel)]="precioMinimo" (change)="emitirFiltro()">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-group input-group-sm rounded-2 overflow-hidden border border-light shadow-2xs">
+            <span class="input-group-text bg-light text-muted border-0 fs-7">Max</span>
+            <input type="number"
+              class="form-control border-0 bg-light text-center fw-semibold text-dark p-1 fs-7 shadow-none"
+              [(ngModel)]="precioMaximo" (change)="emitirFiltro()">
+          </div>
+        </div>
+      </div>
+
+      <div class="position-relative px-1 py-2">
+        <input type="range" class="form-range custom-slider-range" min="3" max="100" [(ngModel)]="precioMinimo"
+          (change)="emitirFiltro()">
+        <input type="range" class="form-range custom-slider-range mt-2" min="3" max="100" [(ngModel)]="precioMaximo"
+          (change)="emitirFiltro()">
+      </div>
+    </div>
+
+    <div class="mobile-actions d-md-none mt-5 pt-3 d-flex gap-2">
+      <button type="button" class="btn btn-light text-secondary w-50 py-2.5 rounded-3 fw-semibold border"
+        (click)="limpiarFiltros(); toggleMenuMovil()">Limpiar</button>
+      <button type="button" class="btn btn-dark w-50 py-2.5 rounded-3 fw-semibold shadow-sm"
+        (click)="toggleMenuMovil()">Aplicar Filtros</button>
     </div>
   </div>
 </aside>
