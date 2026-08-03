@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { AuthService } from '../../../../Service/auth.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoriaService } from '../../../../Service/categoria.service';
 import { Categorium } from '../../../../Interface/categorium';
@@ -9,11 +8,12 @@ import { Categorium } from '../../../../Interface/categorium';
   templateUrl: './filtrador.component.html',
   styleUrl: './filtrador.component.scss'
 })
-export class FiltradorComponent {
+export class FiltradorComponent implements OnInit {
   categorias: Categorium[] = [];
   isMenuVisible: boolean = false;
   isProcessing: boolean = false;
   hoveredCategoriaId: number | null = null;
+
   constructor(
     private router: Router,
     private categoriaService: CategoriaService,
@@ -22,7 +22,7 @@ export class FiltradorComponent {
 
   ngOnInit(): void {
     this.obtenerCategorias();
-  };
+  }
 
   obtenerCategorias(): void {
     this.categoriaService.getList().subscribe(
@@ -34,9 +34,12 @@ export class FiltradorComponent {
       }
     );
   }
+
   redireccionarALibros(idCategoria: number) {
     this.router.navigate(['/categoria', idCategoria, 'libros']);
+    this.isMenuVisible = false; 
   }
+
   cargarSubcategorias(idCategoria: number): void {
     this.categoriaService.getSubCategoriasPorId(idCategoria).subscribe(subcategorias => {
       const categoriaIndex = this.categorias.findIndex(c => c.idCategoria === idCategoria);
@@ -50,10 +53,19 @@ export class FiltradorComponent {
       console.error('Error al cargar subcategorías', error);
     });
   }
-  redireccionarALibrosSubcategoria(
-    idCategoria: number,
-    idSubcategoria: number
-  ) {
+
+  // Método para desplegar subcategorías en móviles
+  toggleSubcategoriasMovil(idCategoria: number, event: Event): void {
+    event.stopPropagation(); // Evita que se disparen otros clicks
+    
+    if (this.hoveredCategoriaId === idCategoria) {
+      this.hoveredCategoriaId = null; // Cierra si ya está abierta
+    } else {
+      this.cargarSubcategorias(idCategoria); // Carga del servidor y abre
+    }
+  }
+
+  redireccionarALibrosSubcategoria(idCategoria: number, idSubcategoria: number) {
     this.router.navigate([
       '/categoria',
       idCategoria,
@@ -61,10 +73,17 @@ export class FiltradorComponent {
       idSubcategoria,
       'libros'
     ]);
+    this.isMenuVisible = false;
   }
+
+  toggleMenuMovil(): void {
+    this.isMenuVisible = !this.isMenuVisible;
+  }
+
   mostrarSubcategorias(categoriaId: number): boolean {
     return categoriaId === this.hoveredCategoriaId;
   }
+
   esconderSubcategorias(): void {
     this.hoveredCategoriaId = null;
   }

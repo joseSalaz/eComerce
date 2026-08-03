@@ -1,21 +1,49 @@
 <nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid justify-content-center">
-        <div class="navbar-nav">
-            <div *ngFor="let categoria of categorias" class="nav-item dropdown"
-                (mouseenter)="cargarSubcategorias(categoria.idCategoria)" (mouseleave)="hoveredCategoriaId=null">
-                <button class="nav-link" (click)="redireccionarALibros(categoria.idCategoria)">
-                    {{ categoria.categoria1 }}
-                </button>
+    <div class="container-fluid justify-content-center flex-column flex-lg-row">
+        
+        <!-- HEADER MÓVIL: Toda la barra es clickable y tiene flechita indicadora -->
+        <div class="mobile-header d-lg-none w-100 d-flex justify-content-between align-items-center" 
+             (click)="toggleMenuMovil()">
+            <span class="fw-bold text-uppercase fs-6 color-primary d-flex align-items-center gap-2">
+                Categorías 
+                <i class="fas" [ngClass]="isMenuVisible ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </span>
+           
+        </div>
 
-                <!-- Sin *ngIf, siempre en DOM, controlado por CSS hover -->
-                <div class="dropdown-menu">
+        <!-- NAVEGACIÓN PRINCIPAL -->
+        <div class="navbar-nav" [class.show-mobile]="isMenuVisible">
+            <div *ngFor="let categoria of categorias" class="nav-item dropdown"
+                 (mouseenter)="cargarSubcategorias(categoria.idCategoria)" 
+                 (mouseleave)="esconderSubcategorias()">
+                
+                <div class="category-header-row">
+                    <!-- Click en el texto: Redirige directamente -->
+                    <button class="nav-link" (click)="redireccionarALibros(categoria.idCategoria)">
+                        {{ categoria.categoria1 }}
+                    </button>
+
+                    <!-- Botón/Flecha exclusiva para abrir subcategorías en Móvil -->
+                    <button class="btn-toggle-subcategories d-lg-none" 
+                            (click)="toggleSubcategoriasMovil(categoria.idCategoria, $event)">
+                        <i class="fas" [ngClass]="hoveredCategoriaId === categoria.idCategoria ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </button>
+                </div>
+
+                <!-- Desplegable visible por Hover (PC) o por Click / hoveredCategoriaId (Móvil) -->
+                <div class="dropdown-menu" [class.is-open]="hoveredCategoriaId === categoria.idCategoria">
                     <a *ngFor="let sub of categoria.subcategorias" class="dropdown-item"
-                        (click)="redireccionarALibrosSubcategoria(categoria.idCategoria, sub.id)">
+                       (click)="redireccionarALibrosSubcategoria(categoria.idCategoria, sub.id)">
                         {{ sub.descripcion }}
                     </a>
+                    <!-- Mensaje si la categoría no tiene subcategorías aún -->
+                    <span *ngIf="categoria.subcategorias && categoria.subcategorias.length === 0" class="dropdown-item disabled">
+                        Sin subcategorías
+                    </span>
                 </div>
 
             </div>
         </div>
+
     </div>
 </nav>
