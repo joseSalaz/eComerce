@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Libro } from '../../../Interface/libro';
+import { Libro, LibroCatalogo } from '../../../Interface/libro';
 import { Router } from '@angular/router';
 import { LibroService } from '../../../Service/libro.service';
 import { CategoriaService } from '../../../Service/categoria.service';
@@ -15,7 +15,7 @@ declare var bootstrap: any;
   styleUrls: ['./carrusel.component.scss']
 })
 export class CarruselComponent implements OnInit, AfterViewInit, OnDestroy {
-  
+
   @Input() categoria: number | string = '';
   @Output() comprarLibro: EventEmitter<number> = new EventEmitter<number>();
   @ViewChild('carousel') carouselElement!: ElementRef;
@@ -23,64 +23,58 @@ export class CarruselComponent implements OnInit, AfterViewInit, OnDestroy {
   private currentIndex: number = 0;
   private intervalId: any;
   datas: Libro[] = [];
+  libros: LibroCatalogo[] = [];
   firstItemId: number = 0;
   categoriaFiltrada: number | string = '';
   defaultImageUrl: string = "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
-  
+
   constructor(
     private CategoriaService: CategoriaService,
     private router: Router,
     private _libroServicio: LibroService,
-    public loadingStateService: LoadingStateService 
-  ) {}
+    public loadingStateService: LoadingStateService
+  ) { }
 
   ngOnInit(): void {
-    setTimeout(()=>{this.mostrarLibro();})
-    
+    setTimeout(() => { this.mostrarLibro(); })
+
   }
 
   mostrarLibro(): void {
-  let idSubcategoria: number;
 
-  if (typeof this.categoria === 'string') {
-    idSubcategoria = parseInt(this.categoria, 10);
-  } else {
-    idSubcategoria = this.categoria;
-  }
+    let idSubcategoria: number;
 
-  // Establecemos el estado de carga a 'waiting'
-  this.loadingStateService.setLoading(LoadingState.Waiting);
+    if (typeof this.categoria === 'string') {
+      idSubcategoria = parseInt(this.categoria, 10);
+    } else {
+      idSubcategoria = this.categoria;
+    }
 
-  // Simula una solicitud retrasada al servidor
- 
-    this.CategoriaService.getLibrosPorCategoriaId(idSubcategoria).subscribe(
-      (libros: Libro[]) => {
-        this.datas = libros;
+    this.loadingStateService.setLoading(LoadingState.Waiting);
 
-        if (this.datas.length > 0) {
-          this.firstItemId = this.datas[0].idLibro;
-        }
+    this.CategoriaService.getLibrosPorCategoriaId(idSubcategoria).subscribe({
 
-        // Llamamos a obtener el precio de cada libro
-        this.datas.forEach((libro, index) => {
-          this._libroServicio.getPreciosPorIdLibro(libro.idLibro).subscribe(precios => {
-            if (precios.length > 0 && precios[0].precioVenta != null) {
-              this.datas[index].precioVenta = precios[0].precioVenta;
-            }
-          });
-        });
+      next: (response) => {
 
-        // Estado exitoso una vez que los libros están cargados
+        this.libros = response.data;
+
+        console.log(this.libros);
+
         this.loadingStateService.setLoading(LoadingState.Successful);
-      },
-      (error) => {
-        // Si hay un error, cambiamos el estado a 'error'
-        console.error('Error al cargar los libros:', error);
-        this.loadingStateService.setLoading(LoadingState.Error);
-      }
-    );
 
-}
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        this.loadingStateService.setLoading(LoadingState.Error);
+
+      }
+
+    });
+
+  }
 
   ngAfterViewInit(): void {
     if (typeof window !== 'undefined') {
