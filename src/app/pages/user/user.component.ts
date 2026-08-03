@@ -78,7 +78,7 @@ export class UserComponent implements OnInit {
     this.router.navigate(['/inicio']);
   }
 
-  // Captura el ID enviado por el hijo de pedidos y procesa la apertura del modal global
+  
   abrirModalVentaGlobal(idVenta: number): void {
     this.ventaService.obtenerDetallesVenta(idVenta).subscribe({
       next: (detalles) => {
