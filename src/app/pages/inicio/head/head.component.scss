@@ -486,3 +486,61 @@
     font-size: 10px;
   }
 }
+.nav-item-wrapper {
+  position: relative; // Necesario para que el popover se posicione respecto al botón
+}
+
+.auth-popover {
+  position: absolute;
+  top: 100%;
+  right: -50px; // Ajusta según la posición deseada
+  width: 320px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 1050;
+  margin-top: 12px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+
+  /* Flecha flotante superior apuntando al icono */
+  .popover-arrow {
+    position: absolute;
+    top: -8px;
+    right: 70px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #ffffff;
+  }
+
+  .popover-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2b2b2b;
+    margin-bottom: 15px;
+  }
+
+  .btn-auth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+
+    &.btn-google {
+      background-color: #00bcd4; // Tono celeste turquesa similar a la imagen
+      color: #ffffff;
+      border: none;
+
+      &:hover {
+        background-color: #00acc1;
+      }
+    }
+  }
+}

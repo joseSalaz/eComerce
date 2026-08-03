@@ -42,34 +42,46 @@
                         </button>
                     </div>
 
-                    <div class="nav-item-wrapper">
-                        <div class="user-dropdown" *ngIf="!vernombre; else templateRegister">
-                            <a class="btn btn-link text-decoration-none text-dark" routerLink="/auth/log-in">
-                                <i class="fas fa-user-circle text-primary"></i>
-                                <span class="btn-label">Registrese</span>
-                            </a>
-                        </div>
-                        <ng-template #templateRegister>
-                            <div class="user-dropdown">
-                                <button class="btn text-dark dropdown-toggle" (click)="toggleMenu($event)">
-                                    <i class="fas fa-user text-primary"></i>
-                                    <span class="btn-label">{{ displayname }}</span>
-                                </button>
-                                <ul class="dropdown-menu" [ngClass]="{ 'show': isMenuVisible }">
-                                    <li>
-                                        <button class="dropdown-item" (click)="onSelectOption('miperfil')">
-                                            Mi perfil
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="dropdown-item" (click)="onSelectOption('cerrarSesion')">
-                                            Cerrar sesion
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </ng-template>
-                    </div>
+                   <div class="user-dropdown" *ngIf="!vernombre; else templateRegister">
+                     <!-- Botón que activa/desactiva el modal desplegable -->
+                    <button class="btn btn-link text-decoration-none text-dark" (click)="toggleAuthModal($event)">
+                        <i class="fas fa-user-circle text-primary"></i>
+                        <span class="btn-label">Regístrese</span>
+                     </button>
+                     <!-- Modal / Dropdown Flotante de Inicio de Sesión -->
+                 <div class="auth-popover shadow-lg" *ngIf="mostrarAuthModal">
+                    <!-- Flecha decorativa superior -->
+                <div class="popover-arrow"></div>
+
+                     <h5 class="popover-title text-center">Escoja una opción para entrar</h5>
+      
+                <div class="d-flex flex-column gap-2 mt-3">
+                 <button class="btn btn-auth btn-google w-100" (click)="loginConGoogle()">
+          <img src="https://img.icons8.com/color/22/000000/google-logo.png" alt="Google" />
+          ENTRAR CON GOOGLE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plantilla cuando el usuario ya está autenticado -->
+  <ng-template #templateRegister>
+    <div class="user-dropdown">
+      <button class="btn text-dark dropdown-toggle" (click)="toggleMenu($event)">
+        <i class="fas fa-user text-primary"></i>
+        <span class="btn-label">{{ displayname }}</span>
+      </button>
+      <ul class="dropdown-menu" [ngClass]="{ 'show': isMenuVisible }">
+        <li>
+          <button class="dropdown-item" (click)="onSelectOption('miperfil')">Mi perfil</button>
+        </li>
+        <li>
+          <button class="dropdown-item" (click)="onSelectOption('cerrarSesion')">Cerrar sesión</button>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+
 
                     <div class="nav-item-wrapper">
                         <div *ngIf="mostrarCarrito">
@@ -88,8 +100,7 @@
                 </div>
             </div>
         </div>
-
-    </div>
+</div> 
 </nav>
 
 <!-- Espaciador: empuja el contenido debajo del navbar fijo -->

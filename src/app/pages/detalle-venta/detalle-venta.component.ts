@@ -181,30 +181,24 @@ export class DetalleVentaComponent implements OnInit {
     }
   }
 
-  abrirModalPago() {
+  mostrarPagoDesplegado: boolean = false;
+
+// Reemplaza o complementa la lógica de apertura
+toggleOpcionesPago(): void {
+  if (!this.mostrarPagoDesplegado) {
     if (!this.direccionSeleccionada || !this.direccionSeleccionada.idDireccion) {
-      // Swal.fire({
-      //   title: '📍 Selecciona una dirección',
-      //   text: 'Debes elegir una dirección de envío antes de proceder.',
-      //   icon: 'warning',
-      //   confirmButtonText: 'Ok',
-      //   confirmButtonColor: '#d33'
-      // });
       Notiflix.Report.warning(
         '📍 Selecciona una dirección',
-        '"Debes elegir una dirección de envío antes de proceder.',
-        'Okay',
+        'Debes elegir una dirección de envío antes de proceder.',
+        'Okay'
       );
       return;
     }
 
     this.carroService.setDireccionSeleccionada(this.direccionSeleccionada);
-    this.showModalPago = true;
+    this.mostrarPagoDesplegado = true;
+  } else {
+    this.mostrarPagoDesplegado = false;
   }
-
-
-
-  cerrarModalPago() {
-    this.showModalPago = false;
-  }
+}
 }

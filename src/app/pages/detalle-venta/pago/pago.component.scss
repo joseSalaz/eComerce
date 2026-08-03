@@ -1,79 +1,119 @@
-.payment-container {
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+.payment-methods-wrapper {
+  .payment-subtitle {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Tarjetas Interactivas de Pago */
+  .payment-card {
+    display: block;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: all 0.25s ease-in-out;
+
+    &:hover {
+      border-color: #cbd5e1;
+      background-color: #f8fafc;
+    }
+
+    &.selected {
+      border-color: #0d6efd;
+      background-color: #f0f7ff;
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.12);
+    }
+
+    .payment-card-body {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .form-check-input {
+      cursor: pointer;
+      width: 1.2rem;
+      height: 1.2rem;
+
+      &:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+      }
+    }
+
+    .payment-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .payment-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1e293b;
+      }
+
+      .payment-desc {
+        font-size: 0.75rem;
+        color: #64748b;
+      }
+    }
+
+    .payment-logo {
+      height: 24px;
+      max-width: 80px;
+      object-fit: contain;
+    }
+  }
+
+  /* Botón de Pago Principal */
+  .btn-checkout {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 14px rgba(13, 110, 253, 0.35);
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(13, 110, 253, 0.45);
+      background: linear-gradient(135deg, #0b5ed7 0%, #084298 100%);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: #e2e8f0;
+      color: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
 }
 
-.payment-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
+/* Responsividad para móviles */
+@media (max-width: 576px) {
+  .payment-card {
+    padding: 12px;
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn img.payment-logo {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-}
-
-.btn-paypal {
-  background-color: #0070ba;
-  color: #fff;
-}
-
-.btn-paypal:hover {
-  background-color: #005b9f;
-}
-
-.btn-mercado-pago {
-  background-color: #009ee3;
-  color: #fff;
-}
-
-.btn-mercado-pago:hover {
-  background-color: #007bb2;
-}
-
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1300;
-}
-
-.loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #000;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-.loading-text {
-  margin-top: 10px;
-  font-size: 16px;
-  color: #333;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    .payment-logo {
+      height: 20px;
+      max-width: 60px;
+    }
+  }
 }

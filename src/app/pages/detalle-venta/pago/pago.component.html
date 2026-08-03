@@ -1,23 +1,56 @@
-<div class="payment-container">
-
-  <div class="text-center">
-    <h1>Finaliza tu compra</h1>
+<div class="payment-methods-wrapper">
+  <div class="payment-header mb-3">
+    <h6 class="payment-subtitle">Selecciona tu método de pago</h6>
   </div>
 
+  <div class="payment-options">
+    <!-- Opción PayPal -->
+    <label class="payment-card" [class.selected]="metodoSeleccionado === 'paypal'">
+      <div class="payment-card-body">
+        <div class="form-check m-0">
+          <input 
+            type="radio" 
+            name="paymentMethod" 
+            id="paypal" 
+            value="paypal"
+            [(ngModel)]="metodoSeleccionado" 
+            class="form-check-input">
+        </div>
+        <div class="payment-info">
+          <span class="payment-title">PayPal</span>
+          <small class="payment-desc">Tarjetas de crédito, débito o saldo PayPal</small>
+        </div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Paypal_2014_logo.png" alt="PayPal" class="payment-logo">
+      </div>
+    </label>
 
-
-  <!-- BOTONES DE PAGO -->
-  <div class="payment-buttons">
-    <button (click)="procesarPago('paypal')" class="btn btn-paypal" >
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Paypal_2014_logo.png" alt="PayPal Logo" class="payment-logo" />
-      Pagar con PayPal
-    </button>
-    <button (click)="procesarPago('mercadoPago')" class="btn btn-mercado-pago" >
-      <img src="https://niixer.com/wp-content/uploads/2023/07/mercado-pago-logo-vector-1-1280x600.png" alt="Mercado Pago Logo" class="payment-logo" />
-      Pagar con Mercado Pago
-    </button>
+    <!-- Opción Mercado Pago -->
+    <label class="payment-card" [class.selected]="metodoSeleccionado === 'mercadoPago'">
+      <div class="payment-card-body">
+        <div class="form-check m-0">
+          <input 
+            type="radio" 
+            name="paymentMethod" 
+            id="mercadoPago" 
+            value="mercadoPago"
+            [(ngModel)]="metodoSeleccionado" 
+            class="form-check-input">
+        </div>
+        <div class="payment-info">
+          <span class="payment-title">Mercado Pago</span>
+          <small class="payment-desc">Banca por internet, YAPE, tarjetas y más</small>
+        </div>
+        <img src="https://niixer.com/wp-content/uploads/2023/07/mercado-pago-logo-vector-1-1280x600.png" alt="Mercado Pago" class="payment-logo">
+      </div>
+    </label>
   </div>
 
-
-
+  <!-- Botón de Acción Principal -->
+  <button 
+    type="button" 
+    class="btn btn-checkout w-100 mt-3" 
+    [disabled]="!metodoSeleccionado"
+    (click)="procesarPago(metodoSeleccionado!)">
+    <i class="fas fa-shield-alt me-2"></i> Pagar Ahora
+  </button>
 </div>

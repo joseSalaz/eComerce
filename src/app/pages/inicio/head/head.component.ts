@@ -23,13 +23,23 @@ export class HeadComponent implements OnInit {
   isMenuVisible: boolean = false;
   isProcessing: boolean = false;
   isMobileMenuOpen = false;
-
-
+  mostrarAuthModal: boolean = false;
   constructor(
     private authService: AuthService,
     private router: Router,
     private carroService: CarroService,
   ) { }
+toggleAuthModal(event: Event): void {
+    event.stopPropagation();
+    this.mostrarAuthModal = !this.mostrarAuthModal;
+  }
+
+  loginConGoogle(): void {
+    this.authService.login();
+    this.mostrarAuthModal = false; // Cerrar el modal al iniciar el proceso
+  }
+
+ 
 
   ngOnInit(): void {
 
