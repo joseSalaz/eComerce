@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriaService } from '../../Service/categoria.service';
-import { Libro } from '../../Interface/libro';
+import { ApiResponseLibros, Libro, LibroCatalogo } from '../../Interface/libro';
 import { switchMap } from 'rxjs/operators'; // Importa switchMap
 import { LibroService } from '../../Service/libro.service';
 import { AutorService } from '../../Service/autor.service';
@@ -22,6 +22,10 @@ export class CategoriaComponent implements OnInit {
   filtros: AutorCategoria[] = [];
   proveedores: Proveedor[] = [];
   idCategoria!: number;
+  // Nuestra nueva lista optimizada
+  listaLibros: LibroCatalogo[] = [];
+  cargando: boolean = true;
+  categoriaId!: number;
   constructor(
     private categoriaService: CategoriaService,
     private router: Router,
@@ -32,32 +36,35 @@ export class CategoriaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.route.paramMap.subscribe(params => {
 
       this.idCategoria = Number(params.get('idCategoria'));
 
-      this.obtenerLibros();
-
+      this.obtenerLibros(this.idCategoria);
       this.obtenerAutores();
-
       this.obtenerProveedores();
 
     });
-  }
-
-  obtenerLibros(): void {
-
-    this.categoriaService
-      .getLibrosPorCategoriaId(this.idCategoria)
-      .subscribe(libros => {
-
-        this.datas = libros;
-
-        this.obtenerPrecios();
-
-      });
 
   }
+
+  obtenerLibros(id: number): void {
+
+    this.categoriaService.getLibrosPorCategoriaId(id).subscribe({
+
+      next: response => {
+
+        this.listaLibros = response.data;
+
+      },
+
+      error: err => console.error(err)
+
+    });
+
+  }
+
   obtenerAutores(): void {
 
     this.autor
@@ -78,15 +85,6 @@ export class CategoriaComponent implements OnInit {
       });
 
   }
-  obtenerPrecios(): void {
-    this.datas.forEach((libro, index) => {
-      this.libroService.getPreciosPorIdLibro(libro.idLibro).subscribe(precios => {
-        if (precios.length > 0 && precios[0].precioVenta != null) {
-          this.datas[index].precioVenta = precios[0].precioVenta;
-        }
-      });
-    });
-  }
 
   redireccionarAlDetalleProducto(libroId: number): void {
     this.router.navigate(['/detalle-producto', libroId]);
@@ -96,27 +94,45 @@ export class CategoriaComponent implements OnInit {
 
     const request = {
       idCategoria: this.idCategoria,
+      idSubcategoria: null,
       autores: filtro.autores,
       proveedores: filtro.proveedores,
       precioMinimo: filtro.precioMinimo,
       precioMaximo: filtro.precioMaximo
     };
 
-    this.libroService.filtrarLibros(request)
-      .subscribe(data => {
 
-        this.datas = data;
+    this.libroService.filtrarLibros(request)
+      .subscribe({
+
+        next: (response: any) => {
+
+          console.log("Resultado filtro:", response);
+
+
+          this.listaLibros = response.map((item: any) => ({
+
+            libro: {
+              idLibro: item.idLibro,
+              titulo: item.titulo,
+              imagen: item.imagen,
+              precioVenta: item.precioVenta
+            },
+
+            precio: item.precioVenta
+
+          }));
+
+
+          console.log("Lista adaptada:", this.listaLibros);
+
+        },
+
+        error: err => {
+          console.error(err);
+        }
 
       });
 
   }
 }
-
-
-
-
-
-
-
-
-

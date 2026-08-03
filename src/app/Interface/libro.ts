@@ -11,8 +11,31 @@ export interface Libro {
     idSubcategoria: number;
     idTipoPapel: number;
     idProveedor: number;
-    imagen: string ;
+    imagen: string;
     precioVenta?: number;
 }
 
-  
+export interface LibroCatalogo {
+    libro: Libro;
+    precio: number;
+}
+
+export interface ApiResponseLibros {
+    success: boolean;
+    data: LibroCatalogo[];
+}
+
+
+export interface LibroFiltroResponse {
+
+  idLibro:number;
+
+  titulo:string;
+
+  imagen:string;
+
+  precioVenta:number;
+
+  razonSocial:string;
+
+}

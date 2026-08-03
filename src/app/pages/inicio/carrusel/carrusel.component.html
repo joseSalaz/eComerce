@@ -11,21 +11,24 @@
 
 <swiper-container *ngIf="loadingStateService.loading$() === 'successful'" class="mySwiper"
   [slidesPerView]="getSlidesPerView()" navigation autoplay [spaceBetween]="80">
-  <ng-container *ngFor="let element of datas; let i = index">
+  
+  <!-- Iteramos sobre la nueva lista optimizada -->
+  <ng-container *ngFor="let element of libros; let i = index">
     <swiper-slide>
       <div class="card">
         <div class="img-wrapper">
-          <img [src]="element.imagen || defaultImageUrl" (error)="onImageError($event)" alt="Libro" />
+          <!-- Accedemos a la propiedad anidada libroCompleto -->
+          <img [src]="element.libro.imagen || element.libro.imagen || defaultImageUrl" (error)="onImageError($event)" alt="Libro" />
         </div>
         <div class="card-body">
-          <h5 class="card-title">{{ element.titulo }}</h5>
-          <h1 class="price" *ngIf="element.precioVenta; else loading">
-            S/{{ element.precioVenta | number:'1.2-2' }}
+          <h5 class="card-title">{{ element.libro.titulo }}</h5>
+          
+          <!-- El precio ya viene directo, se elimina el ngIf y el #loading -->
+          <h1 class="price">
+            S/{{ element.precio | number:'1.2-2' }}
           </h1>
-          <ng-template #loading>
-            <span>Cargando precio...</span>
-          </ng-template>
-          <button type="button" class="btn btn-primary fs-5" [routerLink]="['/detalle-producto', element.idLibro]">
+          
+          <button type="button" class="btn btn-primary fs-5" [routerLink]="['/detalle-producto', element.libro.idLibro]">
             <i class="fas fa-cart-plus"></i> Comprar
           </button>
         </div>

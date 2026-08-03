@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject, catchError, throwError } from 'rxjs';
-import { Libro } from '../Interface/libro';
+import { ApiResponseLibros, Libro, LibroFiltroResponse } from '../Interface/libro';
 import { environment } from '../../environments/environment';
 import { Precio } from '../Interface/precio';
 import { Kardex } from '../Interface/kardex';
@@ -87,10 +87,12 @@ export class LibroService {
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
-  filtrarLibros(request: any): Observable<any[]> {
-    return this.http.post<any[]>(
-      `${this.apiUrl}/Filtrar/autor/proveedor/precio`,
+  filtrarLibros(request: any): Observable<LibroFiltroResponse[]> {
+
+    return this.http.post<LibroFiltroResponse[]>(
+      `${this.apiUrl}/filtrar/autor/proveedor/precio`,
       request
     );
+
   }
 }
