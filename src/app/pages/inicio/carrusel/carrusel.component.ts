@@ -53,32 +53,43 @@ export class CarruselComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Simula una solicitud retrasada al servidor
  
-    this.CategoriaService.getLibrosPorCategoriaId(idSubcategoria).subscribe(
-      (libros: Libro[]) => {
-        this.datas = libros;
+  this.CategoriaService.getLibrosPorCategoriaId(idSubcategoria).subscribe(
+  (respuesta: any) => {
+   
+    const listaRaw = respuesta && respuesta.data ? respuesta.data : (Array.isArray(respuesta) ? respuesta : []);
 
-        if (this.datas.length > 0) {
-          this.firstItemId = this.datas[0].idLibro;
-        }
-
-        // Llamamos a obtener el precio de cada libro
-        this.datas.forEach((libro, index) => {
-          this._libroServicio.getPreciosPorIdLibro(libro.idLibro).subscribe(precios => {
-            if (precios.length > 0 && precios[0].precioVenta != null) {
+    this.datas = listaRaw.map((item: any) => {
+      if (item.libro) {
+        return {
+          ...item.libro,
+          precioVenta: item.precio ?? item.libro.precioVenta ?? null
+        };
+      }
+      return item;
+    });
+    if (this.datas.length > 0) {
+      this.firstItemId = this.datas[0].idLibro;
+    }
+    this.datas.forEach((libro: any, index: number) => {
+      if (libro.precioVenta === null || libro.precioVenta === undefined) {
+        this._libroServicio.getPreciosPorIdLibro(libro.idLibro).subscribe({
+          next: (precios) => {
+            if (precios && precios.length > 0 && precios[0].precioVenta != null) {
               this.datas[index].precioVenta = precios[0].precioVenta;
             }
-          });
+          },
+          error: (err) => console.error(`Error al obtener precio para el libro ${libro.idLibro}:`, err)
         });
-
-        // Estado exitoso una vez que los libros están cargados
-        this.loadingStateService.setLoading(LoadingState.Successful);
-      },
-      (error) => {
-        // Si hay un error, cambiamos el estado a 'error'
-        console.error('Error al cargar los libros:', error);
-        this.loadingStateService.setLoading(LoadingState.Error);
       }
-    );
+    });
+
+    this.loadingStateService.setLoading(LoadingState.Successful);
+  },
+  (error) => {
+    console.error('Error al cargar los libros:', error);
+    this.loadingStateService.setLoading(LoadingState.Error);
+  }
+);
 
 }
 
